@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    // "outDir": "lib-es",
+    // "module": "commonjs",
+    // "target": "es5",
+    "lib": ["esnext", "dom"],
+    "target": "esnext",
+    "sourceMap": true,
+    "allowJs": true,
+    // "jsx": "react",
+    "moduleResolution": "bundler",
+    // "removeComments": true,
+    //    "rootDir": "src",
+    "forceConsistentCasingInFileNames": false,
+    "importHelpers": true,
+    // "suppressImplicitAnyIndexErrors": true, // ts5.0已弃用
+    "verbatimModuleSyntax": true, // 单独导出或导入ts类型且不使用type关键字时，tsc报错
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    // "incremental": true // 增量编译tsc，除第一次编译全部之外，其余时候只编译有改动部分，但不会删除掉改名前的文件和d.ts
+    // "allowSyntheticDefaultImports": true,
+
+    "alwaysStrict": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    // "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false
+  },
+  "include": ["__tests__/**/*.ts", "tests/*/*.ts", "src/**/*.d.ts", "src/**/*.ts"]
+}

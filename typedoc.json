@@ -1,0 +1,21 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "htmlLang": "zh-CN",
+  "includeVersion": true,
+  "name": "lib-starter",
+  "customCss": "./typedoc.theme.css",
+  "sort": ["static-first", "kind", "enum-value-ascending"],
+  "categoryOrder": ["file"],
+  "out": "./docs-html",
+  "categorizeByGroup": true,
+  "searchCategoryBoosts": {
+    "Component": 2,
+    "Model": 1.2
+  },
+  "searchGroupBoosts": {
+    "Classes": 1.5
+  },
+  "navigationLinks": {
+    "GitHub": "https://github.com/mengxinssfd/lib-starter"
+  }
+}

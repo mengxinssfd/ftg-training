@@ -1,0 +1,15 @@
+/dist/*
+.local
+.output.js
+/node_modules/**
+
+**/*.svg
+**/*.sh
+
+/public/*
+/types/*
+coverage
+docs-html
+.github
+temp
+pnpm-lock.yaml
