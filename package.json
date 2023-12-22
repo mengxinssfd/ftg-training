@@ -1,10 +1,9 @@
 {
-  "name": "lib-starter",
+  "name": "fighting-game-control-system",
   "version": "0.0.0",
   "packageManager": "pnpm@7.1.0",
   "description": "一个基于pnpm typescript monorepo/multirepo的lib快速启动仓库模板",
   "scripts": {
-    "lib-starter:init-ci": "tsx scripts/lib-starter-init-ci.ts",
     "pkg:init": "tsx scripts/pkg-init.ts",
     "pkg:new": "tsx scripts/pkg-new.ts",
     "test": "jest",
@@ -36,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mengxinssfd/lib-starter.git"
+    "url": "git+https://github.com/mengxinssfd/fighting-game-control-system.git"
   },
   "keywords": [
     "lib",
@@ -45,9 +44,9 @@
   "author": "dyh_a",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mengxinssfd/lib-starter/issues"
+    "url": "https://github.com/mengxinssfd/fighting-game-control-system/issues"
   },
-  "homepage": "https://github.com/mengxinssfd/lib-starter#readme",
+  "homepage": "https://github.com/mengxinssfd/fighting-game-control-system#readme",
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
@@ -87,6 +86,7 @@
     "rollup-plugin-polyfill-node": "^0.12.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.1",
+    "rxjs": "^7.8.1",
     "sass": "^1.62.0",
     "semver": "^7.5.0",
     "ts-jest": "^29.1.0",
@@ -99,5 +99,30 @@
     "dist",
     "CHANGELOG.md",
     "LICENSE"
-  ]
+  ],
+  "main": "dist/fighting-game-control-system.cjs.js",
+  "module": "dist/fighting-game-control-system.esm-bundler.js",
+  "types": "dist/fighting-game-control-system.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "node": "./dist/fighting-game-control-system.cjs.js",
+        "default": "./dist/fighting-game-control-system.esm-bundler.js"
+      },
+      "require": "./dist/fighting-game-control-system.cjs.js"
+    }
+  },
+  "buildOptions": {
+    "name": "FightingGameControlSystem",
+    "formats": [
+      "esm-bundler",
+      "esm-browser",
+      "cjs",
+      "global"
+    ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
