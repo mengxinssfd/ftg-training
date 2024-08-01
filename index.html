@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <script type="module">
+      import { Player, Shoryuken, Hadouken, AllKeys } from './src';
+      const player = new Player([new Shoryuken(), new Hadouken()], AllKeys);
+
+      window.addEventListener('keydown', (e) => {
+        player.input(e.key, 'down');
+        const skill = player.matchSkill();
+        if (skill) {
+          console.log(skill.name);
+          player.clearInputs();
+        }
+      });
+      window.addEventListener('keyup', (e) => {
+        player.input(e.key, 'up');
+      });
+    </script>
+  </body>
+</html>

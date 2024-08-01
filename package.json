@@ -20,7 +20,8 @@
     "typedoc:build": "typedoc --plugin @mxssfd/typedoc-theme --theme my-theme",
     "typedoc:deploy": "gh-pages -d docs-html",
     "build": "tsx scripts/build.ts -t",
-    "release": "tsx scripts/release.ts"
+    "release": "tsx scripts/release.ts",
+    "dev": "vite"
   },
   "lint-staged": {
     "*.{json,html,md,yaml}": [
@@ -124,5 +125,8 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "vite": "^5.3.5"
   }
 }
