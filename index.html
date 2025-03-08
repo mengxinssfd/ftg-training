@@ -21,7 +21,15 @@
     <div id="successCommand"></div>
     <div id="frame">0</div>
     <script type="module">
-      import { Player, Directs, KeyboardInput, XboxGamepadInput, commands, socdN } from './src';
+      import {
+        Player,
+        Directs,
+        KeyboardInput,
+        XboxGamepadInput,
+        BluetoothGamepadInput,
+        commands,
+        socdN,
+      } from './src';
 
       const iconMap = {
         [Directs.None]: 'N',
@@ -56,7 +64,7 @@
         k: OtherKeys.MK,
         l: OtherKeys.HK,
       };
-      const xboxKeyMaps = XboxGamepadInput.keymap;
+      const xboxKeyMaps = BluetoothGamepadInput.Keymap;
       const gamepadMap = {
         [xboxKeyMaps.Up]: Directs.Up,
         [xboxKeyMaps.Left]: Directs.Left,
@@ -153,7 +161,7 @@
       const player = new Player(
         [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720],
         //        new KeyboardInput(map, socdN),
-        new XboxGamepadInput(gamepadMap, socdN),
+        new BluetoothGamepadInput(gamepadMap, socdN),
       );
       // player.inputManager.setHistoryLen(10);
 

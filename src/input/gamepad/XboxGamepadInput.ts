@@ -1,7 +1,7 @@
 import { GamepadInput } from './GamepadInput';
 
 // 0-15是xbox手柄的按键在gamepad.buttons的下标位置
-enum xboxKeyMaps {
+enum XboxKeyMaps {
   A = 0,
   B,
   X,
@@ -10,8 +10,8 @@ enum xboxKeyMaps {
   RB,
   LT,
   RT,
-  Back,
-  Start,
+  View,
+  Menu,
   LS,
   RS,
   Up,
@@ -20,7 +20,7 @@ enum xboxKeyMaps {
   Right,
 }
 export class XboxGamepadInput extends GamepadInput {
-  static readonly keymap = xboxKeyMaps;
+  static readonly Keymap = XboxKeyMaps;
   protected override updateGamepad(): void {
     const gamepads = navigator.getGamepads();
     const gp = gamepads[0];
@@ -29,7 +29,7 @@ export class XboxGamepadInput extends GamepadInput {
     // 读取按钮状态
     gp.buttons.forEach((btn, k) => {
       if (!btn.pressed) return;
-      const btnName = xboxKeyMaps[k] as string;
+      const btnName = XboxKeyMaps[k] as string;
       const key = this.map[k];
       key && this.addKey(k);
       console.log(`按钮 ${btnName} 被按下`, key);
@@ -48,14 +48,14 @@ export class XboxGamepadInput extends GamepadInput {
     const [x, y] = axes as [number, number];
     // todo 识别斜方向
     if (x === -1) {
-      this.addKey(xboxKeyMaps.Left);
+      this.addKey(XboxKeyMaps.Left);
     } else if (x === 1) {
-      this.addKey(xboxKeyMaps.Right);
+      this.addKey(XboxKeyMaps.Right);
     }
     if (y === -1) {
-      this.addKey(xboxKeyMaps.Up);
+      this.addKey(XboxKeyMaps.Up);
     } else if (y === 1) {
-      this.addKey(xboxKeyMaps.Down);
+      this.addKey(XboxKeyMaps.Down);
     }
   }
 }
