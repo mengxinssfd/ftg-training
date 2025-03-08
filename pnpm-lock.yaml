@@ -34,8 +34,8 @@ importers:
         specifier: ^15.0.2
         version: 15.2.3(rollup@3.29.4)
       '@tool-pack/basic':
-        specifier: ^0.0.20
-        version: 0.0.20
+        specifier: ^0.9.1
+        version: 0.9.1
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.4
@@ -148,7 +148,7 @@ importers:
         specifier: ^0.24.4
         version: 0.24.8(typescript@5.5.4)
       typescript:
-        specifier: ^5.0.4
+        specifier: ^5.5.4
         version: 5.5.4
 
 packages:
@@ -1060,11 +1060,11 @@ packages:
     resolution: {integrity: sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==}
     engines: {node: '>=14.16'}
 
-  '@tool-pack/basic@0.0.20':
-    resolution: {integrity: sha512-VcW/BVtgx9X1P69E9lcFMFkP8bE4qFOJkK0aFYLVk6kxepHWDLdDMySdVGasAQsa7Wvi0fCOFfvltUSfxaNa+Q==}
+  '@tool-pack/basic@0.9.1':
+    resolution: {integrity: sha512-uijiQPt9iAUpgzx2hKX9THpeta/cNM4UjmEnJanbQjG0CC93yEXCEo9ySiUgzQPCaU56aDVT0zxXe/4RSXH3NQ==}
 
-  '@tool-pack/types@0.0.2':
-    resolution: {integrity: sha512-cbhzF9gkLZ4Xe9YmBqx8szLlFSQznELcWrAEe1mFA4D/lW7c7K78FH2v60K1Zib0tRMZ1cZfJMd4lJlh12/G9A==}
+  '@tool-pack/types@0.3.0':
+    resolution: {integrity: sha512-JjiuX2YL67PnVesIexsSvKsZeAU+whjvXrUzqij5nXWLCuRGnRAIass1+t/tyZWDtOj1dAcdIccTlnGi/DLh9g==}
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -5490,11 +5490,11 @@ snapshots:
     dependencies:
       defer-to-connect: 2.0.1
 
-  '@tool-pack/basic@0.0.20':
+  '@tool-pack/basic@0.9.1':
     dependencies:
-      '@tool-pack/types': 0.0.2
+      '@tool-pack/types': 0.3.0
 
-  '@tool-pack/types@0.0.2': {}
+  '@tool-pack/types@0.3.0': {}
 
   '@tootallnate/once@2.0.0': {}
 
