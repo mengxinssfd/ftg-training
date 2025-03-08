@@ -3,8 +3,8 @@ import { Directs } from '../enums';
 
 export class KeyboardInput extends Input {
   constructor(
-    protected map: Record<string, any>,
-    protected socd?: (directs: Set<Directs>) => void,
+    protected override map: Record<string, any>,
+    protected override socd?: (directs: Set<Directs>) => void,
   ) {
     super(map, socd);
     this.addListener();

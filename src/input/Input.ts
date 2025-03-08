@@ -12,7 +12,7 @@ export abstract class Input {
     const directs = [Directs.Up, Directs.Down, Directs.Left, Directs.Right];
     return directs.includes(key as Directs);
   }
-  protected onKey(k: string, type: 'add' | 'delete'): void {
+  protected onKey(k: string | number, type: 'add' | 'delete'): void {
     const key = this.map[k];
     if (!key) return;
     if (this.isDirect(key)) {
@@ -20,6 +20,9 @@ export abstract class Input {
     } else {
       this.others[type](key);
     }
+  }
+  protected addKey(k: string | number): void {
+    this.onKey(k, 'add');
   }
   getKeys(): Pick<InputHistory, 'direct' | 'others'> {
     const directs = new Set(this.directs);
@@ -45,7 +48,5 @@ export abstract class Input {
     this.directs.clear();
     this.others.clear();
   }
-  destroy(): void {
-    // 默认什么都不做
-  }
+  abstract destroy(): void;
 }

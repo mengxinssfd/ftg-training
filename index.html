@@ -21,7 +21,7 @@
     <div id="successCommand"></div>
     <div id="frame">0</div>
     <script type="module">
-      import { Player, Directs, KeyboardInput, GamepadInput, commands, socdN } from './src';
+      import { Player, Directs, KeyboardInput, XboxGamepadInput, commands, socdN } from './src';
 
       const iconMap = {
         [Directs.None]: 'N',
@@ -43,7 +43,7 @@
         HK: 'hk',
       };
 
-      const map = {
+      const keyboardMap = {
         ' ': Directs.Up,
         a: Directs.Left,
         s: Directs.Down,
@@ -55,6 +55,20 @@
         j: OtherKeys.LK,
         k: OtherKeys.MK,
         l: OtherKeys.HK,
+      };
+      const xboxKeyMaps = XboxGamepadInput.keymap;
+      const gamepadMap = {
+        [xboxKeyMaps.Up]: Directs.Up,
+        [xboxKeyMaps.Left]: Directs.Left,
+        [xboxKeyMaps.Down]: Directs.Down,
+        [xboxKeyMaps.Right]: Directs.Right,
+
+        [xboxKeyMaps.X]: OtherKeys.LP,
+        [xboxKeyMaps.Y]: OtherKeys.MP,
+        [xboxKeyMaps.RB]: OtherKeys.HP,
+        [xboxKeyMaps.A]: OtherKeys.LK,
+        [xboxKeyMaps.B]: OtherKeys.MK,
+        [xboxKeyMaps.RT]: OtherKeys.HK,
       };
 
       const Hadouken = {
@@ -139,7 +153,7 @@
       const player = new Player(
         [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720],
         //        new KeyboardInput(map, socdN),
-        new GamepadInput(map, socdN),
+        new XboxGamepadInput(gamepadMap, socdN),
       );
       // player.inputManager.setHistoryLen(10);
 
@@ -147,10 +161,12 @@
       const hitSkillMap = new Map();
       const ms = [60];
       let lastTime = Date.now();
-      window.requestAnimationFrame(function handler() {
-        player.frameAdd();
+      const f = 1000 / 60;
+      setInterval(function handler() {
         const now = Date.now();
-        ms.unshift(1000 / (now - lastTime));
+        const timeDiff = now - lastTime;
+        player.frameAdd();
+        ms.unshift(1000 / timeDiff);
         ms.length = 5;
         lastTime = now;
         const skill = player.matchSkill();
@@ -180,8 +196,7 @@
         if (player.frame % 50 === 0) {
           frame.innerText = 'fps' + ~~(ms.reduce((r, v) => r + v, 0) / ms.length);
         }
-        window.requestAnimationFrame(handler);
-      });
+      }, f);
     </script>
   </body>
 </html>
