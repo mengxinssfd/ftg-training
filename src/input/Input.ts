@@ -7,9 +7,7 @@ export abstract class Input {
   constructor(
     protected map: Record<string, any>,
     protected socd?: (directs: Set<Directs>) => void,
-  ) {
-    this.addListener();
-  }
+  ) {}
   private isDirect(key: string | Directs) {
     const directs = [Directs.Up, Directs.Down, Directs.Left, Directs.Right];
     return directs.includes(key as Directs);
@@ -43,6 +41,11 @@ export abstract class Input {
     if (d.has(Directs.Right)) return Directs.Right;
     return Directs.None;
   }
-  abstract addListener(): void;
-  abstract destroy(): void;
+  protected clearInputs(): void {
+    this.directs.clear();
+    this.others.clear();
+  }
+  destroy(): void {
+    // 默认什么都不做
+  }
 }

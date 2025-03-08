@@ -1,6 +1,14 @@
 import { Input } from './Input';
+import { Directs } from '../enums';
 
 export class KeyboardInput extends Input {
+  constructor(
+    protected map: Record<string, any>,
+    protected socd?: (directs: Set<Directs>) => void,
+  ) {
+    super(map, socd);
+    this.addListener();
+  }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private keydownListener(_e: KeyboardEvent): void {
     // 不能用箭头函数赋值，因为比 constructor 慢
@@ -9,7 +17,7 @@ export class KeyboardInput extends Input {
   private keyupListener(_e: KeyboardEvent): void {
     // 不能用箭头函数赋值，因为比 constructor 慢
   }
-  override addListener(): void {
+  addListener(): void {
     const kd = (this.keydownListener = (e): void => {
       this.onKey(e.key, 'add');
     });

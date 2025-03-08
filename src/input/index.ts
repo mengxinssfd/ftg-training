@@ -1,3 +1,3 @@
 export * from './Input';
 export * from './KeyboardInput';
-export * from './HandleInput';
+export * from './GamepadInput';

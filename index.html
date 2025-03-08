@@ -21,7 +21,7 @@
     <div id="successCommand"></div>
     <div id="frame">0</div>
     <script type="module">
-      import { Player, Directs, KeyboardInput, commands, socdN } from './src';
+      import { Player, Directs, KeyboardInput, GamepadInput, commands, socdN } from './src';
 
       const iconMap = {
         [Directs.None]: 'N',
@@ -138,7 +138,8 @@
       };
       const player = new Player(
         [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720],
-        new KeyboardInput(map, socdN),
+        //        new KeyboardInput(map, socdN),
+        new GamepadInput(map, socdN),
       );
       // player.inputManager.setHistoryLen(10);
 
