@@ -3,22 +3,183 @@
   <head>
     <meta charset="UTF-8" />
     <title>Title</title>
+    <style>
+      #successCommand {
+        position: fixed;
+        left: 10%;
+        bottom: 10%;
+      }
+      #frame {
+        position: fixed;
+        right: 10%;
+        top: 10%;
+      }
+    </style>
   </head>
   <body>
+    <ul id="inputHistory"></ul>
+    <div id="successCommand"></div>
+    <div id="frame">0</div>
     <script type="module">
-      import { Player, Shoryuken, Hadouken, AllKeys } from './src';
-      const player = new Player([new Shoryuken(), new Hadouken()], AllKeys);
+      import { Player, Directs, KeyboardInput, commands, socdN } from './src';
 
-      window.addEventListener('keydown', (e) => {
-        player.input(e.key, 'down');
+      const iconMap = {
+        [Directs.None]: 'N',
+        [Directs.Up]: '↑',
+        [Directs.Down]: '↓',
+        [Directs.Left]: '←',
+        [Directs.Right]: '→',
+        [Directs.UpLeft]: '↖',
+        [Directs.UpRight]: '↗',
+        [Directs.DownLeft]: '↙',
+        [Directs.DownRight]: '↘',
+      };
+      const OtherKeys = {
+        LP: 'lp',
+        MP: 'mp',
+        HP: 'hp',
+        LK: 'lk',
+        MK: 'mk',
+        HK: 'hk',
+      };
+
+      const map = {
+        ' ': Directs.Up,
+        a: Directs.Left,
+        s: Directs.Down,
+        d: Directs.Right,
+
+        u: OtherKeys.LP,
+        i: OtherKeys.MP,
+        o: OtherKeys.HP,
+        j: OtherKeys.LK,
+        k: OtherKeys.MK,
+        l: OtherKeys.HK,
+      };
+
+      const Hadouken = {
+        limitFrame: 20,
+        matchPriority: 0,
+        name: '波动拳',
+        commandIcon: `${commands['236'].map((d) => iconMap[d]).join('')} + p`,
+        directs: [commands['236']],
+        trigger: OtherKeys.LP,
+      };
+
+      const Shoryuken = {
+        matchPriority: 1,
+        limitFrame: 20,
+        name: '升龙拳',
+        commandIcon: `${commands['623'].map((d) => iconMap[d]).join('')} + p`,
+        directs: [commands['623'], commands['323'], commands['6236'], commands['636']],
+        trigger: (i) => {
+          const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
+          return keys.some((k) => i.others.includes(k));
+        },
+      };
+      const OdShoryuken = {
+        matchPriority: 3,
+        limitFrame: 20,
+        name: 'OD升龙拳',
+        commandIcon: `${commands['623'].map((d) => iconMap[d]).join('')} + pp`,
+        directs: [commands['623'], commands['323'], commands['6236']],
+        trigger: (i) => {
+          const keys = [
+            [OtherKeys.LP, OtherKeys.MP],
+            [OtherKeys.LP, OtherKeys.HP],
+            [OtherKeys.MP, OtherKeys.HP],
+          ];
+          return keys.some((ks) => ks.every((k) => i.others.includes(k)));
+        },
+      };
+      const Sa3 = {
+        matchPriority: 2,
+        limitFrame: 30,
+        name: '神龙裂破',
+        commandIcon: `${commands['236236'].map((d) => iconMap[d]).join('')} + p`,
+        directs: [commands['236236']],
+        trigger: (i) => {
+          const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
+          return keys.some((k) => i.others.includes(k));
+        },
+      };
+      const D180 = {
+        matchPriority: 1,
+        limitFrame: 35,
+        name: '180',
+        commandIcon: `180 + p`,
+        directs: [commands['63214'], commands['41236']],
+        trigger: (i) => {
+          const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
+          return keys.some((k) => i.others.includes(k));
+        },
+      };
+      const D360 = {
+        matchPriority: 2,
+        limitFrame: 50,
+        name: '360',
+        commandIcon: `360 + p`,
+        directs: commands['360'],
+        trigger: (i) => {
+          const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
+          return keys.some((k) => i.others.includes(k));
+        },
+      };
+      const D720 = {
+        matchPriority: 2,
+        limitFrame: 50,
+        name: '720',
+        commandIcon: `720 + p`,
+        directs: commands['720'],
+        trigger: (i) => {
+          const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
+          return keys.some((k) => i.others.includes(k));
+        },
+      };
+      const player = new Player(
+        [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720],
+        new KeyboardInput(map, socdN),
+      );
+      // player.inputManager.setHistoryLen(10);
+
+      let skillActiveFrame = 0;
+      const hitSkillMap = new Map();
+      const ms = [60];
+      let lastTime = Date.now();
+      window.requestAnimationFrame(function handler() {
+        player.frameAdd();
+        const now = Date.now();
+        ms.unshift(1000 / (now - lastTime));
+        ms.length = 5;
+        lastTime = now;
         const skill = player.matchSkill();
         if (skill) {
-          console.log(skill.name);
-          player.clearInputs();
+          skillActiveFrame = player.frame;
+          hitSkillMap.set(player.inputManager.inputHistory.at(-1), skill);
         }
-      });
-      window.addEventListener('keyup', (e) => {
-        player.input(e.key, 'up');
+        const history = player.inputManager.inputHistory.slice(-20).map((v, i, arr) => {
+          const lastV = arr[i + 1];
+          const frame = Math.min(
+            99,
+            (lastV ? lastV.startFrame : player.inputManager.frame) - v.startFrame,
+          );
+          return `<li><span>${frame}</span>  <span>${iconMap[v.direct]}</span>  <span>${
+            v.others
+          }</span>  <span>${hitSkillMap.get(v)?.name || ''}</span></li>`;
+        });
+        inputHistory.innerHTML = history.reverse().join('');
+        if (skill) {
+          successCommand.innerText = `${skill.commandIcon}`;
+        } else {
+          if (player.frame - skillActiveFrame > 100) {
+            successCommand.innerText = '';
+          }
+        }
+
+        if (player.frame % 50 === 0) {
+          frame.innerText = 'fps' + ~~(ms.reduce((r, v) => r + v, 0) / ms.length);
+        }
+        window.requestAnimationFrame(handler);
       });
     </script>
   </body>

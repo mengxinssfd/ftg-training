@@ -1,35 +1,91 @@
-import { InputManager, SkillManager, AllKeys, Hadouken, Shoryuken } from '../src';
+import {
+  Directs,
+  InputManager,
+  Player,
+  PlayerLocation,
+  Skill,
+  SkillManager,
+  KeyboardInput,
+  commands,
+} from '../src';
+
+enum OtherKeys {
+  LP = 'lp',
+  MP = 'mp',
+  HP = 'hp',
+  LK = 'lk',
+  MK = 'mk',
+  HK = 'hk',
+}
+
+const map = {
+  w: Directs.Up,
+  a: Directs.Left,
+  s: Directs.Down,
+  d: Directs.Right,
+
+  u: OtherKeys.LP,
+  i: OtherKeys.MP,
+  o: OtherKeys.HP,
+  j: OtherKeys.LK,
+  k: OtherKeys.MK,
+  l: OtherKeys.HK,
+};
+
+function input(value: string, type: 'down' | 'up') {
+  const event = new Event(type === 'up' ? 'keyup' : 'keydown');
+  (event as any).key = value;
+  window.dispatchEvent(event);
+}
+
+const Hadouken: Skill = {
+  limitFrame: 20,
+  matchPriority: 0,
+  name: '波动拳',
+  directs: [commands['236']],
+  trigger: OtherKeys.LP,
+};
+
+const Shoryuken: Skill = {
+  matchPriority: 1,
+  limitFrame: 20,
+  name: '升龙拳',
+  directs: [commands['623'], commands['323'], commands['6236']],
+  trigger: OtherKeys.LP,
+};
 
 describe('fighting-game-control-system', function () {
   test('hadouken', () => {
-    const ih = new InputManager();
-    ih.registerKeys(AllKeys);
-    const sm = new SkillManager();
-    const hadouken = new Hadouken();
-    sm.registerSkills([hadouken]);
+    const player = new Player([Hadouken], new KeyboardInput(map));
 
-    ih.input('s', 'down');
-    ih.input('d', 'down');
-    ih.input('s', 'up');
-    ih.input('u', 'down');
+    input('s', 'down');
+    player.frameAdd();
+    input('d', 'down');
+    player.frameAdd();
+    input('s', 'up');
+    player.frameAdd();
+    input('u', 'down');
+    player.frameAdd();
 
-    expect(sm.match(ih)).toBe(hadouken);
+    expect(player.matchSkill()).toBe(Hadouken);
   });
   test('shoryuken', () => {
-    const ih = new InputManager();
-    ih.registerKeys(AllKeys);
-    const sm = new SkillManager();
-    const shoryuken = new Shoryuken();
-    const hadouken = new Hadouken();
-    sm.registerSkills([shoryuken, hadouken]);
+    const ih = new InputManager(new KeyboardInput(map));
+    const sm = new SkillManager(ih);
+    sm.registerSkills([Shoryuken, Hadouken]);
 
-    ih.input('d', 'down');
-    ih.input('d', 'up');
-    ih.input('s', 'down');
-    ih.input('d', 'down');
-    ih.input('u', 'down');
+    input('d', 'down');
+    ih.frameAdd(PlayerLocation.Left);
+    input('d', 'up');
+    ih.frameAdd(PlayerLocation.Left);
+    input('s', 'down');
+    ih.frameAdd(PlayerLocation.Left);
+    input('d', 'down');
+    ih.frameAdd(PlayerLocation.Left);
+    input('u', 'down');
+    ih.frameAdd(PlayerLocation.Left);
 
-    expect(sm.match(ih)).toBe(shoryuken);
-    expect(sm.match(ih)).not.toBe(hadouken);
+    expect(sm.match()).toBe(Shoryuken);
+    expect(sm.match()).not.toBe(Hadouken);
   });
 });

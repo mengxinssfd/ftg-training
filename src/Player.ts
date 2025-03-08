@@ -1,27 +1,27 @@
 import { SkillManager } from './SkillManager';
 import { InputManager } from './InputManager';
-import { Skill } from './skills';
-import type { Key } from './types';
+import { PlayerLocation } from './enums';
+import { Input } from './input';
+import type { Skill } from './types';
 
 export class Player {
   skillManager: SkillManager;
   inputManager: InputManager;
+  location = PlayerLocation.Left;
+  frame = 0;
 
-  constructor(skills: Skill[], keys: Key[]) {
-    this.inputManager = new InputManager();
-    this.inputManager.registerKeys(keys);
-    this.skillManager = new SkillManager();
+  constructor(skills: Skill[], input: Input) {
+    this.inputManager = new InputManager(input);
+    this.skillManager = new SkillManager(this.inputManager);
     this.skillManager.registerSkills(skills);
   }
-
-  input(key: string, type: 'down' | 'up'): void {
-    this.inputManager.input(key, type);
+  frameAdd(): void {
+    this.frame++;
+    this.inputManager.frameAdd(this.location, this.frame);
   }
-
   matchSkill(): Skill | null {
-    return this.skillManager.match(this.inputManager);
+    return this.skillManager.match();
   }
-
   clearInputs(): void {
     this.inputManager.clear();
   }

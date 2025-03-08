@@ -1,33 +1,17 @@
-import type { InputManager } from './InputManager';
+import type { Directs, PlayerLocation } from './enums';
 
-export enum KeyType {
-  Direct,
-  Attack,
+export interface InputHistory {
+  others: string[];
+  direct: Directs;
+  startFrame: number;
+  location: PlayerLocation;
 }
 
-export enum AttackPower {
-  Light,
-  Medium,
-  Heavy,
-}
-export enum AttackType {
-  Punch,
-  Kick,
-}
-
-export interface Key {
-  map: string;
-  icon: string;
+export interface Skill {
+  matchPriority: number;
+  limitFrame: number;
   name: string;
-  type: KeyType;
-  match?: (history: InputManager) => Key;
-}
-
-export interface DirectKey extends Key {
-  type: KeyType.Direct;
-}
-export interface AttackKey extends Key {
-  type: KeyType.Attack;
-  power: AttackPower;
-  attackType: AttackType;
+  directs: Directs[][] | ((ih: InputHistory[], skill: Skill, frame: number) => boolean);
+  trigger: string | ((input: InputHistory) => boolean);
+  handler?: () => void;
 }
