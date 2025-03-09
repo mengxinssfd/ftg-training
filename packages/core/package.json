@@ -1,0 +1,53 @@
+{
+  "name": "@ftg-trailing/core",
+  "version": "0.0.0",
+  "description": "ftg-training core",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "main": "dist/ftg-training.cjs.js",
+  "module": "dist/ftg-training.esm-bundler.js",
+  "types": "dist/ftg-training.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "node": "./dist/ftg-training.cjs.js",
+        "default": "./dist/ftg-training.esm-bundler.js"
+      },
+      "require": "./dist/ftg-training.cjs.js"
+    }
+  },
+  "buildOptions": {
+    "name": "FTGTrainingCore",
+    "formats": [
+      "esm-bundler",
+      "esm-browser",
+      "cjs",
+      "global"
+    ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md",
+    "displayName": "ftg-training/core",
+    "tsconfig": "../../tsconfig.json"
+  },
+  "sideEffects": false,
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mengxinssfd/ftg-training.git"
+  },
+  "author": "DYH",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mengxinssfd/ftg-training/issues"
+  },
+  "homepage": "https://github.com/mengxinssfd/ftg-training#readme"
+}
