@@ -22,6 +22,10 @@ module.exports = {
       { tsconfig: './tsconfig.jest.json' },
     ],
   },
+  moduleNameMapper: {
+    '^@core$': '<rootDir>/packages/core/src',
+    '^@/(.*?)$': '<rootDir>/packages/client/src/$1',
+  },
   testRegex: '(/__tests__/.*\\.(test|spec))\\.(jsx?|tsx?)$',
   // moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'node'],

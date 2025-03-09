@@ -21,41 +21,4 @@ enum XboxKeyMaps {
 }
 export class XboxGamepadInput extends GamepadInput {
   static readonly Keymap = XboxKeyMaps;
-  protected override updateGamepad(): void {
-    const gamepads = navigator.getGamepads();
-    const gp = gamepads[0];
-    if (!gp) return;
-    this.clearInputs();
-    // 读取按钮状态
-    gp.buttons.forEach((btn, k) => {
-      if (!btn.pressed) return;
-      const btnName = XboxKeyMaps[k] as string;
-      const key = this.map[k];
-      key && this.addKey(k);
-      console.log(`按钮 ${btnName} 被按下`, key);
-    });
-    // 读取轴状态
-    this.transAxes(gp.axes);
-  }
-  protected override transAxes(axes: readonly number[]): void {
-    console.log(`轴状态: ${axes}`);
-    // xbox 的轴有4个值
-    // 第一个是左摇杆的x轴，左是-1，右是1
-    // 第二个是左摇杆的y轴，上是-1，下是1
-    // 后面两个是右摇杆，和左摇杆一样
-
-    // 不要右摇杆的值
-    const [x, y] = axes as [number, number];
-    // todo 识别斜方向
-    if (x === -1) {
-      this.addKey(XboxKeyMaps.Left);
-    } else if (x === 1) {
-      this.addKey(XboxKeyMaps.Right);
-    }
-    if (y === -1) {
-      this.addKey(XboxKeyMaps.Up);
-    } else if (y === 1) {
-      this.addKey(XboxKeyMaps.Down);
-    }
-  }
 }

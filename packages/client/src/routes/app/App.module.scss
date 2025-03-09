@@ -14,5 +14,12 @@
         margin-left: 50px;
       }
     }
+    .location {
+      position: fixed;
+      top:20px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+    }
   }
 }

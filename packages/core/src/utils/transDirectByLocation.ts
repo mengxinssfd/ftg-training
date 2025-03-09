@@ -10,5 +10,5 @@ export function transDirectByLocation(location: PlayerLocation, direct: Directs)
     [Directs.DownLeft]: Directs.DownRight,
     [Directs.DownRight]: Directs.DownLeft,
   };
-  return rev[direct as keyof typeof rev] || Directs.None;
+  return rev[direct as keyof typeof rev] ?? direct;
 }

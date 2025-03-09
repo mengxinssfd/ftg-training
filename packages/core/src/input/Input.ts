@@ -1,5 +1,6 @@
 import { Directs } from '../enums';
 import type { InputHistory } from '../types';
+import { transDirect4To8 } from '../utils';
 
 export abstract class Input {
   // 注意：directs只接收上下左右四个正方向，斜方向不应该接收，否则 socd 不好处理，如果有斜方向应该录入两个正方向
@@ -25,41 +26,30 @@ export abstract class Input {
   protected addKey(k: string | number): void {
     this.onKey(k, 'add');
   }
-  getKeys(): Pick<InputHistory, 'direct' | 'others'> {
-    const directs = new Set(this.directs);
-    this.socd?.(directs);
-    return { direct: this.transDirect(directs), others: [...this.others] };
-  }
-  private transDirect(d: Set<Directs>): Directs {
-    if (d.has(Directs.Up)) {
-      if (d.has(Directs.Left)) return Directs.UpLeft;
-      if (d.has(Directs.Right)) return Directs.UpRight;
-      return Directs.Up;
-    }
-    if (d.has(Directs.Down)) {
-      if (d.has(Directs.Left)) return Directs.DownLeft;
-      if (d.has(Directs.Right)) return Directs.DownRight;
-      return Directs.Down;
-    }
-    if (d.has(Directs.Left)) return Directs.Left;
-    if (d.has(Directs.Right)) return Directs.Right;
-    return Directs.None;
+  getInputResult(): Pick<InputHistory, 'direct' | 'others'> {
+    return { direct: transDirect4To8(this.collectInputs()), others: [...this.others] };
   }
   protected clearInputs(): void {
     this.directs.clear();
     this.others.clear();
   }
+  protected collectInputs(): Set<Directs> {
+    const directs = new Set(this.directs);
+    this.socd?.(directs);
+    return directs;
+  }
   abstract destroy(): void;
   static union(inputs: Input[]): Pick<InputHistory, 'direct' | 'others'> {
     const first = inputs[0];
     if (!first) return { direct: Directs.None, others: [] };
-    if (inputs.length === 1) return first.getKeys();
+    if (inputs.length === 1) return first.getInputResult();
     const [directs, others] = inputs.reduce(
-      (res, v) => [res[0].union(v.directs), res[1].union(v.others)],
+      (res, v) => {
+        return [res[0].union(v.collectInputs()), res[1].union(v.others)];
+      },
       [new Set<Directs>(), new Set<string>()],
     );
-    first.directs = directs;
-    first.others = others;
-    return first.getKeys();
+    first.socd?.(directs);
+    return { direct: transDirect4To8(directs), others: [...others] };
   }
 }

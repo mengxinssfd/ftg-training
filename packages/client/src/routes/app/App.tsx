@@ -1,21 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
-import { Directs, KeyboardInput, Player, socdN } from '@core';
+import {
+  BluetoothGamepadInput,
+  Directs,
+  KeyboardInput,
+  Player,
+  PlayerLocation,
+  socdN,
+} from '@core';
 import { InputHistory, InputViewer } from './components';
 import { OtherKeys } from '@/common/OtherKeys';
+import type { ImpSkill } from '@/common/skills';
 import {
+  AirArrow,
   D180,
+  D214,
+  D22,
   D360,
   D720,
   Hadouken,
   OdShoryuken,
   Sa3,
   Shoryuken,
-  AirArrow,
-  D214,
-  D22,
 } from '@/common/skills';
-import type { ImpSkill } from '@/common/skills';
 
 const keyboardMap = {
   ' ': Directs.Up,
@@ -30,11 +37,24 @@ const keyboardMap = {
   k: OtherKeys.MK,
   l: OtherKeys.HK,
 };
+const gamepadKeyMaps = BluetoothGamepadInput.Keymap;
+const gamepadMap = {
+  [gamepadKeyMaps.Up]: Directs.Up,
+  [gamepadKeyMaps.Left]: Directs.Left,
+  [gamepadKeyMaps.Down]: Directs.Down,
+  [gamepadKeyMaps.Right]: Directs.Right,
+
+  [gamepadKeyMaps.X]: OtherKeys.LP,
+  [gamepadKeyMaps.Y]: OtherKeys.MP,
+  [gamepadKeyMaps.RB]: OtherKeys.HP,
+  [gamepadKeyMaps.A]: OtherKeys.LK,
+  [gamepadKeyMaps.B]: OtherKeys.MK,
+  [gamepadKeyMaps.RT]: OtherKeys.HK,
+};
 const player = new Player(
   [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720, AirArrow, D214, D22],
-  [new KeyboardInput(keyboardMap, socdN)],
+  [new BluetoothGamepadInput(gamepadMap, socdN), new KeyboardInput(keyboardMap, socdN)],
 );
-
 const f = 1000 / 60;
 function App() {
   const [frame, setFrame] = useState<number>(0);
@@ -64,6 +84,27 @@ function App() {
 
   return (
     <div className={styles['_']}>
+      <div className="location">
+        <label>
+          站位：
+          <select
+            name="location"
+            onChange={(e) => {
+              player.location =
+                e.target.value === String(PlayerLocation.Left)
+                  ? PlayerLocation.Left
+                  : PlayerLocation.Right;
+            }}
+            defaultValue={player.location}>
+            <option key={PlayerLocation.Left} value={PlayerLocation.Left}>
+              1P
+            </option>
+            <option key={PlayerLocation.Right} value={PlayerLocation.Right}>
+              2P
+            </option>
+          </select>
+        </label>
+      </div>
       <InputHistory inputHistories={player.inputManager.inputHistory} frame={frame} />
       <InputViewer inputHistories={player.inputManager.inputHistory} />
       <div className="skill">
