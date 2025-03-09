@@ -54,7 +54,7 @@ const Shoryuken: Skill = {
   trigger: OtherKeys.LP,
 };
 
-describe('fighting-game-control-system', function () {
+describe('ftg-training-core', function () {
   test('hadouken', () => {
     const player = new Player([Hadouken], [new KeyboardInput(map)]);
 
