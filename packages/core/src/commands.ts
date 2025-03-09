@@ -11,6 +11,7 @@ export const commands = (function () {
     236236: [...d236, ...d236],
     214: d214,
     214214: [...d214, ...d214],
+    2149: [...d214, Directs.UpRight],
     63214: d63214,
     41236: d63214.slice().reverse(),
     22: [Directs.Down, Directs.None, Directs.Down],

@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import Path from 'path';
 
 /**
  * Vite configuration
@@ -7,5 +8,11 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     cacheDir: `./.cache`,
+    resolve: {
+      alias: {
+        '@': Path.resolve(__dirname, 'packages/client/src'),
+        '@core': Path.resolve(__dirname, 'packages/core/src'),
+      },
+    },
   };
 });

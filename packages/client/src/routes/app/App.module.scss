@@ -1,0 +1,18 @@
+._ {
+  // :global 内部的class维持原样
+  :global {
+    .skill {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      text-align: center;
+      font-size: 50px;
+      div + div {
+        margin-left: 50px;
+      }
+    }
+  }
+}
