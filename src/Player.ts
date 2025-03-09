@@ -1,7 +1,7 @@
 import { SkillManager } from './SkillManager';
 import { InputManager } from './InputManager';
 import { PlayerLocation } from './enums';
-import { Input } from './input';
+import type { Input } from './input';
 import type { Skill } from './types';
 
 export class Player {
@@ -10,8 +10,8 @@ export class Player {
   location = PlayerLocation.Left;
   frame = 0;
 
-  constructor(skills: Skill[], input: Input) {
-    this.inputManager = new InputManager(input);
+  constructor(skills: Skill[], inputs: Input[]) {
+    this.inputManager = new InputManager(inputs);
     this.skillManager = new SkillManager(this.inputManager);
     this.skillManager.registerSkills(skills);
   }

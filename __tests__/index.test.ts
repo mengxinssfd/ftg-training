@@ -56,7 +56,7 @@ const Shoryuken: Skill = {
 
 describe('fighting-game-control-system', function () {
   test('hadouken', () => {
-    const player = new Player([Hadouken], new KeyboardInput(map));
+    const player = new Player([Hadouken], [new KeyboardInput(map)]);
 
     input('s', 'down');
     player.frameAdd();
@@ -70,20 +70,20 @@ describe('fighting-game-control-system', function () {
     expect(player.matchSkill()).toBe(Hadouken);
   });
   test('shoryuken', () => {
-    const ih = new InputManager(new KeyboardInput(map));
+    const ih = new InputManager([new KeyboardInput(map)]);
     const sm = new SkillManager(ih);
     sm.registerSkills([Shoryuken, Hadouken]);
 
     input('d', 'down');
-    ih.frameAdd(PlayerLocation.Left);
+    ih.frameAdd(PlayerLocation.Left, 1);
     input('d', 'up');
-    ih.frameAdd(PlayerLocation.Left);
+    ih.frameAdd(PlayerLocation.Left, 2);
     input('s', 'down');
-    ih.frameAdd(PlayerLocation.Left);
+    ih.frameAdd(PlayerLocation.Left, 3);
     input('d', 'down');
-    ih.frameAdd(PlayerLocation.Left);
+    ih.frameAdd(PlayerLocation.Left, 4);
     input('u', 'down');
-    ih.frameAdd(PlayerLocation.Left);
+    ih.frameAdd(PlayerLocation.Left, 5);
 
     expect(sm.match()).toBe(Shoryuken);
     expect(sm.match()).not.toBe(Hadouken);

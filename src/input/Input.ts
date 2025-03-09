@@ -2,6 +2,7 @@ import { Directs } from '../enums';
 import type { InputHistory } from '../types';
 
 export abstract class Input {
+  // 注意：directs只接收上下左右四个正方向，斜方向不应该接收，否则 socd 不好处理，如果有斜方向应该录入两个正方向
   protected directs = new Set<Directs>();
   protected others = new Set<string>();
   constructor(
@@ -49,4 +50,16 @@ export abstract class Input {
     this.others.clear();
   }
   abstract destroy(): void;
+  static union(inputs: Input[]): Pick<InputHistory, 'direct' | 'others'> {
+    const first = inputs[0];
+    if (!first) return { direct: Directs.None, others: [] };
+    if (inputs.length === 1) return first.getKeys();
+    const [directs, others] = inputs.reduce(
+      (res, v) => [res[0].union(v.directs), res[1].union(v.others)],
+      [new Set<Directs>(), new Set<string>()],
+    );
+    first.directs = directs;
+    first.others = others;
+    return first.getKeys();
+  }
 }

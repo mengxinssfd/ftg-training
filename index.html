@@ -160,8 +160,8 @@
       };
       const player = new Player(
         [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720],
-        //        new KeyboardInput(map, socdN),
-        new BluetoothGamepadInput(gamepadMap, socdN),
+        [new KeyboardInput(keyboardMap, socdN)],
+        //       [ new BluetoothGamepadInput(gamepadMap, socdN)],
       );
       // player.inputManager.setHistoryLen(10);
 

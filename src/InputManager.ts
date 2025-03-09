@@ -1,4 +1,4 @@
-import type { Input } from './input';
+import { Input } from './input';
 import type { InputHistory } from './types';
 import type { PlayerLocation } from './enums';
 
@@ -7,17 +7,17 @@ export class InputManager {
   frame = 0;
   inputHistory: InputHistory[] = [];
 
-  constructor(private input: Input) {}
+  constructor(private inputs: Input[]) {}
   frameAdd(location: PlayerLocation, frame: number): void {
     this.frame = frame;
-    const input = this.input.getKeys();
-    if (this.isSameCommand(input)) return;
+    const input = Input.union(this.inputs);
+    if (this.isSameInput(input)) return;
     this.inputHistory.push({ ...input, startFrame: this.frame, location: location });
     if (this.inputHistory.length >= this.historyLen) {
       this.inputHistory.splice(0, this.inputHistory.length - this.historyLen);
     }
   }
-  private isSameCommand(input: Pick<InputHistory, 'direct' | 'others'>): boolean {
+  private isSameInput(input: Pick<InputHistory, 'direct' | 'others'>): boolean {
     const lastInput = this.inputHistory.at(-1);
     if (!lastInput) return false;
 
