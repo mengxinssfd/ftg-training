@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
 import { BluetoothGamepadInput, Direct, KeyboardInput, Player, PlayerLocation, socdN } from '@core';
 import type { Keymap } from '@core';
-import { InputHistory, InputViewer } from './components';
+import { HitBoxInput, InputHistory, InputViewer } from './components';
 import { OtherKeys } from '@/common/OtherKeys';
 import type { ImpSkill } from '@/common/skills';
 import * as skills from '@/common/skills';
@@ -36,9 +36,11 @@ const gamepadMap = {
   [gamepadKeyMaps.B]: OtherKeys.MK,
   [gamepadKeyMaps.RT]: OtherKeys.HK,
 } satisfies Keymap;
+const hbi = new HitBoxInput(socdN);
 const player = new Player(Object.values(skills), [
   new BluetoothGamepadInput(gamepadMap, socdN),
   new KeyboardInput(keyboardMap, socdN),
+  hbi,
 ]);
 const f = 1000 / 60;
 function App() {
@@ -96,6 +98,7 @@ function App() {
         <div>{skill?.commandView}</div>
         <div>{skill?.name}</div>
       </div>
+      <hbi.HitBox />
     </div>
   );
 }

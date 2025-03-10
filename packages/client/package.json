@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "vite serve --port 8080",
+    "start": "vite serve --port 8080 --host",
     "build": "vite build",
     "preview": "vite preview --port 8080",
     "test": "react-scripts test",

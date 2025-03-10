@@ -3,6 +3,7 @@ import { Direct } from '@core';
 import styles from './InputViewer.module.scss';
 import { iconMap } from '@/common/iconMap';
 import { OtherKeys } from '@/common/OtherKeys';
+import { getClassNames } from '@tool-pack/basic';
 
 const directs = [
   iconMap[Direct.UpLeft],
@@ -33,14 +34,14 @@ export function InputViewer({ inputHistories: ih }: { inputHistories: InputHisto
     <div className={styles['_']}>
       <ul className="directs">
         {directs.map((v) => (
-          <li key={v} className={v === activeDirectIcon ? 'active' : ''}>
+          <li key={v} className={getClassNames({ active: v === activeDirectIcon })}>
             {v}
           </li>
         ))}
       </ul>
       <ul className="attacks">
         {attacks.map((v) => (
-          <li key={v} className={activeAttacks.includes(v) ? 'active' : ''}>
+          <li key={v} className={getClassNames({ active: activeAttacks.includes(v) })}>
             {v}
           </li>
         ))}

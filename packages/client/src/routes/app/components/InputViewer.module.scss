@@ -8,7 +8,7 @@
   justify-content: space-evenly;
   width: 240px;
   height: 100px;
-  background: #e6dcb5;
+  background: rgba(244, 164, 96, 0.2);
   border-radius: 10px;
 
   :global {
@@ -27,7 +27,7 @@
       line-height: $h;
       text-align: center;
       &.active {
-        background: rgba(28, 92, 165, 0.25);
+        background: rgba(244, 164, 96, 0.5);
       }
     }
     .attacks {
