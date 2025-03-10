@@ -25,4 +25,7 @@ export class Player {
   clearInputs(): void {
     this.inputManager.clear();
   }
+  destroy(): void {
+    this.inputManager.destroy();
+  }
 }

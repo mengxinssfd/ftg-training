@@ -25,10 +25,14 @@ export class InputManager {
       lastInput.others.every((v, k) => v === input.others[k])
     );
   }
-  clear() {
+  clear(): void {
     this.inputHistories.length = 0;
   }
-  setHistoryMaxLen(length: number) {
+  setHistoryMaxLen(length: number): void {
     this.historyMaxLen = length;
+  }
+  destroy(): void {
+    this.clear();
+    this.inputs.forEach((i) => i.destroy());
   }
 }
