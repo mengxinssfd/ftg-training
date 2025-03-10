@@ -1,5 +1,5 @@
 import {
-  Directs,
+  Direct,
   InputManager,
   Player,
   PlayerLocation,
@@ -19,10 +19,10 @@ enum OtherKeys {
 }
 
 const map = {
-  w: Directs.Up,
-  a: Directs.Left,
-  s: Directs.Down,
-  d: Directs.Right,
+  w: Direct.Up,
+  a: Direct.Left,
+  s: Direct.Down,
+  d: Direct.Right,
 
   u: OtherKeys.LP,
   i: OtherKeys.MP,

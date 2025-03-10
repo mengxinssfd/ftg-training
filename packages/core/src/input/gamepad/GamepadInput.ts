@@ -1,10 +1,10 @@
 import { Input } from '../Input';
 import { parserDirectsFromAxes } from '../../utils';
-import type { Directs } from '../../enums';
+import type { Direct } from '../../enums';
 
 export abstract class GamepadInput extends Input {
   private isDestroyed = false;
-  protected override collectInputs(): Set<Directs> {
+  protected override collectInputs(): Set<Direct> {
     if (!this.isDestroyed) {
       const gamepads = navigator.getGamepads();
       // 获取第一个手柄

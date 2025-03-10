@@ -23,7 +23,7 @@
     <script type="module">
       import {
         Player,
-        Directs,
+        Direct,
         KeyboardInput,
         XboxGamepadInput,
         BluetoothGamepadInput,
@@ -32,15 +32,15 @@
       } from './packages/core/src';
 
       const iconMap = {
-        [Directs.None]: 'N',
-        [Directs.Up]: '↑',
-        [Directs.Down]: '↓',
-        [Directs.Left]: '←',
-        [Directs.Right]: '→',
-        [Directs.UpLeft]: '↖',
-        [Directs.UpRight]: '↗',
-        [Directs.DownLeft]: '↙',
-        [Directs.DownRight]: '↘',
+        [Direct.None]: 'N',
+        [Direct.Up]: '↑',
+        [Direct.Down]: '↓',
+        [Direct.Left]: '←',
+        [Direct.Right]: '→',
+        [Direct.UpLeft]: '↖',
+        [Direct.UpRight]: '↗',
+        [Direct.DownLeft]: '↙',
+        [Direct.DownRight]: '↘',
       };
       const OtherKeys = {
         LP: 'lp',
@@ -52,10 +52,10 @@
       };
 
       const keyboardMap = {
-        ' ': Directs.Up,
-        a: Directs.Left,
-        s: Directs.Down,
-        d: Directs.Right,
+        ' ': Direct.Up,
+        a: Direct.Left,
+        s: Direct.Down,
+        d: Direct.Right,
 
         u: OtherKeys.LP,
         i: OtherKeys.MP,
@@ -66,10 +66,10 @@
       };
       const xboxKeyMaps = BluetoothGamepadInput.Keymap;
       const gamepadMap = {
-        [xboxKeyMaps.Up]: Directs.Up,
-        [xboxKeyMaps.Left]: Directs.Left,
-        [xboxKeyMaps.Down]: Directs.Down,
-        [xboxKeyMaps.Right]: Directs.Right,
+        [xboxKeyMaps.Up]: Direct.Up,
+        [xboxKeyMaps.Left]: Direct.Left,
+        [xboxKeyMaps.Down]: Direct.Down,
+        [xboxKeyMaps.Right]: Direct.Right,
 
         [xboxKeyMaps.X]: OtherKeys.LP,
         [xboxKeyMaps.Y]: OtherKeys.MP,

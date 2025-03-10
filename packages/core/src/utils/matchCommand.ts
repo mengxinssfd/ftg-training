@@ -1,9 +1,9 @@
-import { Directs } from '../enums';
+import { Direct } from '../enums';
 import type { InputHistory } from '../types';
 import { transDirectByLocation } from './transDirectByLocation';
 
 export function matchCommand(
-  directs: Directs[],
+  directs: Direct[],
   ih: InputHistory[],
   limitFrame: number,
   frame: number,

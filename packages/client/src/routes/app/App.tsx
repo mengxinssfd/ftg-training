@@ -1,13 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
-import {
-  BluetoothGamepadInput,
-  Directs,
-  KeyboardInput,
-  Player,
-  PlayerLocation,
-  socdN,
-} from '@core';
+import { BluetoothGamepadInput, Direct, KeyboardInput, Player, PlayerLocation, socdN } from '@core';
 import type { Keymap } from '@core';
 import { InputHistory, InputViewer } from './components';
 import { OtherKeys } from '@/common/OtherKeys';
@@ -15,10 +8,10 @@ import type { ImpSkill } from '@/common/skills';
 import * as skills from '@/common/skills';
 
 const keyboardMap = {
-  ' ': Directs.Up,
-  a: Directs.Left,
-  s: Directs.Down,
-  d: Directs.Right,
+  ' ': Direct.Up,
+  a: Direct.Left,
+  s: Direct.Down,
+  d: Direct.Right,
 
   u: OtherKeys.LP,
   i: OtherKeys.MP,
@@ -31,10 +24,10 @@ const keyboardMap = {
 } satisfies Keymap;
 const gamepadKeyMaps = BluetoothGamepadInput.Keymap;
 const gamepadMap = {
-  [gamepadKeyMaps.Up]: Directs.Up,
-  [gamepadKeyMaps.Left]: Directs.Left,
-  [gamepadKeyMaps.Down]: Directs.Down,
-  [gamepadKeyMaps.Right]: Directs.Right,
+  [gamepadKeyMaps.Up]: Direct.Up,
+  [gamepadKeyMaps.Left]: Direct.Left,
+  [gamepadKeyMaps.Down]: Direct.Down,
+  [gamepadKeyMaps.Right]: Direct.Right,
 
   [gamepadKeyMaps.X]: OtherKeys.LP,
   [gamepadKeyMaps.Y]: OtherKeys.MP,

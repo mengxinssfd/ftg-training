@@ -1,8 +1,8 @@
-import type { Directs, PlayerLocation } from './enums';
+import type { Direct, PlayerLocation } from './enums';
 
 export interface InputHistory {
   others: (string | number)[];
-  direct: Directs;
+  direct: Direct;
   startFrame: number;
   location: PlayerLocation;
 }
@@ -12,7 +12,7 @@ export interface Skill {
   matchPriority: number;
   limitFrame: number;
   name: string;
-  directs: Directs[][] | SkillDirectsTrigger;
+  directs: Direct[][] | SkillDirectsTrigger;
   trigger: string | ((input: InputHistory) => boolean);
   handler?: () => void;
 }

@@ -1,31 +1,31 @@
-import { Directs } from './enums';
+import { Direct } from './enums';
 import type { InputHistory, SkillDirectsTrigger } from './types';
 
 export const presetDirects = (function () {
-  const d236 = [Directs.Down, Directs.DownRight, Directs.Right];
-  const d214 = [Directs.Down, Directs.DownLeft, Directs.Left];
-  const d323 = [Directs.DownRight, Directs.Down, Directs.DownRight];
-  const d63214 = [Directs.Right, Directs.DownRight, ...d214];
+  const d236 = [Direct.Down, Direct.DownRight, Direct.Right];
+  const d214 = [Direct.Down, Direct.DownLeft, Direct.Left];
+  const d323 = [Direct.DownRight, Direct.Down, Direct.DownRight];
+  const d63214 = [Direct.Right, Direct.DownRight, ...d214];
   return {
     236: d236,
     236236: [...d236, ...d236],
-    26236: [Directs.Down, Directs.Right, ...d236],
+    26236: [Direct.Down, Direct.Right, ...d236],
     214: d214,
     214214: [...d214, ...d214],
-    24214: [Directs.Down, Directs.Left, ...d214],
-    2149: [...d214, Directs.UpRight],
+    24214: [Direct.Down, Direct.Left, ...d214],
+    2149: [...d214, Direct.UpRight],
     63214: d63214,
     41236: d63214.slice().reverse(),
-    22: [Directs.Down, Directs.None, Directs.Down],
+    22: [Direct.Down, Direct.None, Direct.Down],
     323: d323,
-    6323: [Directs.Right, ...d323],
-    623: [Directs.Right, Directs.Down, Directs.DownRight],
-    63236: [Directs.Right, Directs.DownRight, ...d236],
-    6236: [Directs.Right, ...d236],
-    636: [Directs.Right, Directs.DownRight, Directs.Right],
+    6323: [Direct.Right, ...d323],
+    623: [Direct.Right, Direct.Down, Direct.DownRight],
+    63236: [Direct.Right, Direct.DownRight, ...d236],
+    6236: [Direct.Right, ...d236],
+    636: [Direct.Right, Direct.DownRight, Direct.Right],
     360: (ih, skill, frame): boolean => {
-      const anyUp = [Directs.UpLeft, Directs.Up, Directs.UpRight];
-      const directs = [Directs.Right, Directs.Left, Directs.Down];
+      const anyUp = [Direct.UpLeft, Direct.Up, Direct.UpRight];
+      const directs = [Direct.Right, Direct.Left, Direct.Down];
       let hasUp = false;
       for (let i = ih.length - 1; i >= 0; i--) {
         const h = ih[i] as InputHistory;
@@ -45,8 +45,8 @@ export const presetDirects = (function () {
       return false;
     },
     720: (ih, skill, frame): boolean => {
-      const anyUp = [Directs.UpLeft, Directs.Up, Directs.UpRight];
-      const directs = [Directs.Right, Directs.Left, Directs.Down];
+      const anyUp = [Direct.UpLeft, Direct.Up, Direct.UpRight];
+      const directs = [Direct.Right, Direct.Left, Direct.Down];
       directs.push(...directs);
       let hasUp = false;
       for (let i = ih.length - 1; i >= 0; i--) {
@@ -63,5 +63,5 @@ export const presetDirects = (function () {
       }
       return false;
     },
-  } satisfies Record<string, Directs[] | SkillDirectsTrigger>;
+  } satisfies Record<string, Direct[] | SkillDirectsTrigger>;
 })();

@@ -1,19 +1,19 @@
 import type { InputHistory as InputHistoryTS } from '@core';
-import { Directs } from '@core';
+import { Direct } from '@core';
 import styles from './InputViewer.module.scss';
 import { iconMap } from '@/common/iconMap';
 import { OtherKeys } from '@/common/OtherKeys';
 
 const directs = [
-  iconMap[Directs.UpLeft],
-  iconMap[Directs.Up],
-  iconMap[Directs.UpRight],
-  iconMap[Directs.Left],
-  iconMap[Directs.None],
-  iconMap[Directs.Right],
-  iconMap[Directs.DownLeft],
-  iconMap[Directs.Down],
-  iconMap[Directs.DownRight],
+  iconMap[Direct.UpLeft],
+  iconMap[Direct.Up],
+  iconMap[Direct.UpRight],
+  iconMap[Direct.Left],
+  iconMap[Direct.None],
+  iconMap[Direct.Right],
+  iconMap[Direct.DownLeft],
+  iconMap[Direct.Down],
+  iconMap[Direct.DownRight],
 ];
 
 const attacks = [
@@ -27,7 +27,7 @@ const attacks = [
 
 export function InputViewer({ inputHistories: ih }: { inputHistories: InputHistoryTS[] }) {
   const lastedInput = ih.at(-1);
-  const activeDirectIcon = iconMap[lastedInput ? lastedInput.direct : Directs.None];
+  const activeDirectIcon = iconMap[lastedInput ? lastedInput.direct : Direct.None];
   const activeAttacks = lastedInput ? lastedInput.others : [];
   return (
     <div className={styles['_']}>

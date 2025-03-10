@@ -1,21 +1,21 @@
-import { Directs } from '@core';
+import { Direct } from '@core';
 
 /**
  * 把 4 方向的值转为 8 方向的值
  * @param directs
  */
-export function transDirect4To8(directs: Set<Directs>): Directs {
-  if (directs.has(Directs.Up)) {
-    if (directs.has(Directs.Left)) return Directs.UpLeft;
-    if (directs.has(Directs.Right)) return Directs.UpRight;
-    return Directs.Up;
+export function transDirect4To8(directs: Set<Direct>): Direct {
+  if (directs.has(Direct.Up)) {
+    if (directs.has(Direct.Left)) return Direct.UpLeft;
+    if (directs.has(Direct.Right)) return Direct.UpRight;
+    return Direct.Up;
   }
-  if (directs.has(Directs.Down)) {
-    if (directs.has(Directs.Left)) return Directs.DownLeft;
-    if (directs.has(Directs.Right)) return Directs.DownRight;
-    return Directs.Down;
+  if (directs.has(Direct.Down)) {
+    if (directs.has(Direct.Left)) return Direct.DownLeft;
+    if (directs.has(Direct.Right)) return Direct.DownRight;
+    return Direct.Down;
   }
-  if (directs.has(Directs.Left)) return Directs.Left;
-  if (directs.has(Directs.Right)) return Directs.Right;
-  return Directs.None;
+  if (directs.has(Direct.Left)) return Direct.Left;
+  if (directs.has(Direct.Right)) return Direct.Right;
+  return Direct.None;
 }
