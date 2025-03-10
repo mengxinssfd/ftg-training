@@ -23,24 +23,24 @@
     <script type="module">
       import {
         Player,
-        Directs,
+        Direct,
         KeyboardInput,
         XboxGamepadInput,
         BluetoothGamepadInput,
-        commands,
+        presetDirects,
         socdN,
       } from './packages/core/src';
 
       const iconMap = {
-        [Directs.None]: 'N',
-        [Directs.Up]: '↑',
-        [Directs.Down]: '↓',
-        [Directs.Left]: '←',
-        [Directs.Right]: '→',
-        [Directs.UpLeft]: '↖',
-        [Directs.UpRight]: '↗',
-        [Directs.DownLeft]: '↙',
-        [Directs.DownRight]: '↘',
+        [Direct.None]: 'N',
+        [Direct.Up]: '↑',
+        [Direct.Down]: '↓',
+        [Direct.Left]: '←',
+        [Direct.Right]: '→',
+        [Direct.UpLeft]: '↖',
+        [Direct.UpRight]: '↗',
+        [Direct.DownLeft]: '↙',
+        [Direct.DownRight]: '↘',
       };
       const OtherKeys = {
         LP: 'lp',
@@ -52,10 +52,10 @@
       };
 
       const keyboardMap = {
-        ' ': Directs.Up,
-        a: Directs.Left,
-        s: Directs.Down,
-        d: Directs.Right,
+        ' ': Direct.Up,
+        a: Direct.Left,
+        s: Direct.Down,
+        d: Direct.Right,
 
         u: OtherKeys.LP,
         i: OtherKeys.MP,
@@ -66,10 +66,10 @@
       };
       const xboxKeyMaps = BluetoothGamepadInput.Keymap;
       const gamepadMap = {
-        [xboxKeyMaps.Up]: Directs.Up,
-        [xboxKeyMaps.Left]: Directs.Left,
-        [xboxKeyMaps.Down]: Directs.Down,
-        [xboxKeyMaps.Right]: Directs.Right,
+        [xboxKeyMaps.Up]: Direct.Up,
+        [xboxKeyMaps.Left]: Direct.Left,
+        [xboxKeyMaps.Down]: Direct.Down,
+        [xboxKeyMaps.Right]: Direct.Right,
 
         [xboxKeyMaps.X]: OtherKeys.LP,
         [xboxKeyMaps.Y]: OtherKeys.MP,
@@ -83,8 +83,8 @@
         limitFrame: 20,
         matchPriority: 0,
         name: '波动拳',
-        commandIcon: `${commands['236'].map((d) => iconMap[d]).join('')} + p`,
-        directs: [commands['236']],
+        commandIcon: `${presetDirects['236'].map((d) => iconMap[d]).join('')} + p`,
+        directs: [presetDirects['236']],
         trigger: OtherKeys.LP,
       };
 
@@ -92,8 +92,13 @@
         matchPriority: 1,
         limitFrame: 20,
         name: '升龙拳',
-        commandIcon: `${commands['623'].map((d) => iconMap[d]).join('')} + p`,
-        directs: [commands['623'], commands['323'], commands['6236'], commands['636']],
+        commandIcon: `${presetDirects['623'].map((d) => iconMap[d]).join('')} + p`,
+        directs: [
+          presetDirects['623'],
+          presetDirects['323'],
+          presetDirects['6236'],
+          presetDirects['636'],
+        ],
         trigger: (i) => {
           const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
           return keys.some((k) => i.others.includes(k));
@@ -103,8 +108,8 @@
         matchPriority: 3,
         limitFrame: 20,
         name: 'OD升龙拳',
-        commandIcon: `${commands['623'].map((d) => iconMap[d]).join('')} + pp`,
-        directs: [commands['623'], commands['323'], commands['6236']],
+        commandIcon: `${presetDirects['623'].map((d) => iconMap[d]).join('')} + pp`,
+        directs: [presetDirects['623'], presetDirects['323'], presetDirects['6236']],
         trigger: (i) => {
           const keys = [
             [OtherKeys.LP, OtherKeys.MP],
@@ -118,8 +123,8 @@
         matchPriority: 2,
         limitFrame: 30,
         name: '神龙裂破',
-        commandIcon: `${commands['236236'].map((d) => iconMap[d]).join('')} + p`,
-        directs: [commands['236236']],
+        commandIcon: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + p`,
+        directs: [presetDirects['236236']],
         trigger: (i) => {
           const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
           return keys.some((k) => i.others.includes(k));
@@ -130,7 +135,7 @@
         limitFrame: 35,
         name: '180',
         commandIcon: `180 + p`,
-        directs: [commands['63214'], commands['41236']],
+        directs: [presetDirects['63214'], presetDirects['41236']],
         trigger: (i) => {
           const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
           return keys.some((k) => i.others.includes(k));
@@ -141,7 +146,7 @@
         limitFrame: 50,
         name: '360',
         commandIcon: `360 + p`,
-        directs: commands['360'],
+        directs: presetDirects['360'],
         trigger: (i) => {
           const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
           return keys.some((k) => i.others.includes(k));
@@ -152,7 +157,7 @@
         limitFrame: 50,
         name: '720',
         commandIcon: `720 + p`,
-        directs: commands['720'],
+        directs: presetDirects['720'],
         trigger: (i) => {
           const keys = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
           return keys.some((k) => i.others.includes(k));

@@ -4,5 +4,6 @@ export * from './input';
 export * from './InputManager';
 export * from './SkillManager';
 export * from './Player';
-export * from './commands';
+export * from './presetDirects';
 export * from './socd';
+export * from './utils';

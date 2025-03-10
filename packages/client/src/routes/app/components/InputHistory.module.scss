@@ -1,0 +1,17 @@
+._ {
+  position: fixed;
+  width: 120px;
+  left: 0;
+  :global {
+    li {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      .frame {
+        text-align: center;
+      }
+      .attacks {
+        width: 60px;
+      }
+    }
+  }
+}

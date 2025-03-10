@@ -1,12 +1,12 @@
 import {
-  Directs,
+  Direct,
   InputManager,
   Player,
   PlayerLocation,
   Skill,
   SkillManager,
   KeyboardInput,
-  commands,
+  presetDirects,
 } from '../src';
 
 enum OtherKeys {
@@ -19,10 +19,10 @@ enum OtherKeys {
 }
 
 const map = {
-  w: Directs.Up,
-  a: Directs.Left,
-  s: Directs.Down,
-  d: Directs.Right,
+  w: Direct.Up,
+  a: Direct.Left,
+  s: Direct.Down,
+  d: Direct.Right,
 
   u: OtherKeys.LP,
   i: OtherKeys.MP,
@@ -42,7 +42,7 @@ const Hadouken: Skill = {
   limitFrame: 20,
   matchPriority: 0,
   name: '波动拳',
-  directs: [commands['236']],
+  directs: [presetDirects['236']],
   trigger: OtherKeys.LP,
 };
 
@@ -50,7 +50,7 @@ const Shoryuken: Skill = {
   matchPriority: 1,
   limitFrame: 20,
   name: '升龙拳',
-  directs: [commands['623'], commands['323'], commands['6236']],
+  directs: [presetDirects['623'], presetDirects['323'], presetDirects['6236']],
   trigger: OtherKeys.LP,
 };
 

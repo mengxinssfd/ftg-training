@@ -1,4 +1,4 @@
-export enum Directs {
+export enum Direct {
   DownLeft = 1,
   Down,
   DownRight,

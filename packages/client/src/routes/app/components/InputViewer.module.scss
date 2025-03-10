@@ -1,0 +1,39 @@
+._ {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 240px;
+  height: 100px;
+  background: rgba(244, 164, 96, 0.2);
+  border-radius: 10px;
+
+  :global {
+    ul {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: 0;
+      margin-block-start: 0;
+      padding-inline-start: 0;
+    }
+    li {
+      $h: 30px;
+      display: block;
+      width: $h;
+      height: $h;
+      line-height: $h;
+      text-align: center;
+      &.active {
+        background: rgba(244, 164, 96, 0.5);
+      }
+    }
+    .attacks {
+      li {
+        border-radius: 50%;
+      }
+    }
+  }
+}

@@ -43,8 +43,10 @@
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
     "paths": {
-      "@core": ["packages/core/src"]
-    }
+      "@core": ["packages/core/src"],
+      "@/*": ["packages/client/src/*"]
+    },
+    "jsx": "react"
   },
-  "include": ["__tests__/**/*.ts", "tests/*/*.ts", "src/**/*.d.ts", "src/**/*.ts"]
+  "include": ["packages/*/src", "packages/*/__tests__"]
 }
