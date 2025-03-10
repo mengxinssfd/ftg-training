@@ -6,12 +6,12 @@ import { NotFountLayout } from '../layouts/NotFound.layout';
 
 const router = createBrowserRouter([
   {
-    path: '',
+    path: import.meta.env.VITE_BASE,
     element: <AppLayout />,
     errorElement: <ErrorLayout />,
     children: [
       {
-        path: '/',
+        path: '',
         element: <App />,
       },
     ],

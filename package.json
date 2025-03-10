@@ -22,7 +22,8 @@
     "build": "tsx scripts/build.ts -t",
     "release": "tsx scripts/release.ts",
     "cient:start": "pnpm -C packages/client start",
-    "client:deploy": "pnpm -C packages/client build && gh-pages -d packages/client/dist"
+    "client:build:preview": "pnpm -C packages/client build --mode deploy && serve ./packages/client/dist -p 8080",
+    "client:deploy": "pnpm -C packages/client build --mode deploy && gh-pages -d packages/client/dist"
   },
   "lint-staged": {
     "*.{json,html,md,yaml}": [
@@ -91,6 +92,7 @@
     "rxjs": "^7.8.1",
     "sass": "^1.62.0",
     "semver": "^7.5.0",
+    "serve": "^14.2.4",
     "ts-jest": "^29.1.0",
     "tslib": "^2.5.0",
     "tsx": "^3.12.6",

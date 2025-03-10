@@ -6,11 +6,16 @@ import Path from 'path';
  * Vite configuration
  * https://vitejs.dev/config/
  */
-export default defineConfig(() => {
+export default defineConfig((c) => {
+  const base = c.mode === 'deploy' ? '/ftg-training/' : '';
   return {
     cacheDir: `./.cache`,
     css: {
       devSourcemap: true,
+    },
+    base,
+    define: {
+      'import.meta.env.VITE_BASE': JSON.stringify(base),
     },
     resolve: {
       alias: {
