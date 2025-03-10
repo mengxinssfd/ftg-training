@@ -63,5 +63,7 @@ export const presetDirects = (function () {
       }
       return false;
     },
+    66: [Direct.Right, Direct.None, Direct.Right],
+    44: [Direct.Left, Direct.None, Direct.Left],
   } satisfies Record<string, Direct[] | SkillDirectsTrigger>;
 })();
