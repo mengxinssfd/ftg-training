@@ -19,6 +19,8 @@ const keyboardMap = {
   j: OtherKeys.LK,
   k: OtherKeys.MK,
   l: OtherKeys.HK,
+  h: [OtherKeys.HP, OtherKeys.HK],
+  y: [OtherKeys.MK, OtherKeys.MP],
   n: [OtherKeys.LP, OtherKeys.HP],
   m: [OtherKeys.LK, OtherKeys.HK],
 } satisfies Keymap;

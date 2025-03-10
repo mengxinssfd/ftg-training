@@ -1,16 +1,63 @@
 ._ {
   position: fixed;
   width: 120px;
-  left: 0;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  overflow: hidden;
   :global {
     li {
+      position: relative;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      .frame {
+      line-height: 32px;
+      &:after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, currentColor, rgba(0, 0, 0, 0));
+        content: '';
+      }
+      .direct {
+        font-weight: bolder;
         text-align: center;
       }
+      .frame {
+        text-align: right;
+      }
       .attacks {
+        display: flex;
+        align-items: center;
         width: 60px;
+        font-weight: bolder;
+        span {
+          display: block;
+          $w: 22px;
+          width: $w;
+          height: $w;
+          margin-right: 4px;
+          border-radius: 50%;
+          line-height: $w;
+          text-align: center;
+          font-size: 12px;
+          &.lp,
+          &.lk {
+            color: #00f7ff;
+            background: rgba(0, 247, 255, 0.15);
+          }
+          &.mp,
+          &.mk {
+            color: #9ae84c;
+            background: rgba(154, 232, 76, 0.15);
+          }
+          &.hp,
+          &.hk {
+            color: #850606;
+            background: rgba(133, 6, 6, 0.15);
+          }
+        }
       }
     }
   }

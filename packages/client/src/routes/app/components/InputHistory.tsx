@@ -20,7 +20,13 @@ export function InputHistory({
             <li key={v.startFrame}>
               <div className="frame">{frame}</div>
               <div className="direct">{iconMap[v.direct]}</div>
-              <div className="attacks">{v.others.join(',')}</div>
+              <div className="attacks">
+                {v.others.map((o) => (
+                  <span key={o} className={o as string}>
+                    {o}
+                  </span>
+                ))}
+              </div>
             </li>
           );
         })
