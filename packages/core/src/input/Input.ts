@@ -6,9 +6,9 @@ import { castArray } from '@tool-pack/basic';
 export abstract class Input {
   // 注意：directs只接收上下左右四个正方向，斜方向不应该接收，否则 socd 不好处理，如果有斜方向应该录入两个正方向
   protected directs = new Set<Directs>();
-  protected others = new Set<string>();
+  protected others = new Set<string | number>();
   constructor(protected map: Keymap, protected socd?: (directs: Set<Directs>) => void) {}
-  private isDirect(key: string | Directs) {
+  private isDirect(key: string | Directs): key is Directs {
     const directs = [Directs.Up, Directs.Down, Directs.Left, Directs.Right];
     return directs.includes(key as Directs);
   }
@@ -44,7 +44,7 @@ export abstract class Input {
       (res, v) => {
         return [res[0].union(v.collectInputs()), res[1].union(v.others)];
       },
-      [new Set<Directs>(), new Set<string>()],
+      [new Set<Directs>(), new Set<string | number>()],
     );
     first.socd?.(directs);
     return { direct: transDirect4To8(directs), others: [...others] };

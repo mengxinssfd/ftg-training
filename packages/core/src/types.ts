@@ -1,7 +1,7 @@
 import type { Directs, PlayerLocation } from './enums';
 
 export interface InputHistory {
-  others: string[];
+  others: (string | number)[];
   direct: Directs;
   startFrame: number;
   location: PlayerLocation;

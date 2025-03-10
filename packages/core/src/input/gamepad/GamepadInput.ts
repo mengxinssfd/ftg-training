@@ -4,7 +4,7 @@ import type { Directs } from '../../enums';
 
 export abstract class GamepadInput extends Input {
   private isDestroyed = false;
-  protected collectInputs(): Set<Directs> {
+  protected override collectInputs(): Set<Directs> {
     if (!this.isDestroyed) {
       const gamepads = navigator.getGamepads();
       // 获取第一个手柄
