@@ -6,3 +6,4 @@ export * from './SkillManager';
 export * from './Player';
 export * from './presetDirects';
 export * from './socd';
+export * from './utils';
