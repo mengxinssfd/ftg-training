@@ -21,8 +21,8 @@
     "typedoc:deploy": "gh-pages -d docs-html",
     "build": "tsx scripts/build.ts -t",
     "release": "tsx scripts/release.ts",
-    "start": "pnpm -C packages/client start",
-    "docs:deploy": "pnpm -C packages/client start && gh-pages -d packages/dist"
+    "cient:start": "pnpm -C packages/client start",
+    "client:deploy": "pnpm -C packages/client build && gh-pages -d packages/client/dist"
   },
   "lint-staged": {
     "*.{json,html,md,yaml}": [
