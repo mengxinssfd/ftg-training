@@ -3,11 +3,11 @@ import {
   InputManager,
   Player,
   PlayerLocation,
-  Skill,
   SkillManager,
   KeyboardInput,
   presetDirects,
 } from '../src';
+import type { Skill } from '../src';
 
 enum OtherKeys {
   LP = 'lp',
