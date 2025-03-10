@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './App.module.scss';
 import { Direct, XboxGamepadInput, KeyboardInput, Player, PlayerLocation, socdN } from '@core';
 import type { Keymap } from '@core';

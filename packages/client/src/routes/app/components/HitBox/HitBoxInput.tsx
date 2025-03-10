@@ -40,7 +40,7 @@ export class HitBoxInput extends Input {
         {list.map((item) => {
           return (
             <button
-              className={String(Direct[item] ?? item).toLowerCase()}
+              className={String(Direct[item as Direct] ?? item).toLowerCase()}
               key={item}
               onTouchCancel={() => {
                 this.onKey(item, 'delete');

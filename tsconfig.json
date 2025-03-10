@@ -42,11 +42,12 @@
     "noPropertyAccessFromIndexSignature": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
+    "skipLibCheck": true,
     "paths": {
       "@core": ["packages/core/src"],
       "@/*": ["packages/client/src/*"]
     },
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "include": ["packages/*/src", "packages/*/__tests__"]
 }

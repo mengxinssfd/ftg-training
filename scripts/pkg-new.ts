@@ -1,70 +1,70 @@
-import * as path from 'path';
+import { createSrcAndTests, getGitUrl, useFile } from './utils';
+import { capitalize, camelCase } from '@tool-pack/basic';
+import rootPkg from '../package.json';
 import { prompt } from 'enquirer';
+import * as path from 'path';
 import chalk from 'chalk';
 import * as fs from 'fs';
-import { toCamel } from '@tool-pack/basic';
-import { createSrcAndTests, getGitUrl, useFile } from './utils';
-import rootPkg from '../package.json';
 
 const pkgsPath = path.resolve(__dirname, '../packages');
 
 async function getConfig() {
   const config = {
-    name: '',
+    description: '',
+    private: false,
+    keywords: '',
     pkgName: '',
     umdName: '',
-    deps: [],
     formats: [],
-    private: false,
-    description: '',
-    keywords: '',
+    name: '',
+    deps: [],
   };
 
   ({ value: config.name } = await prompt<{ value: string }>({
-    type: 'input',
-    name: 'value',
-    message: '目录名(dirName)',
-    required: true,
     validate(value) {
       if (fs.existsSync(path.resolve(pkgsPath, value))) {
         return '目录已存在！';
       }
       return true;
     },
+    message: '目录名(dirName)',
+    required: true,
+    type: 'input',
+    name: 'value',
   }));
 
   const reply = await prompt([
     {
-      type: 'input',
-      name: 'pkgName',
-      message: '包名(pkgName)',
       initial: `@${rootPkg.name}/${config.name}`,
+      message: '包名(pkgName)',
+      name: 'pkgName',
       required: true,
+      type: 'input',
     },
     {
-      type: 'input',
-      name: 'umdName',
+      initial: camelCase(rootPkg.name) + capitalize(config.name),
       message: '全局umd名(umdName)',
-      initial: toCamel(rootPkg.name, '-') + toCamel(config.name, '-', true),
+      name: 'umdName',
       required: true,
+      type: 'input',
     },
     {
-      type: 'input',
-      name: 'description',
       message: '项目描述(description)',
+      name: 'description',
       required: true,
-    },
-    {
       type: 'input',
-      name: 'keywords',
-      message: '关键词(keywords)',
-      initial: config.name.split('-').join(','),
-      required: true,
     },
     {
+      initial: config.name.split('-').join(','),
+      message: '关键词(keywords)',
+      name: 'keywords',
+      required: true,
+      type: 'input',
+    },
+    {
+      message: '是否私有(private)',
       type: 'confirm',
       name: 'private',
-      message: '是否私有(private)',
       initial: false,
       required: true,
     },
@@ -78,10 +78,10 @@ async function getConfig() {
 
   if (deps.length) {
     ({ deps: config.deps } = await prompt({
-      type: 'multiselect',
-      name: 'deps',
       message: '选择依赖(deps)(按空格键选中/取消，enter键确定)',
+      type: 'multiselect',
       choices: deps,
+      name: 'deps',
     }));
   }
 
@@ -89,11 +89,11 @@ async function getConfig() {
 
   if (!config.private) {
     ({ formats: config.formats } = await prompt({
+      message: '选择打包类型(formats)(按空格键选中/取消，enter键确定)',
+      initial: formatsChoices as any,
+      choices: formatsChoices,
       type: 'multiselect',
       name: 'formats',
-      message: '选择打包类型(formats)(按空格键选中/取消，enter键确定)',
-      choices: formatsChoices,
-      initial: formatsChoices as any,
     }));
   }
 
@@ -103,9 +103,9 @@ async function getConfig() {
   const { confirm } = await prompt<{ confirm: boolean }>({
     type: 'confirm',
     name: 'confirm',
-    message: '确认',
     initial: false,
     required: true,
+    message: '确认',
   });
 
   if (!confirm) throw 'cancel';
@@ -192,11 +192,11 @@ function createPackageJson(pkgPath: string, config: Awaited<ReturnType<typeof ge
 function createApiExtractorJson(pkgPath: string, config: Awaited<ReturnType<typeof getConfig>>) {
   if (config.private) return;
   const apiExtContent = {
-    extends: '../../api-extractor.json',
-    mainEntryPointFilePath: './dist/packages/<unscopedPackageName>/src/index.d.ts',
     dtsRollup: {
       publicTrimmedFilePath: './dist/<unscopedPackageName>.d.ts',
     },
+    mainEntryPointFilePath: './dist/packages/<unscopedPackageName>/src/index.d.ts',
+    extends: '../../api-extractor.json',
   };
   fs.writeFileSync(
     path.resolve(pkgPath, 'api-extractor.json'),
@@ -222,11 +222,11 @@ function updateTypedocJson(config: Awaited<ReturnType<typeof getConfig>>) {
 async function setup() {
   try {
     const { start } = await prompt<{ start: boolean }>({
-      type: 'confirm',
-      name: 'start',
       message: '是否开始添加child package？',
+      type: 'confirm',
       initial: false,
       required: true,
+      name: 'start',
     });
 
     if (!start) return;
