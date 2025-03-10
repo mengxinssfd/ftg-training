@@ -41,7 +41,7 @@ function createODSkill(skill: ImpSkill): ImpSkill {
   };
 }
 
-export const D236: ImpSkill = {
+export const P236: ImpSkill = {
   limitFrame: 20,
   matchPriority: 0,
   name: '波动拳',
@@ -50,29 +50,47 @@ export const D236: ImpSkill = {
   trigger: anyPunch,
 };
 
-export const OD236 = createODSkill(D236);
+export const P236OD = createODSkill(P236);
 
-export const D214: ImpSkill = {
+export const K214: ImpSkill = {
   matchPriority: 1,
   limitFrame: 20,
-  name: '旋风腿',
+  name: '龙卷旋风腿',
   commandView: `${presetDirects['214'].map((d) => iconMap[d]).join('')} + k`,
   directs: [presetDirects['214']],
   trigger: anyKick,
 };
-export const OD214 = createODSkill(D214);
-
-export const D22: ImpSkill = {
+export const K214OD = createODSkill(K214);
+export const P214: ImpSkill = {
   matchPriority: 1,
   limitFrame: 20,
-  name: '天升脚',
-  commandView: `${presetDirects['22'].map((d) => iconMap[d]).join('')} + k`,
-  directs: [presetDirects['22']],
+  name: '波掌击',
+  commandView: `${presetDirects['214'].map((d) => iconMap[d]).join('')} + k`,
+  directs: [presetDirects['214']],
+  trigger: anyPunch,
+};
+export const P214OD = createODSkill(P214);
+export const K236: ImpSkill = {
+  matchPriority: 1,
+  limitFrame: 20,
+  name: '上段足刀踢',
+  commandView: `${presetDirects['236'].map((d) => iconMap[d]).join('')} + k`,
+  directs: [presetDirects['236']],
   trigger: anyKick,
 };
-export const OD22 = createODSkill(D22);
+export const k236OD = createODSkill(K236);
 
-export const D623: ImpSkill = {
+export const K22: ImpSkill = {
+  matchPriority: 1,
+  limitFrame: 20,
+  name: '电刃炼气',
+  commandView: `${presetDirects['22'].map((d) => iconMap[d]).join('')} + p`,
+  directs: [presetDirects['22']],
+  trigger: anyPunch,
+};
+// export const K22OD = createODSkill(K22);
+
+export const P623: ImpSkill = {
   matchPriority: 1,
   limitFrame: 20,
   name: '升龙拳',
@@ -85,9 +103,9 @@ export const D623: ImpSkill = {
   ],
   trigger: anyPunch,
 };
-export const OD623 = createODSkill(D623);
+export const P623OD = createODSkill(P623);
 
-export const D2149: ImpSkill = {
+export const K2149: ImpSkill = {
   matchPriority: 2,
   limitFrame: 25,
   name: '空箭',
@@ -95,20 +113,20 @@ export const D2149: ImpSkill = {
   directs: [presetDirects['2149']],
   trigger: anyKick,
 };
-export const OD2149 = createODSkill(D2149);
+export const K2149OD = createODSkill(K2149);
 
 export const Sa1: ImpSkill = {
   matchPriority: 2,
   limitFrame: 30,
   name: '真空波动拳',
-  commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + k`,
+  commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + p`,
   directs: [presetDirects['236236']],
-  trigger: anyKick,
+  trigger: anyPunch,
 };
 export const Sa2: ImpSkill = {
   matchPriority: 2,
   limitFrame: 30,
-  name: '真升龙拳',
+  name: '真·波掌击',
   commandView: `${presetDirects['214214'].map((d) => iconMap[d]).join('')} + p`,
   directs: [presetDirects['214214']],
   trigger: anyPunch,
@@ -116,16 +134,16 @@ export const Sa2: ImpSkill = {
 export const Sa3: ImpSkill = {
   matchPriority: 2,
   limitFrame: 30,
-  name: '神龙裂破',
-  commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + p`,
+  name: '真·升龙拳',
+  commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + k`,
   directs: [presetDirects['236236']],
-  trigger: anyPunch,
+  trigger: anyKick,
 };
 
-export const D180: ImpSkill = {
+export const P180: ImpSkill = {
   matchPriority: 1,
   limitFrame: 35,
-  name: '180',
+  name: '180指令投',
   commandView: `180 + p`,
   directs: [presetDirects['63214'], presetDirects['41236']],
   trigger: anyPunch,
@@ -134,7 +152,7 @@ export const D180: ImpSkill = {
 export const D360: ImpSkill = {
   matchPriority: 2,
   limitFrame: 50,
-  name: '360',
+  name: '360指令投',
   commandView: `360 + p`,
   directs: presetDirects['360'],
   trigger: anyPunch,
@@ -143,7 +161,7 @@ export const D360: ImpSkill = {
 export const D720: ImpSkill = {
   matchPriority: 2,
   limitFrame: 50,
-  name: '720',
+  name: '720指令投',
   commandView: `720 + p`,
   directs: presetDirects['720'],
   trigger: anyPunch,

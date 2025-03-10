@@ -58,7 +58,7 @@ function App() {
       setFrame(player.frame);
       const frameDiff = player.frame - matchedFrameRef.current;
       // 如果距离上一次搓招成功小于 10 帧则不可再次搓招判定
-      if (frameDiff < 10) return;
+      if (frameDiff < 50) return;
       // 如果距离上次搓招成功大于 100 帧，则撤销显示技能
       else if (frameDiff > 100) {
         setSkill(undefined);
