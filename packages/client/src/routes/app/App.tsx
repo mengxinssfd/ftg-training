@@ -12,18 +12,7 @@ import type { Keymap } from '@core';
 import { InputHistory, InputViewer } from './components';
 import { OtherKeys } from '@/common/OtherKeys';
 import type { ImpSkill } from '@/common/skills';
-import {
-  AirArrow,
-  D180,
-  D214,
-  D22,
-  D360,
-  D720,
-  Hadouken,
-  OdShoryuken,
-  Sa3,
-  Shoryuken,
-} from '@/common/skills';
+import * as skills from '@/common/skills';
 
 const keyboardMap = {
   ' ': Directs.Up,
@@ -37,7 +26,8 @@ const keyboardMap = {
   j: OtherKeys.LK,
   k: OtherKeys.MK,
   l: OtherKeys.HK,
-  h: [OtherKeys.LP, OtherKeys.HP],
+  n: [OtherKeys.LP, OtherKeys.HP],
+  m: [OtherKeys.LK, OtherKeys.HK],
 } satisfies Keymap;
 const gamepadKeyMaps = BluetoothGamepadInput.Keymap;
 const gamepadMap = {
@@ -53,10 +43,10 @@ const gamepadMap = {
   [gamepadKeyMaps.B]: OtherKeys.MK,
   [gamepadKeyMaps.RT]: OtherKeys.HK,
 } satisfies Keymap;
-const player = new Player(
-  [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720, AirArrow, D214, D22],
-  [new BluetoothGamepadInput(gamepadMap, socdN), new KeyboardInput(keyboardMap, socdN)],
-);
+const player = new Player(Object.values(skills), [
+  new BluetoothGamepadInput(gamepadMap, socdN),
+  new KeyboardInput(keyboardMap, socdN),
+]);
 const f = 1000 / 60;
 function App() {
   const [frame, setFrame] = useState<number>(0);

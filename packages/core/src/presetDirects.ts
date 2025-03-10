@@ -1,7 +1,7 @@
 import { Directs } from './enums';
-import type { InputHistory, Skill } from './types';
+import type { InputHistory, SkillDirectsTrigger } from './types';
 
-export const commands = (function () {
+export const presetDirects = (function () {
   const d236 = [Directs.Down, Directs.DownRight, Directs.Right];
   const d214 = [Directs.Down, Directs.DownLeft, Directs.Left];
   const d323 = [Directs.DownRight, Directs.Down, Directs.DownRight];
@@ -9,8 +9,10 @@ export const commands = (function () {
   return {
     236: d236,
     236236: [...d236, ...d236],
+    26236: [Directs.Down, Directs.Right, ...d236],
     214: d214,
     214214: [...d214, ...d214],
+    24214: [Directs.Down, Directs.Left, ...d214],
     2149: [...d214, Directs.UpRight],
     63214: d63214,
     41236: d63214.slice().reverse(),
@@ -21,7 +23,7 @@ export const commands = (function () {
     63236: [Directs.Right, Directs.DownRight, ...d236],
     6236: [Directs.Right, ...d236],
     636: [Directs.Right, Directs.DownRight, Directs.Right],
-    360: (ih: InputHistory[], skill: Skill, frame: number): boolean => {
+    360: (ih, skill, frame): boolean => {
       const anyUp = [Directs.UpLeft, Directs.Up, Directs.UpRight];
       const directs = [Directs.Right, Directs.Left, Directs.Down];
       let hasUp = false;
@@ -42,7 +44,7 @@ export const commands = (function () {
       }
       return false;
     },
-    720: (ih: InputHistory[], skill: Skill, frame: number): boolean => {
+    720: (ih, skill, frame): boolean => {
       const anyUp = [Directs.UpLeft, Directs.Up, Directs.UpRight];
       const directs = [Directs.Right, Directs.Left, Directs.Down];
       directs.push(...directs);
@@ -61,8 +63,5 @@ export const commands = (function () {
       }
       return false;
     },
-  } satisfies Record<
-    string,
-    Directs[] | ((ih: InputHistory[], skill: Skill, frame: number) => boolean)
-  >;
+  } satisfies Record<string, Directs[] | SkillDirectsTrigger>;
 })();
