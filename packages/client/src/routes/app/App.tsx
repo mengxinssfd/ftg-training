@@ -8,6 +8,7 @@ import {
   PlayerLocation,
   socdN,
 } from '@core';
+import type { Keymap } from '@core';
 import { InputHistory, InputViewer } from './components';
 import { OtherKeys } from '@/common/OtherKeys';
 import type { ImpSkill } from '@/common/skills';
@@ -36,7 +37,8 @@ const keyboardMap = {
   j: OtherKeys.LK,
   k: OtherKeys.MK,
   l: OtherKeys.HK,
-};
+  h: [OtherKeys.LP, OtherKeys.HP],
+} satisfies Keymap;
 const gamepadKeyMaps = BluetoothGamepadInput.Keymap;
 const gamepadMap = {
   [gamepadKeyMaps.Up]: Directs.Up,
@@ -50,7 +52,7 @@ const gamepadMap = {
   [gamepadKeyMaps.A]: OtherKeys.LK,
   [gamepadKeyMaps.B]: OtherKeys.MK,
   [gamepadKeyMaps.RT]: OtherKeys.HK,
-};
+} satisfies Keymap;
 const player = new Player(
   [Shoryuken, OdShoryuken, Hadouken, Sa3, D180, D360, D720, AirArrow, D214, D22],
   [new BluetoothGamepadInput(gamepadMap, socdN), new KeyboardInput(keyboardMap, socdN)],
