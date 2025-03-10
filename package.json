@@ -21,7 +21,8 @@
     "typedoc:deploy": "gh-pages -d docs-html",
     "build": "tsx scripts/build.ts -t",
     "release": "tsx scripts/release.ts",
-    "dev": "vite"
+    "start": "pnpm -C packages/client start",
+    "docs:deploy": "pnpm -C packages/client start && gh-pages -d packages/dist"
   },
   "lint-staged": {
     "*.{json,html,md,yaml}": [
@@ -95,8 +96,5 @@
     "tsx": "^3.12.6",
     "typedoc": "^0.24.4",
     "typescript": "^5.5.4"
-  },
-  "dependencies": {
-    "vite": "^5.3.5"
   }
 }
