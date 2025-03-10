@@ -1,5 +1,5 @@
 import type { InputManager } from './InputManager';
-import type { Skill } from './types';
+import type { InputHistory, Skill } from './types';
 import { matchCommand } from './utils';
 
 export class SkillManager {
@@ -12,19 +12,18 @@ export class SkillManager {
   }
   match(): Skill | null {
     const len = this._skills.length;
+    const lastHistory = this.inputManager.inputHistory.at(-1);
+    if (!lastHistory) return null;
     for (let i = 0; i < len; i++) {
       const skill = this._skills[i] as Skill;
-      if (this.matchSkill(this.inputManager, skill)) {
+      if (this.matchSkill(this.inputManager, skill, lastHistory)) {
         skill.handler?.();
         return skill;
       }
     }
     return null;
   }
-  private matchSkill(im: InputManager, skill: Skill): boolean {
-    const lastHistory = im.inputHistory.at(-1);
-    if (!lastHistory) return false;
-
+  private matchSkill(im: InputManager, skill: Skill, lastHistory: InputHistory): boolean {
     const trigger = skill.trigger;
     if (typeof trigger === 'function') {
       if (!trigger(lastHistory)) return false;
