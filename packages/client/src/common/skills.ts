@@ -27,12 +27,14 @@ const anyKick2 = (i: InputHistory): boolean =>
   kicks2.some((ks) => ks.every((k) => i.others.includes(k)));
 
 function createODSkill(skill: ImpSkill): ImpSkill {
+  // 不会传函数的过来
+  const directs = skill.directs as Direct[][];
   return {
     ...skill,
     matchPriority: skill.matchPriority + 1,
     name: 'OD' + skill.name,
     commandView:
-      skill.directs[0].map((d) => iconMap[d]).join('') +
+      directs[0]!.map((d) => iconMap[d]).join('') +
       '+' +
       (skill.trigger === anyPunch ? 'pp' : 'kk'),
     trigger: skill.trigger === anyPunch ? anyPunch2 : anyKick2,
@@ -86,7 +88,7 @@ export const D623: ImpSkill = {
 export const OD623 = createODSkill(D623);
 
 export const D2149: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: 2,
   limitFrame: 25,
   name: '空箭',
   commandView: `${presetDirects['2149'].map((d) => iconMap[d]).join('')} + k`,

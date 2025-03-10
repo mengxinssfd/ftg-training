@@ -16,10 +16,27 @@
     }
     .location {
       position: fixed;
-      top:20px;
+      top: 20px;
       right: 30px;
       display: flex;
       align-items: center;
+    }
+    .skill-list {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      ul {
+        margin: 0;
+        padding-inline-start: 0;
+        font-size: 14px;
+      }
+      li {
+        margin-top: 4px;
+        span + span {
+          margin-left: 10px;
+        }
+      }
     }
   }
 }
