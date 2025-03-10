@@ -2,7 +2,7 @@
   "name": "ftg-training",
   "version": "0.0.0",
   "packageManager": "pnpm@7.1.0",
-  "description": "一个基于pnpm typescript monorepo/multirepo的lib快速启动仓库模板",
+  "description": "格斗游戏搓招练习工具",
   "scripts": {
     "pkg:init": "tsx scripts/pkg-init.ts",
     "pkg:new": "tsx scripts/pkg-new.ts",
