@@ -1,5 +1,5 @@
 import { iconMap } from './iconMap';
-import { presetDirects } from '@core';
+import { Direct, findIndexOfInputHistories, matchCommand, presetDirects } from '@core';
 import type { Skill, InputHistory } from '@core';
 import { OtherKeys } from './OtherKeys';
 
@@ -145,4 +145,25 @@ export const D720: ImpSkill = {
   commandView: `720 + p`,
   directs: presetDirects['720'],
   trigger: anyPunch,
+};
+
+const driveParryKeys = [OtherKeys.MK, OtherKeys.MP];
+const lOrR = [Direct.Left, Direct.Right];
+export const DriveRush: ImpSkill = {
+  matchPriority: 1,
+  limitFrame: 20,
+  name: '斗气疾跑',
+  commandView: `mk,mp + ${presetDirects['66'].map((d) => iconMap[d]).join('')}`,
+  directs: (ih, skill, frame) => {
+    const match = matchCommand(presetDirects['66'], ih, skill.limitFrame, frame);
+    if (!match) return false;
+    const i = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h) => {
+      return driveParryKeys.every((k) => h.others.includes(k));
+    });
+    return i > -1;
+  },
+  trigger: (ih) => {
+    // 两种情况：一种是先蓝防后 66，一种是先 66 后蓝防
+    return lOrR.includes(ih.direct) || driveParryKeys.every((k) => ih.others.includes(k));
+  },
 };
