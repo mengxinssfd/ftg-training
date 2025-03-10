@@ -95,8 +95,8 @@ function App() {
           </select>
         </label>
       </div>
-      <InputHistory inputHistories={player.inputManager.inputHistory} frame={frame} />
-      <InputViewer inputHistories={player.inputManager.inputHistory} />
+      <InputHistory inputHistories={player.inputManager.inputHistories} frame={frame} />
+      <InputViewer inputHistories={player.inputManager.inputHistories} />
       <div className="skill">
         <div>{skill?.commandView}</div>
         <div>{skill?.name}</div>

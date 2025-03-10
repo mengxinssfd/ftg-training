@@ -3,21 +3,21 @@ import type { InputHistory, InputResult } from './types';
 import type { PlayerLocation } from './enums';
 
 export class InputManager {
-  private historyLen = 20000;
+  private historyMaxLen = 20000;
   frame = 0;
-  inputHistory: InputHistory[] = [];
+  inputHistories: InputHistory[] = [];
   constructor(private inputs: Input[]) {}
   frameAdd(location: PlayerLocation, frame: number): void {
     this.frame = frame;
     const input = Input.union(this.inputs);
     if (this.isSameInput(input)) return;
-    this.inputHistory.push({ ...input, startFrame: this.frame, location: location });
-    if (this.inputHistory.length >= this.historyLen) {
-      this.inputHistory.splice(0, this.inputHistory.length - this.historyLen);
+    this.inputHistories.push({ ...input, startFrame: this.frame, location: location });
+    if (this.inputHistories.length >= this.historyMaxLen) {
+      this.inputHistories.splice(0, this.inputHistories.length - this.historyMaxLen);
     }
   }
   private isSameInput(input: InputResult): boolean {
-    const lastInput = this.inputHistory.at(-1);
+    const lastInput = this.inputHistories.at(-1);
     if (!lastInput) return false;
     return (
       input.direct === lastInput.direct &&
@@ -26,9 +26,9 @@ export class InputManager {
     );
   }
   clear() {
-    this.inputHistory.length = 0;
+    this.inputHistories.length = 0;
   }
-  setHistoryLen(length: number) {
-    this.historyLen = length;
+  setHistoryMaxLen(length: number) {
+    this.historyMaxLen = length;
   }
 }

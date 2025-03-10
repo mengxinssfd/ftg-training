@@ -12,7 +12,7 @@ export class SkillManager {
   }
   match(): Skill | null {
     const len = this._skills.length;
-    const lastHistory = this.inputManager.inputHistory.at(-1);
+    const lastHistory = this.inputManager.inputHistories.at(-1);
     if (!lastHistory) return null;
     for (let i = 0; i < len; i++) {
       const skill = this._skills[i] as Skill;
@@ -32,8 +32,10 @@ export class SkillManager {
         return false;
     }
     if (typeof skill.directs === 'function') {
-      return skill.directs(im.inputHistory, skill, im.frame);
+      return skill.directs(im.inputHistories, skill, im.frame);
     }
-    return skill.directs.some((d) => matchCommand(d, im.inputHistory, skill.limitFrame, im.frame));
+    return skill.directs.some((d) =>
+      matchCommand(d, im.inputHistories, skill.limitFrame, im.frame),
+    );
   }
 }

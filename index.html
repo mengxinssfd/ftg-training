@@ -185,9 +185,9 @@
         const skill = player.matchSkill();
         if (skill) {
           skillActiveFrame = player.frame;
-          hitSkillMap.set(player.inputManager.inputHistory.at(-1), skill);
+          hitSkillMap.set(player.inputManager.inputHistories.at(-1), skill);
         }
-        const history = player.inputManager.inputHistory.slice(-20).map((v, i, arr) => {
+        const history = player.inputManager.inputHistories.slice(-20).map((v, i, arr) => {
           const lastV = arr[i + 1];
           const frame = Math.min(
             99,
