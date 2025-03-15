@@ -3,8 +3,15 @@ import { Direct, findIndexOfInputHistories, matchCommand, presetDirects } from '
 import type { Skill, InputHistory } from '@core';
 import { OtherKeys } from './OtherKeys';
 
+export enum SkillType {
+  Common,
+  OD,
+  SA,
+}
+
 export interface ImpSkill extends Skill {
   commandView: string;
+  extends?: ImpSkill;
 }
 
 const punches = [OtherKeys.LP, OtherKeys.MP, OtherKeys.HP];
@@ -31,6 +38,7 @@ function createODSkill(skill: ImpSkill): ImpSkill {
   const directs = skill.directs as Direct[][];
   return {
     ...skill,
+    extends: skill,
     matchPriority: skill.matchPriority + 1,
     name: 'OD' + skill.name,
     commandView:
