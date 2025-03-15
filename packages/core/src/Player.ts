@@ -19,7 +19,7 @@ export class Player {
     this.frame++;
     this.inputManager.frameAdd(this.location, this.frame);
   }
-  matchSkill(): Skill | null {
+  matchSkill<S extends Skill>(): S | null {
     return this.skillManager.match();
   }
   clearInputs(): void {

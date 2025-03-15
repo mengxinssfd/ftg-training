@@ -10,12 +10,12 @@ export class SkillManager {
     s.sort((a, b) => b.matchPriority - a.matchPriority);
     this._skills.push(...s);
   }
-  match(): Skill | null {
+  match<S extends Skill>(): S | null {
     const len = this._skills.length;
     const lastHistory = this.inputManager.inputHistories.at(-1);
     if (!lastHistory) return null;
     for (let i = 0; i < len; i++) {
-      const skill = this._skills[i] as Skill;
+      const skill = this._skills[i] as S;
       if (this.matchSkill(this.inputManager, skill, lastHistory)) {
         skill.handler?.();
         return skill;
