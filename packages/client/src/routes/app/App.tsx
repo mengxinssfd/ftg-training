@@ -1,29 +1,12 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
-import { Direct, XboxGamepadInput, KeyboardInput, Player, PlayerLocation, socdN } from '@core';
+import { Direct, XboxGamepadInput, KeyboardInput, Player, socdN } from '@core';
 import type { Keymap } from '@core';
-import { HitBoxInput, InputHistory, InputViewer, SkillList } from './components';
-import { OtherKeys } from '@/common/OtherKeys';
-import type { ImpSkill } from '@/common/skills';
+import { HitBoxInput, InputHistory, InputViewer, SkillList, LocationSettings } from './components';
+import { OtherKeys, keyboardMap } from '@/common';
+import type { ImpSkill } from '@/common';
 import * as skills from '@/common/skills';
 
-const keyboardMap = {
-  ' ': Direct.Up,
-  a: Direct.Left,
-  s: Direct.Down,
-  d: Direct.Right,
-
-  u: OtherKeys.LP,
-  i: OtherKeys.MP,
-  o: OtherKeys.HP,
-  j: OtherKeys.LK,
-  k: OtherKeys.MK,
-  l: OtherKeys.HK,
-  h: [OtherKeys.HP, OtherKeys.HK],
-  y: [OtherKeys.MK, OtherKeys.MP],
-  n: [OtherKeys.LP, OtherKeys.HP],
-  m: [OtherKeys.LK, OtherKeys.HK],
-} satisfies Keymap;
 const gamepadKeyMaps = XboxGamepadInput.Keymap;
 const gamepadMap = {
   [gamepadKeyMaps.Up]: Direct.Up,
@@ -84,27 +67,7 @@ function App() {
 
   return (
     <div className={styles['_']}>
-      <div className="location">
-        <label>
-          站位：
-          <select
-            name="location"
-            onChange={(e) => {
-              player.location =
-                e.target.value === String(PlayerLocation.Left)
-                  ? PlayerLocation.Left
-                  : PlayerLocation.Right;
-            }}
-            defaultValue={player.location}>
-            <option key={PlayerLocation.Left} value={PlayerLocation.Left}>
-              1P
-            </option>
-            <option key={PlayerLocation.Right} value={PlayerLocation.Right}>
-              2P
-            </option>
-          </select>
-        </label>
-      </div>
+      <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
       <InputHistory inputHistories={player.inputManager.inputHistories} frame={frame} />
       <InputViewer inputHistories={player.inputManager.inputHistories} />
       <div className="skill">
