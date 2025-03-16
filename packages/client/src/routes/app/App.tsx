@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 import { Direct, XboxGamepadInput, KeyboardInput, Player, PlayerLocation, socdN } from '@core';
 import type { Keymap } from '@core';
-import { HitBoxInput, InputHistory, InputViewer } from './components';
+import { HitBoxInput, InputHistory, InputViewer, SkillList } from './components';
 import { OtherKeys } from '@/common/OtherKeys';
 import type { ImpSkill } from '@/common/skills';
 import * as skills from '@/common/skills';
@@ -112,19 +112,7 @@ function App() {
         <div>{skill?.name}</div>
       </div>
       <hbi.HitBox />
-      <section className="skill-list">
-        搓招表：
-        <ul>
-          {skillList.map((v, i) => {
-            return (
-              <li key={i}>
-                <span>{v.commandView}</span>
-                <span>{v.name}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      <SkillList skillList={skillList} />
     </div>
   );
 }

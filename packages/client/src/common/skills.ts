@@ -43,7 +43,7 @@ function createODSkill(skill: ImpSkill): ImpSkill {
     name: 'OD' + skill.name,
     commandView:
       directs[0]!.map((d) => iconMap[d]).join('') +
-      '+' +
+      ' + ' +
       (skill.trigger === anyPunch ? 'pp' : 'kk'),
     trigger: skill.trigger === anyPunch ? anyPunch2 : anyKick2,
   };
