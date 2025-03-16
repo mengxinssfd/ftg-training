@@ -18,23 +18,23 @@ enum OtherKeys {
   HK = 'hk',
 }
 
-const map = {
-  w: Direct.Up,
-  a: Direct.Left,
-  s: Direct.Down,
-  d: Direct.Right,
+const keyboardMap = {
+  KeyW: Direct.Up,
+  KeyA: Direct.Left,
+  KeyS: Direct.Down,
+  KeyD: Direct.Right,
 
-  u: OtherKeys.LP,
-  i: OtherKeys.MP,
-  o: OtherKeys.HP,
-  j: OtherKeys.LK,
-  k: OtherKeys.MK,
-  l: OtherKeys.HK,
+  KeyU: OtherKeys.LP,
+  KeyI: OtherKeys.MP,
+  KeyO: OtherKeys.HP,
+  KeyJ: OtherKeys.LK,
+  KeyK: OtherKeys.MK,
+  KeyL: OtherKeys.HK,
 };
 
 function input(value: string, type: 'down' | 'up') {
   const event = new Event(type === 'up' ? 'keyup' : 'keydown');
-  (event as any).key = value;
+  (event as any).code = value;
   window.dispatchEvent(event);
 }
 
@@ -56,33 +56,33 @@ const Shoryuken: Skill = {
 
 describe('ftg-training-core', function () {
   test('hadouken', () => {
-    const player = new Player([Hadouken], [new KeyboardInput(map)]);
+    const player = new Player([Hadouken], [new KeyboardInput(keyboardMap)]);
 
-    input('s', 'down');
+    input('KeyS', 'down');
     player.frameAdd();
-    input('d', 'down');
+    input('KeyD', 'down');
     player.frameAdd();
-    input('s', 'up');
+    input('KeyS', 'up');
     player.frameAdd();
-    input('u', 'down');
+    input('KeyU', 'down');
     player.frameAdd();
 
     expect(player.matchSkill()).toBe(Hadouken);
   });
   test('shoryuken', () => {
-    const ih = new InputManager([new KeyboardInput(map)]);
+    const ih = new InputManager([new KeyboardInput(keyboardMap)]);
     const sm = new SkillManager(ih);
     sm.registerSkills([Shoryuken, Hadouken]);
 
-    input('d', 'down');
+    input('KeyD', 'down');
     ih.frameAdd(PlayerLocation.Left, 1);
-    input('d', 'up');
+    input('KeyD', 'up');
     ih.frameAdd(PlayerLocation.Left, 2);
-    input('s', 'down');
+    input('KeyS', 'down');
     ih.frameAdd(PlayerLocation.Left, 3);
-    input('d', 'down');
+    input('KeyD', 'down');
     ih.frameAdd(PlayerLocation.Left, 4);
-    input('u', 'down');
+    input('KeyU', 'down');
     ih.frameAdd(PlayerLocation.Left, 5);
 
     expect(sm.match()).toBe(Shoryuken);

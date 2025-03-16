@@ -19,10 +19,10 @@ export class KeyboardInput extends Input {
   }
   addListener(): void {
     const kd = (this.keydownListener = (e): void => {
-      this.onKey(e.key, 'add');
+      this.onKey(e.code, 'add');
     });
     const ku = (this.keyupListener = (e): void => {
-      this.onKey(e.key, 'delete');
+      this.onKey(e.code, 'delete');
     });
     window.addEventListener('keydown', kd);
     window.addEventListener('keyup', ku);

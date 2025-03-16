@@ -3,19 +3,19 @@ import type { Keymap } from '@core';
 import { OtherKeys } from './OtherKeys';
 
 export const keyboardMap = {
-  ' ': Direct.Up,
-  a: Direct.Left,
-  s: Direct.Down,
-  d: Direct.Right,
+  Space: Direct.Up,
+  KeyA: Direct.Left,
+  KeyS: Direct.Down,
+  KeyD: Direct.Right,
 
-  u: OtherKeys.LP,
-  i: OtherKeys.MP,
-  o: OtherKeys.HP,
-  j: OtherKeys.LK,
-  k: OtherKeys.MK,
-  l: OtherKeys.HK,
-  h: [OtherKeys.HP, OtherKeys.HK],
-  y: [OtherKeys.MK, OtherKeys.MP],
-  n: [OtherKeys.LP, OtherKeys.HP],
-  m: [OtherKeys.LK, OtherKeys.HK],
+  KeyU: OtherKeys.LP,
+  KeyI: OtherKeys.MP,
+  KeyO: OtherKeys.HP,
+  KeyJ: OtherKeys.LK,
+  KeyK: OtherKeys.MK,
+  KeyL: OtherKeys.HK,
+  KeyH: [OtherKeys.HP, OtherKeys.HK],
+  KeyY: [OtherKeys.MK, OtherKeys.MP],
+  KeyN: [OtherKeys.LP, OtherKeys.HP],
+  KeyM: [OtherKeys.LK, OtherKeys.HK],
 } satisfies Keymap;
