@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 import { Direct, XboxGamepadInput, KeyboardInput, Player, socdN } from '@core';
-import type { Keymap } from '@core';
-import { HitBoxInput, InputHistory, InputViewer, SkillList, LocationSettings } from './components';
+import type { Keymap, SOCD } from '@core';
+import {
+  HitBoxInput,
+  InputHistory,
+  InputViewer,
+  SkillList,
+  LocationSettings,
+  SocdSettings,
+} from './components';
 import { OtherKeys, keyboardMap } from '@/common';
 import type { ImpSkill } from '@/common';
 import * as skills from '@/common/skills';
@@ -23,11 +30,15 @@ const gamepadMap = {
   [gamepadKeyMaps.LT]: [OtherKeys.MK, OtherKeys.MP],
   [gamepadKeyMaps.LB]: [OtherKeys.HK, OtherKeys.HP],
 } satisfies Keymap;
-const hbi = new HitBoxInput(socdN);
+let _socd = socdN;
+const socd: SOCD = (d) => {
+  _socd(d);
+};
+const hbi = new HitBoxInput(socd);
 const skillList = Object.values(skills);
 const player = new Player(skillList, [
-  new XboxGamepadInput(gamepadMap, socdN),
-  new KeyboardInput(keyboardMap, socdN),
+  new XboxGamepadInput(gamepadMap, socd),
+  new KeyboardInput(keyboardMap, socd),
   hbi,
 ]);
 const f = 1000 / 60;
@@ -67,7 +78,10 @@ function App() {
 
   return (
     <div className={styles['_']}>
-      <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
+      <section className={styles.nav}>
+        <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
+        <SocdSettings onChange={(s) => (_socd = s)} />
+      </section>
       <InputHistory inputHistories={player.inputManager.inputHistories} frame={frame} />
       <InputViewer inputHistories={player.inputManager.inputHistories} />
       <div className="skill">
