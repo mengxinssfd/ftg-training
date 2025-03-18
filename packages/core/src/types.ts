@@ -17,5 +17,6 @@ export interface Skill {
   handler?: () => void;
 }
 
-export type Keymap = Record<string, string | number | (string | number)[]>;
+export type Keymap = Record<string, string | number | readonly (string | number)[]>;
 export type InputResult = Pick<InputHistory, 'direct' | 'others'>;
+export type SOCD = (directs: Map<Direct, number>) => void;

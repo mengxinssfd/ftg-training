@@ -1,11 +1,8 @@
 import { Input } from './Input';
-import { Direct } from '../enums';
+import type { SOCD } from '../types';
 
 export class KeyboardInput extends Input {
-  constructor(
-    protected override map: Record<string, any>,
-    protected override socd?: (directs: Set<Direct>) => void,
-  ) {
+  constructor(protected override map: Record<string, any>, protected override socd?: SOCD) {
     super(map, socd);
     this.addListener();
   }

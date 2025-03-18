@@ -4,7 +4,7 @@ import type { Direct } from '../../enums';
 
 export abstract class GamepadInput extends Input {
   private isDestroyed = false;
-  protected override collectInputs(): Set<Direct> {
+  protected override collectInputs(): Map<Direct, number> {
     if (!this.isDestroyed) {
       const gamepads = navigator.getGamepads();
       // 获取第一个手柄
@@ -26,8 +26,9 @@ export abstract class GamepadInput extends Input {
     return super.collectInputs();
   }
   protected transAxes(axes: readonly number[]): void {
+    const now = Date.now();
     parserDirectsFromAxes([axes[0] as number, axes[1] as number]).forEach((d) =>
-      this.directs.add(d),
+      this.directs.set(d, now),
     );
   }
   override destroy(): void {
