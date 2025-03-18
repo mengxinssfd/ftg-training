@@ -167,7 +167,7 @@ export const D360: ImpSkill = {
 };
 
 export const D720: ImpSkill = {
-  matchPriority: 2,
+  matchPriority: 3,
   limitFrame: 50,
   name: '720指令投',
   commandView: `720 + p`,
@@ -194,4 +194,35 @@ export const DriveRush: ImpSkill = {
     // 两种情况：一种是先蓝防后 66，一种是先 66 后蓝防
     return lOrR.includes(ih.direct) || driveParryKeys.every((k) => ih.others.includes(k));
   },
+};
+
+export const P46: ImpSkill = {
+  matchPriority: 1,
+  limitFrame: 20,
+  name: '头槌',
+  commandView: `${iconMap[Direct.Left]}(蓄力)${iconMap[Direct.Right]} + p`,
+  directs: presetDirects['46'],
+  trigger: anyPunch,
+};
+export const OD46: ImpSkill = {
+  ...P46,
+  matchPriority: 2,
+  name: 'OD' + P46.name,
+  commandView: P46.commandView + 'p',
+  trigger: anyPunch2,
+};
+export const P28: ImpSkill = {
+  matchPriority: 1,
+  limitFrame: 20,
+  name: '大屁股',
+  commandView: `${iconMap[Direct.Down]}(蓄力)${iconMap[Direct.Up]} + p`,
+  directs: presetDirects['28'],
+  trigger: anyPunch,
+};
+export const OD28: ImpSkill = {
+  ...P28,
+  matchPriority: 2,
+  name: 'OD' + P28.name,
+  commandView: P28.commandView + 'p',
+  trigger: anyPunch2,
 };
