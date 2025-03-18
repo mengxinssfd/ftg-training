@@ -14,6 +14,7 @@ export interface Skill {
   name: string;
   directs: Direct[][] | SkillDirectsTrigger;
   trigger: string | ((input: InputHistory) => boolean);
+  chargeFrame?: number;
   handler?: () => void;
 }
 

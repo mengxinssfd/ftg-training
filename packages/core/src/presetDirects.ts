@@ -1,6 +1,8 @@
 import { Direct } from './enums';
 import type { InputHistory, SkillDirectsTrigger } from './types';
+import { findIndexOfInputHistories } from './utils';
 
+const defChargeFrame = 45;
 export const presetDirects = (function () {
   const d236 = [Direct.Down, Direct.DownRight, Direct.Right];
   const d214 = [Direct.Down, Direct.DownLeft, Direct.Left];
@@ -65,5 +67,38 @@ export const presetDirects = (function () {
     },
     66: [Direct.Right, Direct.None, Direct.Right],
     44: [Direct.Left, Direct.None, Direct.Left],
+    46: (ih, skill, frame): boolean => {
+      const anyLeft = [Direct.Left, Direct.DownLeft];
+      let rightIH: InputHistory;
+      const chargeFrame = skill.chargeFrame ?? defChargeFrame;
+      const index = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h): boolean => {
+        if (!rightIH) {
+          if (h.direct === Direct.Right) rightIH = h;
+          return false;
+        }
+        if (anyLeft.includes(h.direct)) {
+          if (rightIH.startFrame - h.startFrame >= chargeFrame) return true;
+        }
+        return false;
+      });
+      return index > -1;
+    },
+    28: (ih, skill, frame): boolean => {
+      const anyDown = [Direct.Down, Direct.DownLeft, Direct.DownRight];
+      const anyUp = [Direct.Up, Direct.UpLeft, Direct.UpRight];
+      let upIH: InputHistory;
+      const chargeFrame = skill.chargeFrame ?? defChargeFrame;
+      const index = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h): boolean => {
+        if (!upIH) {
+          if (anyUp.includes(h.direct)) upIH = h;
+          return false;
+        }
+        if (anyDown.includes(h.direct)) {
+          if (upIH.startFrame - h.startFrame >= chargeFrame) return true;
+        }
+        return false;
+      });
+      return index > -1;
+    },
   } satisfies Record<string, Direct[] | SkillDirectsTrigger>;
 })();
