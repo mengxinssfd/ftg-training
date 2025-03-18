@@ -1,21 +1,23 @@
 import { Direct } from '@core';
-import type { Keymap } from '@core';
 import { OtherKeys } from './OtherKeys';
+import { DynamicEnum } from '@tool-pack/basic';
 
-export const keyboardMap = {
-  Space: Direct.Up,
-  KeyA: Direct.Left,
-  KeyS: Direct.Down,
-  KeyD: Direct.Right,
+export const keyboardMap = new DynamicEnum(
+  new Map([
+    [Direct.Up, 'Space'],
+    [Direct.Left, 'KeyA'],
+    [Direct.Down, 'KeyS'],
+    [Direct.Right, 'KeyD'],
 
-  KeyU: OtherKeys.LP,
-  KeyI: OtherKeys.MP,
-  KeyO: OtherKeys.HP,
-  KeyJ: OtherKeys.LK,
-  KeyK: OtherKeys.MK,
-  KeyL: OtherKeys.HK,
-  KeyH: [OtherKeys.HP, OtherKeys.HK],
-  KeyY: [OtherKeys.MK, OtherKeys.MP],
-  KeyN: [OtherKeys.LP, OtherKeys.HP],
-  KeyM: [OtherKeys.LK, OtherKeys.HK],
-} satisfies Keymap;
+    [OtherKeys.LP, 'KeyU'],
+    [OtherKeys.MP, 'KeyI'],
+    [OtherKeys.HP, 'KeyO'],
+    [OtherKeys.LK, 'KeyJ'],
+    [OtherKeys.MK, 'KeyK'],
+    [OtherKeys.HK, 'KeyL'],
+    [[OtherKeys.HP, OtherKeys.HK], 'KeyH'],
+    [[OtherKeys.MK, OtherKeys.MP], 'KeyY'],
+    [[OtherKeys.LP, OtherKeys.HP], 'KeyN'],
+    [[OtherKeys.LK, OtherKeys.HK], 'KeyM'],
+  ]),
+);

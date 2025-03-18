@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
 import { Direct, XboxGamepadInput, KeyboardInput, Player, socdN } from '@core';
-import type { Keymap, SOCD } from '@core';
+import type { SOCD } from '@core';
 import {
   HitBoxInput,
   InputHistory,
@@ -13,23 +13,26 @@ import {
 import { OtherKeys, keyboardMap } from '@/common';
 import type { ImpSkill } from '@/common';
 import * as skills from '@/common/skills';
+import { DynamicEnum } from '@tool-pack/basic';
 
 const gamepadKeyMaps = XboxGamepadInput.Keymap;
-const gamepadMap = {
-  [gamepadKeyMaps.Up]: Direct.Up,
-  [gamepadKeyMaps.Left]: Direct.Left,
-  [gamepadKeyMaps.Down]: Direct.Down,
-  [gamepadKeyMaps.Right]: Direct.Right,
+const gamepadMap = new DynamicEnum(
+  new Map([
+    [Direct.Up, gamepadKeyMaps.Up],
+    [Direct.Left, gamepadKeyMaps.Left],
+    [Direct.Down, gamepadKeyMaps.Down],
+    [Direct.Right, gamepadKeyMaps.Right],
 
-  [gamepadKeyMaps.X]: OtherKeys.LP,
-  [gamepadKeyMaps.Y]: OtherKeys.MP,
-  [gamepadKeyMaps.RB]: OtherKeys.HP,
-  [gamepadKeyMaps.A]: OtherKeys.LK,
-  [gamepadKeyMaps.B]: OtherKeys.MK,
-  [gamepadKeyMaps.RT]: OtherKeys.HK,
-  [gamepadKeyMaps.LT]: [OtherKeys.MK, OtherKeys.MP],
-  [gamepadKeyMaps.LB]: [OtherKeys.HK, OtherKeys.HP],
-} satisfies Keymap;
+    [OtherKeys.LP, gamepadKeyMaps.X],
+    [OtherKeys.MP, gamepadKeyMaps.Y],
+    [OtherKeys.HP, gamepadKeyMaps.RB],
+    [OtherKeys.LK, gamepadKeyMaps.A],
+    [OtherKeys.MK, gamepadKeyMaps.B],
+    [OtherKeys.HK, gamepadKeyMaps.RT],
+    [[OtherKeys.MK, OtherKeys.MP], gamepadKeyMaps.LT],
+    [[OtherKeys.HK, OtherKeys.HP], gamepadKeyMaps.LB],
+  ]),
+);
 let _socd = socdN;
 const socd: SOCD = (d) => {
   _socd(d);
