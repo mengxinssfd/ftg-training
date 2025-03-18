@@ -1,8 +1,9 @@
 import { Direct } from './enums';
 import type { InputHistory, SkillDirectsTrigger } from './types';
-import { findIndexOfInputHistories } from './utils';
+import { findIndexOfInputHistories, transDirectByLocation } from './utils';
 
 const defChargeFrame = 45;
+const anyUp = [Direct.UpLeft, Direct.Up, Direct.UpRight];
 export const presetDirects = (function () {
   const d236 = [Direct.Down, Direct.DownRight, Direct.Right];
   const d214 = [Direct.Down, Direct.DownLeft, Direct.Left];
@@ -26,34 +27,28 @@ export const presetDirects = (function () {
     6236: [Direct.Right, ...d236],
     636: [Direct.Right, Direct.DownRight, Direct.Right],
     360: (ih, skill, frame): boolean => {
-      const anyUp = [Direct.UpLeft, Direct.Up, Direct.UpRight];
       const directs = [Direct.Right, Direct.Left, Direct.Down];
       let hasUp = false;
-      for (let i = ih.length - 1; i >= 0; i--) {
-        const h = ih[i] as InputHistory;
-        if (frame - h.startFrame > skill.limitFrame) return false;
+      const index = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h): boolean => {
         if (!hasUp) {
           // 先找出任意‘up’
           if (anyUp.includes(h.direct)) hasUp = true;
-        } else {
-          // 在匹配是否按了另外 3 个方位
-          const index = directs.indexOf(h.direct);
-          if (index > -1) {
-            directs.splice(index, 1);
-            if (!directs.length) return true;
-          }
+          return false;
         }
-      }
-      return false;
+        // 在匹配是否按了另外 3 个方位
+        const index = directs.indexOf(h.direct);
+        if (index > -1) {
+          directs.splice(index, 1);
+          if (!directs.length) return true;
+        }
+      });
+      return index > -1;
     },
     720: (ih, skill, frame): boolean => {
-      const anyUp = [Direct.UpLeft, Direct.Up, Direct.UpRight];
       const directs = [Direct.Right, Direct.Left, Direct.Down];
       directs.push(...directs);
       let hasUp = false;
-      for (let i = ih.length - 1; i >= 0; i--) {
-        const h = ih[i] as InputHistory;
-        if (frame - h.startFrame > skill.limitFrame) return false;
+      const i = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h): boolean => {
         // 找出任意‘up’
         if (!hasUp && anyUp.includes(h.direct)) hasUp = true;
         // 匹配是否按了另外 3 个方位
@@ -62,8 +57,9 @@ export const presetDirects = (function () {
           directs.splice(index, 1);
           if (!directs.length && hasUp) return true;
         }
-      }
-      return false;
+        return false;
+      });
+      return i > -1;
     },
     66: [Direct.Right, Direct.None, Direct.Right],
     44: [Direct.Left, Direct.None, Direct.Left],
@@ -72,11 +68,12 @@ export const presetDirects = (function () {
       let rightIH: InputHistory;
       const chargeFrame = skill.chargeFrame ?? defChargeFrame;
       const index = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h): boolean => {
+        const direct = transDirectByLocation(h.location, h.direct);
         if (!rightIH) {
-          if (h.direct === Direct.Right) rightIH = h;
+          if (Direct.Right === direct) rightIH = h;
           return false;
         }
-        if (anyLeft.includes(h.direct)) {
+        if (anyLeft.includes(direct)) {
           if (rightIH.startFrame - h.startFrame >= chargeFrame) return true;
         }
         return false;
@@ -85,7 +82,6 @@ export const presetDirects = (function () {
     },
     28: (ih, skill, frame): boolean => {
       const anyDown = [Direct.Down, Direct.DownLeft, Direct.DownRight];
-      const anyUp = [Direct.Up, Direct.UpLeft, Direct.UpRight];
       let upIH: InputHistory;
       const chargeFrame = skill.chargeFrame ?? defChargeFrame;
       const index = findIndexOfInputHistories(ih, skill.limitFrame, frame, (h): boolean => {
