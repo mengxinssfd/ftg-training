@@ -41,6 +41,7 @@ export const presetDirects = (function () {
           directs.splice(index, 1);
           if (!directs.length) return true;
         }
+        return false;
       });
       return index > -1;
     },
