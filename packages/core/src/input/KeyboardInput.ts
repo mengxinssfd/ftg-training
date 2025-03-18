@@ -1,8 +1,8 @@
 import { Input } from './Input';
-import type { SOCD } from '../types';
+import type { Keymap, SOCD } from '../types';
 
 export class KeyboardInput extends Input {
-  constructor(protected override map: Record<string, any>, protected override socd?: SOCD) {
+  constructor(protected override map: Keymap, protected override socd?: SOCD) {
     super(map, socd);
     this.addListener();
   }

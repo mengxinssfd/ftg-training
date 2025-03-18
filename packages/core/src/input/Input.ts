@@ -13,7 +13,7 @@ export abstract class Input {
     return directs.includes(key as Direct);
   }
   protected onKey(k: string | number, type: 'add' | 'delete'): void {
-    const keys = this.map[k];
+    const keys = this.map.getKeyByValue(k);
     if (!keys) return;
     castArray(keys).forEach((key): void => {
       if (this.isDirect(key)) {

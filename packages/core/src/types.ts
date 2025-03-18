@@ -1,4 +1,5 @@
 import type { Direct, PlayerLocation } from './enums';
+import type { DynamicEnum } from '@tool-pack/basic';
 
 export interface InputHistory {
   others: (string | number)[];
@@ -18,6 +19,6 @@ export interface Skill {
   handler?: () => void;
 }
 
-export type Keymap = Record<string, string | number | readonly (string | number)[]>;
+export type Keymap = DynamicEnum;
 export type InputResult = Pick<InputHistory, 'direct' | 'others'>;
 export type SOCD = (directs: Map<Direct, number>) => void;

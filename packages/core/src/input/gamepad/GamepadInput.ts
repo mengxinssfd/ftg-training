@@ -15,7 +15,7 @@ export abstract class GamepadInput extends Input {
       // 读取按钮状态
       gp.buttons.forEach((btn, k) => {
         if (!btn.pressed) return;
-        const key = this.map[k];
+        const key = this.map.getKeyByValue(k);
         key && this.addKey(k);
         // const btnName = keyMaps[k] as string;
         // console.log(`按钮 ${btnName} 被按下`, key, btn.value);

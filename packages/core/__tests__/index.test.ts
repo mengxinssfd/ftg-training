@@ -8,6 +8,7 @@ import {
   presetDirects,
 } from '../src';
 import type { Skill } from '../src';
+import { DynamicEnum } from '@tool-pack/basic';
 
 enum OtherKeys {
   LP = 'lp',
@@ -18,19 +19,21 @@ enum OtherKeys {
   HK = 'hk',
 }
 
-const keyboardMap = {
-  KeyW: Direct.Up,
-  KeyA: Direct.Left,
-  KeyS: Direct.Down,
-  KeyD: Direct.Right,
+const keyboardMap = new DynamicEnum(
+  new Map<Direct | string, string>([
+    [Direct.Up, 'KeyW'],
+    [Direct.Left, 'KeyA'],
+    [Direct.Down, 'KeyS'],
+    [Direct.Right, 'KeyD'],
 
-  KeyU: OtherKeys.LP,
-  KeyI: OtherKeys.MP,
-  KeyO: OtherKeys.HP,
-  KeyJ: OtherKeys.LK,
-  KeyK: OtherKeys.MK,
-  KeyL: OtherKeys.HK,
-};
+    [OtherKeys.LP, 'KeyU'],
+    [OtherKeys.MP, 'KeyI'],
+    [OtherKeys.HP, 'KeyO'],
+    [OtherKeys.LK, 'KeyJ'],
+    [OtherKeys.MK, 'KeyK'],
+    [OtherKeys.HK, 'KeyL'],
+  ]),
+);
 
 function input(value: string, type: 'down' | 'up') {
   const event = new Event(type === 'up' ? 'keyup' : 'keydown');
