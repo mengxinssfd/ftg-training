@@ -1,9 +1,10 @@
 import { Direct } from '@core';
+import type { Keymap, KeyOfKeymap } from '@core';
 import { OtherKeys } from './OtherKeys';
 import { DynamicEnum } from '@tool-pack/basic';
 
-export const keyboardMap = new DynamicEnum(
-  new Map<any, string>([
+export const keyboardMap: Keymap = new DynamicEnum(
+  new Map<KeyOfKeymap, string | number>([
     [Direct.Up, 'Space'],
     [Direct.Left, 'KeyA'],
     [Direct.Down, 'KeyS'],

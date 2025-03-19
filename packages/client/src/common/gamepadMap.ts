@@ -1,10 +1,11 @@
 import { Direct, XboxGamepadInput } from '@core';
+import type { Keymap, KeyOfKeymap } from '@core';
 import { DynamicEnum } from '@tool-pack/basic';
 import { OtherKeys } from '@/common/OtherKeys';
 
 const gamepadKeyMaps = XboxGamepadInput.Keymap;
-export const gamepadMap = new DynamicEnum(
-  new Map<any, number | string>([
+export const gamepadMap: Keymap = new DynamicEnum(
+  new Map<KeyOfKeymap, string | number>([
     [Direct.Up, gamepadKeyMaps.Up],
     [Direct.Left, gamepadKeyMaps.Left],
     [Direct.Down, gamepadKeyMaps.Down],

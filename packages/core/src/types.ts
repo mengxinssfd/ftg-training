@@ -19,6 +19,7 @@ export interface Skill {
   handler?: () => void;
 }
 
-export type Keymap = DynamicEnum;
+export type KeyOfKeymap = Direct | string | (string | number)[];
+export type Keymap = DynamicEnum<KeyOfKeymap, number | string>;
 export type InputResult = Pick<InputHistory, 'direct' | 'others'>;
 export type SOCD = (directs: Map<Direct, number>) => void;

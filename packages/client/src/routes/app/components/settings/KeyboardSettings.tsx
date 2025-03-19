@@ -1,29 +1,29 @@
 import style from './KeyboardSettings.module.scss';
 import { iconMap, keyboardMap } from '@/common';
+import type { KeyOfKeymap } from '@core';
 import { castArray, getClassNames, isObject } from '@tool-pack/basic';
 import { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
 
 export function KeyboardSettings(): JSX.Element {
-  const [activeKey, setActiveKey] = useState<unknown>(undefined);
+  const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
+  useEffect((): void | (() => void) => {
     if (activeKey === undefined) return;
-    const handler = (e: KeyboardEvent) => {
-      const code = e.code;
-      const originValue = keyboardMap.get(activeKey);
-      const existsKey = keyboardMap.getKeyByValue(code);
-      if (existsKey) keyboardMap.set(existsKey, originValue);
-      keyboardMap.set(activeKey, code);
-
+    const handler = (e: KeyboardEvent): boolean => {
+      keyboardMap.setOrSwap(activeKey, e.code);
       setActiveKey(undefined);
       e.stopPropagation();
       e.preventDefault();
       return false;
     };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    const eventType = 'keydown';
+    const options = { capture: true };
+    window.addEventListener(eventType, handler, options);
+    return (): void => {
+      window.removeEventListener(eventType, handler, options);
+    };
   }, [activeKey]);
 
   return (
@@ -59,8 +59,8 @@ function Tbody({
   activeKey,
   setActiveKey,
 }: {
-  activeKey: unknown;
-  setActiveKey: (key: unknown) => void;
+  activeKey: KeyOfKeymap | undefined;
+  setActiveKey: (key: KeyOfKeymap | undefined) => void;
 }): JSX.Element {
   const list: JSX.Element[] = [];
   keyboardMap.forEach((val, key) => {

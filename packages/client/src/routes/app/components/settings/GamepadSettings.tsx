@@ -1,6 +1,7 @@
 import style from './GamepadSettings.module.scss';
 import { gamepadMap, iconMap, useGamepadChange } from '@/common';
-import { castArray, getClassNames, isObject, nextTick } from '@tool-pack/basic';
+import type { KeyOfKeymap } from '@core';
+import { castArray, getClassNames, isObject } from '@tool-pack/basic';
 import { useState } from 'react';
 import { Modal, Button, InputNumber } from 'antd';
 import { XboxGamepadInput } from '@core';
@@ -12,7 +13,7 @@ export function GamepadSettings({
   setDeadZone: (deadZone: number) => void;
   deadZone: number;
 }): JSX.Element {
-  const [activeKey, setActiveKey] = useState<unknown>(undefined);
+  const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useGamepadChange(
@@ -20,13 +21,9 @@ export function GamepadSettings({
     0,
     (_leftStickDirect, buttons) => {
       const btn = buttons[0];
-      if (!btn) return;
-      const originValue = gamepadMap.get(activeKey);
-      const index = btn.index;
-      const existsKey = gamepadMap.getKeyByValue(index);
-      if (existsKey) gamepadMap.set(existsKey, originValue);
-      gamepadMap.set(activeKey, index);
-      nextTick(() => setActiveKey(undefined));
+      if (!btn || activeKey === undefined) return;
+      gamepadMap.setOrSwap(activeKey, btn.index);
+      setActiveKey(undefined);
     },
     deadZone,
   );
@@ -47,7 +44,7 @@ export function GamepadSettings({
             min={0}
             max={1}
             defaultValue={deadZone}
-            onChange={(v) => setDeadZone(v ?? 0)}
+            onChange={(v) => setDeadZone(+(v ?? 0))}
             step={0.01}
           />
         </div>
@@ -74,8 +71,8 @@ function Tbody({
   activeKey,
   setActiveKey,
 }: {
-  activeKey: unknown;
-  setActiveKey: (key: unknown) => void;
+  activeKey: KeyOfKeymap | undefined;
+  setActiveKey: (key: KeyOfKeymap | undefined) => void;
 }): JSX.Element {
   const list: JSX.Element[] = [];
   gamepadMap.forEach((val, key) => {
