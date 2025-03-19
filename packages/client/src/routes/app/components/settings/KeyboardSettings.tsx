@@ -11,7 +11,12 @@ export function KeyboardSettings(): JSX.Element {
   useEffect(() => {
     if (activeKey === undefined) return;
     const handler = (e: KeyboardEvent) => {
-      keyboardMap.set(activeKey, e.code);
+      const code = e.code;
+      const originValue = keyboardMap.get(activeKey);
+      const existsKey = keyboardMap.getKeyByValue(code);
+      if (existsKey) keyboardMap.set(existsKey, originValue);
+      keyboardMap.set(activeKey, code);
+
       setActiveKey(undefined);
       e.stopPropagation();
       e.preventDefault();
