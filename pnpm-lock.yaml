@@ -30,8 +30,8 @@ importers:
         specifier: ^15.0.2
         version: 15.0.2(rollup@3.20.6)
       '@tool-pack/basic':
-        specifier: ^0.9.3
-        version: 0.9.3
+        specifier: ^0.9.5
+        version: 0.9.5
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -2131,8 +2131,8 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@tool-pack/basic@0.9.3':
-    resolution: {integrity: sha512-jPXr0y08QDud/UI0BdrRcVrE6mhUYzbR/fxH+4GjGGT4IyNSTIZACapUh3KbmMo7xdluSq1T59t8zIq9PtW6RA==}
+  '@tool-pack/basic@0.9.5':
+    resolution: {integrity: sha512-uCX0jx//BaM4RZRtvwc3jghfO/DAyen5epZ4heEB7CHeVwfrTy8p5IO2CWdWNGIWPe2OotQTIqfLpxW7t59Fqg==}
 
   '@tool-pack/types@0.3.0':
     resolution: {integrity: sha512-JjiuX2YL67PnVesIexsSvKsZeAU+whjvXrUzqij5nXWLCuRGnRAIass1+t/tyZWDtOj1dAcdIccTlnGi/DLh9g==}
@@ -11056,7 +11056,7 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.0
 
-  '@tool-pack/basic@0.9.3':
+  '@tool-pack/basic@0.9.5':
     dependencies:
       '@tool-pack/types': 0.3.0
 
