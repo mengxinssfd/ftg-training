@@ -15,9 +15,9 @@ export const keyboardMap = new DynamicEnum(
     [OtherKeys.LK, 'KeyJ'],
     [OtherKeys.MK, 'KeyK'],
     [OtherKeys.HK, 'KeyL'],
-    [[OtherKeys.HP, OtherKeys.HK], 'KeyH'],
-    [[OtherKeys.MK, OtherKeys.MP], 'KeyY'],
-    [[OtherKeys.LP, OtherKeys.HP], 'KeyN'],
-    [[OtherKeys.LK, OtherKeys.HK], 'KeyM'],
+    [[OtherKeys.HP, OtherKeys.HK], ''],
+    [[OtherKeys.MK, OtherKeys.MP], ''],
+    [[OtherKeys.LP, OtherKeys.MP, OtherKeys.HP], ''],
+    [[OtherKeys.LK, OtherKeys.MK, OtherKeys.HK], ''],
   ]),
 );

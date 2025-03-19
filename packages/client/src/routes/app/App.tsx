@@ -9,6 +9,7 @@ import {
   SkillList,
   LocationSettings,
   SocdSettings,
+  KeyboardSettings,
 } from './components';
 import { OtherKeys, keyboardMap } from '@/common';
 import type { ImpSkill } from '@/common';
@@ -82,6 +83,7 @@ function App() {
   return (
     <div className={styles['_']}>
       <section className={styles.nav}>
+        <KeyboardSettings />
         <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
         <SocdSettings onChange={(s) => (_socd = s)} />
       </section>
