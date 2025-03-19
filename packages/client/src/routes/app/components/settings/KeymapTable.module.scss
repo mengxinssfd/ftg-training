@@ -1,0 +1,11 @@
+._ {
+  width: 100%;
+  :global {
+    tr.active {
+      background: wheat;
+    }
+    td {
+      text-align: center;
+    }
+  }
+}
