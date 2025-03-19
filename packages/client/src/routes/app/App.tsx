@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './App.module.scss';
-import { Direct, XboxGamepadInput, KeyboardInput, Player, socdN } from '@core';
+import { XboxGamepadInput, KeyboardInput, Player, socdN } from '@core';
 import type { SOCD } from '@core';
 import {
   HitBoxInput,
@@ -10,41 +10,20 @@ import {
   LocationSettings,
   SocdSettings,
   KeyboardSettings,
+  GamepadSettings,
 } from './components';
-import { OtherKeys, keyboardMap } from '@/common';
+import { gamepadMap, keyboardMap } from '@/common';
 import type { ImpSkill } from '@/common';
 import * as skills from '@/common/skills';
-import { DynamicEnum } from '@tool-pack/basic';
 
-const gamepadKeyMaps = XboxGamepadInput.Keymap;
-const gamepadMap = new DynamicEnum(
-  new Map([
-    [Direct.Up, gamepadKeyMaps.Up],
-    [Direct.Left, gamepadKeyMaps.Left],
-    [Direct.Down, gamepadKeyMaps.Down],
-    [Direct.Right, gamepadKeyMaps.Right],
-
-    [OtherKeys.LP, gamepadKeyMaps.X],
-    [OtherKeys.MP, gamepadKeyMaps.Y],
-    [OtherKeys.HP, gamepadKeyMaps.RB],
-    [OtherKeys.LK, gamepadKeyMaps.A],
-    [OtherKeys.MK, gamepadKeyMaps.B],
-    [OtherKeys.HK, gamepadKeyMaps.RT],
-    [[OtherKeys.MK, OtherKeys.MP], gamepadKeyMaps.LT],
-    [[OtherKeys.HK, OtherKeys.HP], gamepadKeyMaps.LB],
-  ]),
-);
 let _socd = socdN;
 const socd: SOCD = (d) => {
   _socd(d);
 };
 const hbi = new HitBoxInput(socd);
 const skillList = Object.values(skills);
-const player = new Player(skillList, [
-  new XboxGamepadInput(gamepadMap, socd),
-  new KeyboardInput(keyboardMap, socd),
-  hbi,
-]);
+const xboxInput = new XboxGamepadInput(gamepadMap, socd);
+const player = new Player(skillList, [xboxInput, new KeyboardInput(keyboardMap, socd), hbi]);
 const f = 1000 / 60;
 const odReplaceFrame = 5; // od技和普通技能在 odTime 帧数内则替换为 od 技
 const nextSkillFrame = 50; // 50 帧内不得再次匹配技能
@@ -83,6 +62,12 @@ function App() {
   return (
     <div className={styles['_']}>
       <section className={styles.nav}>
+        <GamepadSettings
+          deadZone={xboxInput.leftStickDeadZone}
+          setDeadZone={(deadZone) => {
+            xboxInput.leftStickDeadZone = deadZone;
+          }}
+        />
         <KeyboardSettings />
         <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
         <SocdSettings onChange={(s) => (_socd = s)} />
