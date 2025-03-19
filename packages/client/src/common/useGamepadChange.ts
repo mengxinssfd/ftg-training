@@ -17,25 +17,25 @@ export function useGamepadChange(
     const lastInput: { buttons: Button[]; direct: Direct } = { buttons: [], direct: Direct.None };
     requestAnimationFrame(function cb(): void {
       const gp = navigator.getGamepads()[index];
-      if (!gp) return;
-      // 读取按钮状态
-      const buttons: Button[] = [];
-      gp.buttons.forEach((btn, index) => {
-        if (!btn.pressed) return;
-        buttons.push({ index, value: btn.value });
-      });
-      // 读取轴状态
-      const directs = parserDirectsFromAxes(gp.axes as [number, number], deadZone);
-      const direct = transDirect4To8(new Set(directs));
+      if (gp) {
+        // 读取按钮状态
+        const buttons: Button[] = [];
+        gp.buttons.forEach((btn, index) => {
+          if (!btn.pressed) return;
+          buttons.push({ index, value: btn.value });
+        });
+        // 读取轴状态
+        const directs = parserDirectsFromAxes(gp.axes as [number, number], deadZone);
+        const direct = transDirect4To8(new Set(directs));
 
-      if (!isSameInput(direct, buttons)) {
-        onChange(direct, buttons);
+        if (!isSameInput(direct, buttons)) {
+          onChange(direct, buttons);
+        }
+
+        lastInput.direct = direct;
+        lastInput.buttons = buttons;
       }
-
-      lastInput.direct = direct;
-      lastInput.buttons = buttons;
-      if (!running) return;
-      requestAnimationFrame(cb);
+      if (running) requestAnimationFrame(cb);
     });
     return () => {
       running = false;

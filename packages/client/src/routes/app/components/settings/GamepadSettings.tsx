@@ -1,6 +1,6 @@
 import style from './GamepadSettings.module.scss';
 import { gamepadMap, iconMap, useGamepadChange } from '@/common';
-import { castArray, getClassNames, isObject } from '@tool-pack/basic';
+import { castArray, getClassNames, isObject, nextTick } from '@tool-pack/basic';
 import { useState } from 'react';
 import { Modal, Button, InputNumber } from 'antd';
 import { XboxGamepadInput } from '@core';
@@ -21,7 +21,12 @@ export function GamepadSettings({
     (_leftStickDirect, buttons) => {
       const btn = buttons[0];
       if (!btn) return;
-      gamepadMap.set(activeKey, btn.index);
+      const originValue = gamepadMap.get(activeKey);
+      const index = btn.index;
+      const existsKey = gamepadMap.getKeyByValue(index);
+      if (existsKey) gamepadMap.set(existsKey, originValue);
+      gamepadMap.set(activeKey, index);
+      nextTick(() => setActiveKey(undefined));
     },
     deadZone,
   );
