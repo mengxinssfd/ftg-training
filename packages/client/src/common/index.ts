@@ -4,3 +4,4 @@ export * from './skills';
 export * from './keyboardMap';
 export * from './gamepadMap';
 export * from './useGamepadChange';
+export * from './useSkillMatch';
