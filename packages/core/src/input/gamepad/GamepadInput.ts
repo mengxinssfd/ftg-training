@@ -4,6 +4,7 @@ import type { Direct } from '../../enums';
 
 export abstract class GamepadInput extends Input {
   private isDestroyed = false;
+  leftStickDeadZone = 0.05;
   protected override collectInputs(): Map<Direct, number> {
     if (!this.isDestroyed) {
       const gamepads = navigator.getGamepads();
@@ -27,8 +28,8 @@ export abstract class GamepadInput extends Input {
   }
   protected transAxes(axes: readonly number[]): void {
     const now = Date.now();
-    parserDirectsFromAxes([axes[0] as number, axes[1] as number]).forEach((d) =>
-      this.directs.set(d, now),
+    parserDirectsFromAxes([axes[0] as number, axes[1] as number], this.leftStickDeadZone).forEach(
+      (d) => this.directs.set(d, now),
     );
   }
   override destroy(): void {
