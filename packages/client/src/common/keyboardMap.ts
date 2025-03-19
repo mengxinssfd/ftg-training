@@ -3,7 +3,7 @@ import { OtherKeys } from './OtherKeys';
 import { DynamicEnum } from '@tool-pack/basic';
 
 export const keyboardMap = new DynamicEnum(
-  new Map([
+  new Map<any, string>([
     [Direct.Up, 'Space'],
     [Direct.Left, 'KeyA'],
     [Direct.Down, 'KeyS'],

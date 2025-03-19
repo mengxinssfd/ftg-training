@@ -3,12 +3,13 @@ import type { Keymap } from '@core';
 import styles from './HitBox.module.scss';
 import { iconMap } from '@/common/iconMap';
 import { OtherKeys } from '@/common/OtherKeys';
+import { DynamicEnum } from '@tool-pack/basic';
 
 function arrToObj(arr: (string | number)[]): Keymap {
   return arr.reduce((acc: Keymap, item: string | number) => {
-    acc[item] = item;
+    acc.set(item, item);
     return acc;
-  }, {} as Keymap);
+  }, new DynamicEnum(new Map()));
 }
 const list = [
   Direct.Up,

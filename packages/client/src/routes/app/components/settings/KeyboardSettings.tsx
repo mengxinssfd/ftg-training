@@ -1,7 +1,7 @@
 import style from './KeyboardSettings.module.scss';
 import { iconMap, keyboardMap } from '@/common';
 import { castArray, getClassNames, isObject } from '@tool-pack/basic';
-import { JSX, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
 
 export function KeyboardSettings(): JSX.Element {
@@ -60,12 +60,14 @@ function Tbody({
   const list: JSX.Element[] = [];
   keyboardMap.forEach((val, key) => {
     const label = castArray(key)
-      .map((v) => (isObject<{ name: string }>(v) ? v.name : iconMap[v] ?? v))
+      .map((v) =>
+        isObject<{ name: string }>(v) ? v.name : iconMap[v as keyof typeof iconMap] ?? v,
+      )
       .join(' + ');
     list.push(
       <tr key={label} className={getClassNames({ active: activeKey === key })}>
         <td>{label}</td>
-        <td>{val.replace('Key', '')}</td>
+        <td>{String(val || '').replace('Key', '')}</td>
         <td>
           {activeKey !== key ? (
             <Button

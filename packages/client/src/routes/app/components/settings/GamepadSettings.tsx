@@ -18,7 +18,7 @@ export function GamepadSettings({
   useGamepadChange(
     activeKey !== undefined,
     0,
-    (leftStickDirect, buttons) => {
+    (_leftStickDirect, buttons) => {
       const btn = buttons[0];
       if (!btn) return;
       gamepadMap.set(activeKey, btn.index);
@@ -38,7 +38,13 @@ export function GamepadSettings({
         footer={<Button onClick={closeModal}>关闭</Button>}>
         <div>
           左摇杆死区：
-          <InputNumber min={0} max={1} defaultValue={deadZone} onChange={setDeadZone} step={0.01} />
+          <InputNumber
+            min={0}
+            max={1}
+            defaultValue={deadZone}
+            onChange={(v) => setDeadZone(v ?? 0)}
+            step={0.01}
+          />
         </div>
         <table className={style['_']}>
           <thead>
@@ -69,12 +75,14 @@ function Tbody({
   const list: JSX.Element[] = [];
   gamepadMap.forEach((val, key) => {
     const label = castArray(key)
-      .map((v) => (isObject<{ name: string }>(v) ? v.name : iconMap[v] ?? v))
+      .map((v) =>
+        isObject<{ name: string }>(v) ? v.name : iconMap[v as keyof typeof iconMap] ?? v,
+      )
       .join(' + ');
     list.push(
       <tr key={label} className={getClassNames({ active: activeKey === key })}>
         <td>{label}</td>
-        <td>{XboxGamepadInput.Keymap[val] ?? val}</td>
+        <td>{XboxGamepadInput.Keymap[val as keyof typeof XboxGamepadInput.Keymap] ?? val}</td>
         <td>
           {activeKey !== key ? (
             <Button

@@ -21,7 +21,7 @@ const socd: SOCD = (d) => {
   _socd(d);
 };
 const hbi = new HitBoxInput(socd);
-const skillList = Object.values(skills);
+const skillList = Object.values(skills) as ImpSkill[];
 const xboxInput = new XboxGamepadInput(gamepadMap, socd);
 const player = new Player(skillList, [xboxInput, new KeyboardInput(keyboardMap, socd), hbi]);
 const f = 1000 / 60;
@@ -43,13 +43,13 @@ function App() {
         // 如果距离上一次搓招成功小于 50 帧则不可再次搓招判定,除了 OD技
         if (frameDiff < nextSkillFrame) {
           if (frameDiff < odReplaceFrame && skill.extends && skill.extends === lastMatched.skill) {
-            _setSkill();
+            _setSkill(skill);
           }
           return;
         }
-        _setSkill();
+        _setSkill(skill);
       }
-      function _setSkill(): void {
+      function _setSkill(skill: ImpSkill): void {
         setSkill((lastMatched.skill = skill));
         lastMatched.frame = player.frame;
       }
@@ -61,7 +61,7 @@ function App() {
 
   return (
     <div className={styles['_']}>
-      <section className={styles.nav}>
+      <section className={styles['nav']}>
         <GamepadSettings
           deadZone={xboxInput.leftStickDeadZone}
           setDeadZone={(deadZone) => {

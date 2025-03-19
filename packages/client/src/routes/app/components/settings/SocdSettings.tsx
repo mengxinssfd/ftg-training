@@ -11,7 +11,7 @@ export function SocdSettings({ onChange }: { onChange: (socd: SOCD) => void }) {
           name="socd"
           onChange={(e) => {
             const map = { socdN, socdLW, socdFW };
-            onChange(map[e.target.value]);
+            onChange(map[e.target.value as keyof typeof map]);
           }}
           defaultValue="socdN">
           <option value="socdN">对向回中</option>

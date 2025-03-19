@@ -25,7 +25,7 @@ export function useGamepadChange(
         buttons.push({ index, value: btn.value });
       });
       // 读取轴状态
-      const directs = parserDirectsFromAxes(gp.axes, deadZone);
+      const directs = parserDirectsFromAxes(gp.axes as [number, number], deadZone);
       const direct = transDirect4To8(new Set(directs));
 
       if (!isSameInput(direct, buttons)) {
