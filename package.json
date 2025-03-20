@@ -25,17 +25,6 @@
     "client:build:preview": "pnpm -C packages/client build --mode deploy && serve ./packages/client/dist -p 8080",
     "client:deploy": "pnpm -C packages/client build --mode deploy && gh-pages -d packages/client/dist"
   },
-  "lint-staged": {
-    "*.{json,html,md,yaml}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint",
-      "git add"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mengxinssfd/ftg-training.git"
