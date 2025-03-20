@@ -30,8 +30,11 @@ importers:
         specifier: ^15.0.2
         version: 15.0.2(rollup@3.20.6)
       '@tool-pack/basic':
-        specifier: ^0.9.5
-        version: 0.9.5
+        specifier: ^0.9.6
+        version: 0.9.6
+      '@tool-pack/dom':
+        specifier: ^0.4.2
+        version: 0.4.2
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -2131,8 +2134,11 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@tool-pack/basic@0.9.5':
-    resolution: {integrity: sha512-uCX0jx//BaM4RZRtvwc3jghfO/DAyen5epZ4heEB7CHeVwfrTy8p5IO2CWdWNGIWPe2OotQTIqfLpxW7t59Fqg==}
+  '@tool-pack/basic@0.9.6':
+    resolution: {integrity: sha512-9OF/vNbJJUa1ff13dPLyHeIlYpxLDm0aQsmGCDXi3BrdeBtO+/0Z9XefAPIp6CC/mgPzBdc/LyqlPsrEMoTkIQ==}
+
+  '@tool-pack/dom@0.4.2':
+    resolution: {integrity: sha512-6zXfjzXjK3uHZuQQMt3HIOjkUz05GV193jM8BSosNAgtc9ieu34Vld7xz8gPcB1K/Gj87iVu7c6jNk3zXvRtfA==}
 
   '@tool-pack/types@0.3.0':
     resolution: {integrity: sha512-JjiuX2YL67PnVesIexsSvKsZeAU+whjvXrUzqij5nXWLCuRGnRAIass1+t/tyZWDtOj1dAcdIccTlnGi/DLh9g==}
@@ -11056,8 +11062,13 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.0
 
-  '@tool-pack/basic@0.9.5':
+  '@tool-pack/basic@0.9.6':
     dependencies:
+      '@tool-pack/types': 0.3.0
+
+  '@tool-pack/dom@0.4.2':
+    dependencies:
+      '@tool-pack/basic': 0.9.6
       '@tool-pack/types': 0.3.0
 
   '@tool-pack/types@0.3.0': {}
