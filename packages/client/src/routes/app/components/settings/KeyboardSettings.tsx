@@ -4,6 +4,7 @@ import type { KeyOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
 import { Modal, Button } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
+import { preventDefaultEvent } from '@tool-pack/dom';
 
 export function KeyboardSettings(): JSX.Element {
   const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
@@ -14,9 +15,7 @@ export function KeyboardSettings(): JSX.Element {
     const handler = (e: KeyboardEvent): boolean => {
       keyboardMap.setOrSwap(activeKey, e.code);
       setActiveKey(undefined);
-      e.stopPropagation();
-      e.preventDefault();
-      return false;
+      return preventDefaultEvent(e);
     };
     const eventType = 'keydown';
     const options = { capture: true };
