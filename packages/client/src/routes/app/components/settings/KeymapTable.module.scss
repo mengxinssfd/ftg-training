@@ -6,6 +6,31 @@
     }
     td {
       text-align: center;
+      i {
+        display: block;
+        $w: 22px;
+        width: $w;
+        height: $w;
+        border-radius: 50%;
+        line-height: $w;
+        font-style: normal;
+        text-align: center;
+        &.lp,
+        &.lk {
+          color: #00f7ff;
+          background: rgba(0, 247, 255, 0.15);
+        }
+        &.mp,
+        &.mk {
+          color: #9ae84c;
+          background: rgba(154, 232, 76, 0.15);
+        }
+        &.hp,
+        &.hk {
+          color: #850606;
+          background: rgba(133, 6, 6, 0.15);
+        }
+      }
     }
   }
 }

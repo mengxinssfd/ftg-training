@@ -4,6 +4,7 @@ import { OtherKeys } from '@/common';
 import { DynamicEnum } from '@tool-pack/basic';
 import type { KeymapArrayType } from '@/common/keymap/types';
 import { loadKeymap } from '@/common/keymap/utils';
+import { emptyKeymap } from '@/common/keymap/emptyKeymap';
 
 export const keyboardStorageKey = 'keyboardMap';
 export const defKeyboardMapArr: KeymapArrayType = [
@@ -20,8 +21,7 @@ export const defKeyboardMapArr: KeymapArrayType = [
   [OtherKeys.HK, 'KeyL'],
   [[OtherKeys.HP, OtherKeys.HK], ''],
   [[OtherKeys.MK, OtherKeys.MP], ''],
-  [[OtherKeys.LP, OtherKeys.MP, OtherKeys.HP], ''],
-  [[OtherKeys.LK, OtherKeys.MK, OtherKeys.HK], ''],
+  ...emptyKeymap,
 ];
 export const keyboardMap: Keymap = new DynamicEnum(
   new Map(loadKeymap(keyboardStorageKey, defKeyboardMapArr)),

@@ -2,7 +2,7 @@ import style from './KeymapTable.module.scss';
 import { type Keymap, type KeyOfKeymap, XboxGamepadInput } from '@core';
 import { iconMap } from '@/common';
 import { castArray, getClassNames } from '@tool-pack/basic';
-import { Button } from 'antd';
+import { Button, Space } from 'antd';
 
 export function KeymapTable({
   activeKey,
@@ -24,12 +24,18 @@ export function KeymapTable({
       </thead>
       <tbody>
         {keymap.map((val, key) => {
-          const label = castArray(key)
-            .map((v) => iconMap[v as keyof typeof iconMap] ?? v)
-            .join(' + ');
+          const labels = castArray(key).map((v) => iconMap[v as keyof typeof iconMap] ?? v);
           return (
-            <tr key={label} className={getClassNames({ active: activeKey === key })}>
-              <td>{label}</td>
+            <tr key={labels.join(' + ')} className={getClassNames({ active: activeKey === key })}>
+              <td>
+                <Space split={' + '}>
+                  {labels.map((l) => (
+                    <i className={l} key={l}>
+                      {l}
+                    </i>
+                  ))}
+                </Space>
+              </td>
               <td>{XboxGamepadInput.Keymap[val as keyof typeof XboxGamepadInput.Keymap] ?? val}</td>
               <td>
                 {activeKey !== key ? (

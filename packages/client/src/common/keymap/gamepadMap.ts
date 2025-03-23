@@ -3,6 +3,7 @@ import type { Keymap } from '@core';
 import { DynamicEnum } from '@tool-pack/basic';
 import type { KeymapArrayType } from '@/common/keymap/types';
 import { loadKeymap, OtherKeys } from '@/common';
+import { emptyKeymap } from '@/common/keymap/emptyKeymap';
 
 const gamepadKeyMaps = XboxGamepadInput.Keymap;
 export const gamepadStorageKey = 'gamepadMap';
@@ -20,8 +21,7 @@ export const defGamepadMapArr: KeymapArrayType = [
   [OtherKeys.HK, gamepadKeyMaps.RT],
   [[OtherKeys.MK, OtherKeys.MP], gamepadKeyMaps.LT],
   [[OtherKeys.HK, OtherKeys.HP], gamepadKeyMaps.LB],
-  [[OtherKeys.LP, OtherKeys.MP, OtherKeys.HP], ''],
-  [[OtherKeys.LK, OtherKeys.MK, OtherKeys.HK], ''],
+  ...emptyKeymap,
 ];
 export const gamepadMap: Keymap = new DynamicEnum(
   new Map(loadKeymap(gamepadStorageKey, defGamepadMapArr)),
