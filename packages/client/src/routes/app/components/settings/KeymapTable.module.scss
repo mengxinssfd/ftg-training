@@ -35,7 +35,7 @@
       .btn-key {
         $h: 22px;
         height: $h;
-        border-radius: $h / 2;
+        border-radius: calc($h / 2);
         background: wheat;
       }
     }
