@@ -1,16 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Select } from 'antd';
+import { type Theme, themes } from '@/hooks';
 
-type Theme = 'light' | 'dark';
-const themes: Theme[] = ['light', 'dark'];
-const storageKey = 'page-theme';
-export function ThemeSettings() {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme | null) || 'light',
-  );
-  useEffect(() => {
-    updateThemeToBody(theme);
-  }, [theme]);
+export function ThemeSettings({
+  theme,
+  setTheme,
+}: {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}) {
   return (
     <section>
       <label>
@@ -24,10 +21,4 @@ export function ThemeSettings() {
       </label>
     </section>
   );
-  function updateThemeToBody(theme: Theme): void {
-    const prefix = 'theme-';
-    document.body.classList.remove(...themes.map((t) => prefix + t));
-    document.body.classList.add(prefix + theme);
-    localStorage.setItem(storageKey, theme);
-  }
 }

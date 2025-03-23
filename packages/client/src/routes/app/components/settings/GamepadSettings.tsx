@@ -6,12 +6,12 @@ import {
   resetKeymap,
   resetKeymapWithSaved,
   saveKeymap,
-  useGamepadChange,
 } from '@/common';
 import type { GamepadInput, KeyOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
 import { Button, InputNumber, Modal, Space } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
+import { useGamepadChange } from '@/hooks';
 
 let initDeadZone = -1;
 const deadZoneKey = 'deadZone';

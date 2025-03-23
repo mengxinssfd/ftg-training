@@ -1,8 +1,5 @@
 import styles from './App.module.scss';
-import { XboxGamepadInput, KeyboardInput, Player, socdN } from '@core';
-import type { SOCD } from '@core';
 import {
-  HitBoxInput,
   InputHistory,
   InputViewer,
   SkillList,
@@ -12,36 +9,43 @@ import {
   GamepadSettings,
   ThemeSettings,
 } from './components';
-import { gamepadMap, keyboardMap, useSkillMatch } from '@/common';
-import type { ImpSkill } from '@/common';
-import * as skills from '@/common/skills';
+import { createPlayer } from '@/common';
+import { Checkbox } from 'antd';
+import { useSkillMatch, useOnlyHistory, useTheme } from '@/hooks';
 
-let _socd = socdN;
-const socd: SOCD = (d) => _socd(d);
-const hbi = new HitBoxInput(socd);
-const skillList = Object.values(skills) as ImpSkill[];
-const xboxInput = new XboxGamepadInput(gamepadMap, socd);
-const player = new Player(skillList, [xboxInput, new KeyboardInput(keyboardMap, socd), hbi]);
-
+const { player, xboxInput, hitboxInput, setSocd, skillList } = createPlayer();
 function App() {
   const [skill, frame] = useSkillMatch({ player });
+  const [onlyHistory, setOnlyHistory] = useOnlyHistory();
+  const [theme, setTheme] = useTheme();
   return (
     <div className={styles['_']}>
       <section className={styles['nav']}>
-        <GamepadSettings gamepadInput={xboxInput} />
-        <KeyboardSettings />
-        <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
-        <SocdSettings onChange={(s) => (_socd = s)} />
-        <ThemeSettings />
+        <Checkbox checked={onlyHistory} onChange={(e) => setOnlyHistory(e.target.checked)}>
+          <span style={{ color: 'pink' }}>只显示输入历史</span>
+        </Checkbox>
+        {!onlyHistory && (
+          <>
+            <GamepadSettings gamepadInput={xboxInput} />
+            <KeyboardSettings />
+            <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
+            <SocdSettings onChange={setSocd} />
+            <ThemeSettings theme={theme} setTheme={setTheme} />
+          </>
+        )}
       </section>
       <InputHistory inputHistories={player.inputManager.inputHistories} frame={frame} />
-      <InputViewer inputHistories={player.inputManager.inputHistories} />
-      <div className="skill">
-        <div>{skill?.commandView}</div>
-        <div>{skill?.name}</div>
-      </div>
-      <hbi.HitBox />
-      <SkillList skillList={skillList} />
+      {!onlyHistory && (
+        <>
+          <InputViewer inputHistories={player.inputManager.inputHistories} />
+          <div className="skill">
+            <div>{skill?.commandView}</div>
+            <div>{skill?.name}</div>
+          </div>
+          <hitboxInput.HitBox />
+          <SkillList skillList={skillList} />
+        </>
+      )}
     </div>
   );
 }

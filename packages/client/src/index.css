@@ -14,6 +14,9 @@ body.theme-dark {
   background: black;
   color: white;
 }
+body.theme-dark-transparent {
+  color: white;
+}
 * {
   list-style: none;
 }
