@@ -25,6 +25,8 @@ export function KeymapTable({
       <tbody>
         {keymap.map((val, key) => {
           const labels = castArray(key).map((v) => iconMap[v as keyof typeof iconMap] ?? v);
+          const btnKey =
+            XboxGamepadInput.Keymap[val as keyof typeof XboxGamepadInput.Keymap] ?? val;
           return (
             <tr key={labels.join(' + ')} className={getClassNames({ active: activeKey === key })}>
               <td>
@@ -36,7 +38,7 @@ export function KeymapTable({
                   ))}
                 </Space>
               </td>
-              <td>{XboxGamepadInput.Keymap[val as keyof typeof XboxGamepadInput.Keymap] ?? val}</td>
+              <td>{btnKey && <div className="btn-key">{btnKey}</div>}</td>
               <td>
                 {activeKey !== key ? (
                   <Button

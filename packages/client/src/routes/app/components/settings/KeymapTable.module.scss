@@ -15,6 +15,7 @@
         line-height: $w;
         font-style: normal;
         text-align: center;
+        background: wheat;
         &.lp,
         &.lk {
           color: #00f7ff;
@@ -30,6 +31,12 @@
           color: #850606;
           background: rgba(133, 6, 6, 0.15);
         }
+      }
+      .btn-key {
+        $h: 22px;
+        height: $h;
+        border-radius: $h / 2;
+        background: wheat;
       }
     }
   }
