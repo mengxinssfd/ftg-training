@@ -27,10 +27,7 @@ function App() {
   return (
     <div className={styles['_']}>
       <section className={styles['nav']}>
-        <GamepadSettings
-          deadZone={xboxInput.leftStickDeadZone}
-          setDeadZone={(deadZone) => (xboxInput.leftStickDeadZone = deadZone)}
-        />
+        <GamepadSettings gamepadInput={xboxInput} />
         <KeyboardSettings />
         <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
         <SocdSettings onChange={(s) => (_socd = s)} />

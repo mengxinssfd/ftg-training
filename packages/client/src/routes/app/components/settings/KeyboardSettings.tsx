@@ -1,8 +1,15 @@
 import style from './KeyboardSettings.module.scss';
-import { keyboardMap } from '@/common';
+import {
+  defKeyboardMapArr,
+  keyboardMap,
+  keyboardStorageKey,
+  resetKeymap,
+  resetKeymapWithSaved,
+  saveKeymap,
+} from '@/common';
 import type { KeyOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Space } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
 import { preventDefaultEvent } from '@tool-pack/dom';
 
@@ -34,7 +41,25 @@ export function KeyboardSettings(): JSX.Element {
         title="键盘设置"
         open={isModalOpen}
         onCancel={closeModal}
-        footer={<Button onClick={closeModal}>关闭</Button>}>
+        footer={
+          <Space>
+            <Button
+              color="green"
+              variant="solid"
+              onClick={() => resetKeymap(keyboardMap, defKeyboardMapArr)}>
+              还愿为默认
+            </Button>
+            <Button color="pink" variant="solid" onClick={resetKeyboardMapWithSaved}>
+              还原为已保存
+            </Button>
+            <Button type="primary" onClick={save}>
+              保存
+            </Button>
+            <Button color="default" variant="solid" onClick={closeModal}>
+              关闭
+            </Button>
+          </Space>
+        }>
         <section className={style['_']}>
           <KeymapTable activeKey={activeKey} setActiveKey={setActiveKey} keymap={keyboardMap} />
         </section>
@@ -44,5 +69,13 @@ export function KeyboardSettings(): JSX.Element {
 
   function closeModal(): void {
     setIsModalOpen(false);
+    resetKeyboardMapWithSaved();
+  }
+  function save(): void {
+    saveKeymap(keyboardMap, keyboardStorageKey);
+    setIsModalOpen(false);
+  }
+  function resetKeyboardMapWithSaved(): void {
+    resetKeymapWithSaved(keyboardMap, keyboardStorageKey, defKeyboardMapArr);
   }
 }

@@ -1,19 +1,31 @@
 import style from './GamepadSettings.module.scss';
-import { gamepadMap, useGamepadChange } from '@/common';
-import type { KeyOfKeymap } from '@core';
-import { useState } from 'react';
-import { Modal, Button, InputNumber } from 'antd';
+import {
+  defGamepadMapArr,
+  gamepadMap,
+  gamepadStorageKey,
+  resetKeymap,
+  resetKeymapWithSaved,
+  saveKeymap,
+  useGamepadChange,
+} from '@/common';
+import type { GamepadInput, KeyOfKeymap } from '@core';
+import { useEffect, useState } from 'react';
+import { Button, InputNumber, Modal, Space } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
 
-export function GamepadSettings({
-  setDeadZone,
-  deadZone,
-}: {
-  setDeadZone: (deadZone: number) => void;
-  deadZone: number;
-}): JSX.Element {
+let initDeadZone = -1;
+const deadZoneKey = 'deadZone';
+export function GamepadSettings({ gamepadInput }: { gamepadInput: GamepadInput }): JSX.Element {
   const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [deadZone, setDeadZone] = useState(loadDeadZone);
+
+  useEffect(() => {
+    initDeadZone = gamepadInput.leftStickDeadZone;
+  }, []);
+  useEffect(() => {
+    gamepadInput.leftStickDeadZone = deadZone;
+  }, [deadZone]);
 
   useGamepadChange(
     activeKey !== undefined,
@@ -36,14 +48,29 @@ export function GamepadSettings({
         title="手柄设置"
         open={isModalOpen}
         onCancel={closeModal}
-        footer={<Button onClick={closeModal}>关闭</Button>}>
+        footer={
+          <Space>
+            <Button color="green" variant="solid" onClick={reset}>
+              还愿为默认
+            </Button>
+            <Button color="pink" variant="solid" onClick={resetWithSaved}>
+              还原为已保存
+            </Button>
+            <Button type="primary" onClick={save}>
+              保存
+            </Button>
+            <Button color="default" variant="solid" onClick={closeModal}>
+              关闭
+            </Button>
+          </Space>
+        }>
         <section className={style['_']}>
           <div>
             左摇杆死区：
             <InputNumber
               min={0}
               max={1}
-              defaultValue={deadZone}
+              value={deadZone}
               onChange={(v) => setDeadZone(+(v ?? 0))}
               step={0.01}
             />
@@ -56,5 +83,25 @@ export function GamepadSettings({
 
   function closeModal(): void {
     setIsModalOpen(false);
+    resetWithSaved();
+  }
+  function save(): void {
+    saveKeymap(gamepadMap, gamepadStorageKey);
+    saveDeadZone();
+    setIsModalOpen(false);
+  }
+  function reset(): void {
+    resetKeymap(gamepadMap, defGamepadMapArr);
+    setDeadZone(initDeadZone);
+  }
+  function resetWithSaved(): void {
+    resetKeymapWithSaved(gamepadMap, gamepadStorageKey, defGamepadMapArr);
+    setDeadZone(loadDeadZone());
+  }
+  function saveDeadZone(): void {
+    localStorage.setItem(deadZoneKey, JSON.stringify(gamepadInput.leftStickDeadZone));
+  }
+  function loadDeadZone(): number {
+    return +(localStorage.getItem(deadZoneKey) || gamepadInput.leftStickDeadZone);
   }
 }
