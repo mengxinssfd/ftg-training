@@ -10,6 +10,10 @@ body {
     color: white;
   }
 }
+body.theme-dark {
+  background: black;
+  color: white;
+}
 * {
   list-style: none;
 }

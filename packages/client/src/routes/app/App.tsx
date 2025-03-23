@@ -10,6 +10,7 @@ import {
   SocdSettings,
   KeyboardSettings,
   GamepadSettings,
+  ThemeSettings,
 } from './components';
 import { gamepadMap, keyboardMap, useSkillMatch } from '@/common';
 import type { ImpSkill } from '@/common';
@@ -31,6 +32,7 @@ function App() {
         <KeyboardSettings />
         <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
         <SocdSettings onChange={(s) => (_socd = s)} />
+        <ThemeSettings />
       </section>
       <InputHistory inputHistories={player.inputManager.inputHistories} frame={frame} />
       <InputViewer inputHistories={player.inputManager.inputHistories} />
