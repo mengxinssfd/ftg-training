@@ -1,23 +1,25 @@
 import style from './SocdSettings.module.scss';
 import type { SOCD } from '@core';
 import { socdN, socdLW, socdFW } from '@core';
+import { Select } from 'antd';
 
 export function SocdSettings({ onChange }: { onChange: (socd: SOCD) => void }) {
   return (
     <section className={style['_']}>
       <label>
         SOCD：
-        <select
-          name="socd"
-          onChange={(e) => {
+        <Select
+          size="small"
+          defaultValue="socdN"
+          onChange={(v) => {
             const map = { socdN, socdLW, socdFW };
-            onChange(map[e.target.value as keyof typeof map]);
+            onChange(map[v as keyof typeof map]);
           }}
-          defaultValue="socdN">
-          <option value="socdN">对向回中</option>
-          <option value="socdFW">前覆盖</option>
-          <option value="socdLW">后覆盖</option>
-        </select>
+          options={[
+            { value: 'socdN', label: '对向回中' },
+            { value: 'socdFW', label: '前覆盖' },
+            { value: 'socdLW', label: '后覆盖' },
+          ]}></Select>
       </label>
     </section>
   );

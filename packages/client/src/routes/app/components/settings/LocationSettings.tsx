@@ -1,5 +1,7 @@
 import style from './LocationSettings.module.scss';
 import { PlayerLocation } from '@core';
+import { Select } from 'antd';
+
 export function LocationSettings({
   location,
   onChange,
@@ -11,23 +13,14 @@ export function LocationSettings({
     <section className={style['_']}>
       <label>
         站位：
-        <select
-          name="location"
-          onChange={(e) => {
-            onChange(
-              e.target.value === String(PlayerLocation.Left)
-                ? PlayerLocation.Left
-                : PlayerLocation.Right,
-            );
-          }}
-          defaultValue={location}>
-          <option key={PlayerLocation.Left} value={PlayerLocation.Left}>
-            1P
-          </option>
-          <option key={PlayerLocation.Right} value={PlayerLocation.Right}>
-            2P
-          </option>
-        </select>
+        <Select
+          size="small"
+          value={location}
+          onChange={(v) => onChange(v)}
+          options={[
+            { value: PlayerLocation.Left, label: '1P' },
+            { value: PlayerLocation.Right, label: '2P' },
+          ]}></Select>
       </label>
     </section>
   );
