@@ -12,8 +12,10 @@ import {
 import { createPlayer } from '@/common';
 import { Checkbox } from 'antd';
 import { useSkillMatch, useTheme, useLocalStorageState } from '@/hooks';
+import { useEffect } from 'react';
+import { socdN, socdLW, socdFW } from '@core';
 
-const { player, xboxInput, hitboxInput, setSocd, skillList } = createPlayer();
+const { player, xboxInput, hitboxInput, setSocd: _setSocd, skillList } = createPlayer();
 function App() {
   const [skill, frame] = useSkillMatch({ player });
   const [onlyHistory, setOnlyHistory] = useLocalStorageState(
@@ -23,6 +25,12 @@ function App() {
     (v) => (v ? '1' : '0'),
   );
   const [theme, setTheme] = useTheme();
+  const [socd, setSocd] = useLocalStorageState('SOCD', 'socdN');
+  useEffect(() => {
+    const map = { socdN, socdLW, socdFW };
+    _setSocd(map[socd as keyof typeof map]);
+  }, [socd]);
+
   return (
     <div className={styles['_']}>
       <section className={styles['nav']}>
@@ -34,7 +42,7 @@ function App() {
             <GamepadSettings gamepadInput={xboxInput} />
             <KeyboardSettings />
             <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
-            <SocdSettings onChange={setSocd} />
+            <SocdSettings socd={socd} onChange={setSocd} />
             <ThemeSettings theme={theme} setTheme={setTheme} />
           </>
         )}
