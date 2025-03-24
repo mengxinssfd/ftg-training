@@ -17,7 +17,6 @@ export function useLocalStorageState<T>(
     state,
     (value: T): void => {
       setState(value);
-      if (value === undefined) return;
       localStorage.setItem(storageKey, stringify(value));
     },
   ];
