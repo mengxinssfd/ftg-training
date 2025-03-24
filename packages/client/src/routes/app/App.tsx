@@ -11,12 +11,17 @@ import {
 } from './components';
 import { createPlayer } from '@/common';
 import { Checkbox } from 'antd';
-import { useSkillMatch, useOnlyHistory, useTheme } from '@/hooks';
+import { useSkillMatch, useTheme, useLocalStorageState } from '@/hooks';
 
 const { player, xboxInput, hitboxInput, setSocd, skillList } = createPlayer();
 function App() {
   const [skill, frame] = useSkillMatch({ player });
-  const [onlyHistory, setOnlyHistory] = useOnlyHistory();
+  const [onlyHistory, setOnlyHistory] = useLocalStorageState(
+    'onlyHistory',
+    false,
+    (v) => v === '1',
+    (v) => (v ? '1' : '0'),
+  );
   const [theme, setTheme] = useTheme();
   return (
     <div className={styles['_']}>
