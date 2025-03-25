@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Direct, parserDirectsFromAxes, transDirect4To8 } from '@core';
+import { Direct, GamepadInput, parserDirectsFromAxes, transDirect4To8 } from '@core';
 
 interface Button {
   index: number;
@@ -8,7 +8,7 @@ interface Button {
 export function useGamepadChange(
   active: boolean,
   onChange: (leftStickDirect: Direct, buttons: Button[]) => void,
-  gamepadId = '',
+  index = 0,
   deadZone = 0.05,
 ): void {
   useEffect(() => {
@@ -16,9 +16,7 @@ export function useGamepadChange(
     if (!running) return;
     const lastInput: { buttons: Button[]; direct: Direct } = { buttons: [], direct: Direct.None };
     requestAnimationFrame(function cb(): void {
-      const gps = navigator.getGamepads();
-      const firstGp = gps[0];
-      const gp = gamepadId ? gps.find((g) => g && g.id === gamepadId) ?? firstGp : firstGp;
+      const gp = GamepadInput.getGamepad(index);
       if (gp) {
         // 读取按钮状态
         const buttons: Button[] = [];
@@ -51,5 +49,5 @@ export function useGamepadChange(
         return v.index === btn.index && v.value === btn.value;
       });
     }
-  }, [gamepadId, deadZone, active]);
+  }, [index, deadZone, active]);
 }

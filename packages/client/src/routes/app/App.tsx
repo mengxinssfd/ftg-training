@@ -49,11 +49,11 @@ function App() {
     defaultValue: (): GamepadConfig => ({
       deadZone: XboxGamepadInput.DefaultLeftStickDeadZone,
       keymap: defGamepadMapArr,
-      id: '',
+      indexOfGamepads: 0,
     }),
     onChange: (v): void => {
       xboxInput.leftStickDeadZone = v.deadZone;
-      xboxInput.idOfGamepad = v.id;
+      xboxInput.indexOfGamepads = v.indexOfGamepads;
       resetKeymap(gamepadMap, v.keymap);
     },
   });

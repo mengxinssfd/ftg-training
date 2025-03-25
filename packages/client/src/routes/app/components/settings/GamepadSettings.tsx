@@ -8,7 +8,7 @@ import { useGamepadChange } from '@/hooks';
 
 export interface GamepadConfig {
   deadZone: number;
-  id: string;
+  indexOfGamepads: number;
   keymap: MapArrayOfKeymap;
 }
 export function GamepadSettings({
@@ -38,7 +38,7 @@ export function GamepadSettings({
       onChange({ ...config, keymap: gamepadMap.map((v, k) => [k, v]) });
       setActiveKey(undefined);
     },
-    config.id,
+    config.indexOfGamepads,
     config.deadZone,
   );
 
@@ -80,13 +80,13 @@ export function GamepadSettings({
               <Select
                 size="small"
                 popupMatchSelectWidth={false}
-                value={config.id}
-                options={gamepads.map((g) => ({
-                  value: g.id,
+                value={config.indexOfGamepads}
+                options={gamepads.map((g, k) => ({
+                  value: k,
                   label: g.id,
                 }))}
                 onChange={(v) => {
-                  if (v) onChange({ ...config, id: v });
+                  onChange({ ...config, indexOfGamepads: v });
                 }}
               />
             </div>
@@ -101,7 +101,11 @@ export function GamepadSettings({
     setActiveKey(undefined);
   }
   function reset(): void {
-    onChange({ deadZone: GamepadInput.DefaultLeftStickDeadZone, keymap: defGamepadMapArr, id: '' });
+    onChange({
+      deadZone: GamepadInput.DefaultLeftStickDeadZone,
+      keymap: defGamepadMapArr,
+      indexOfGamepads: 0,
+    });
   }
   function getGamepads(): Gamepad[] {
     return navigator.getGamepads().filter(Boolean) as Gamepad[];

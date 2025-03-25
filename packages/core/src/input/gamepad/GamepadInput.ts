@@ -7,14 +7,15 @@ export abstract class GamepadInput extends Input {
   private isDestroyed = false;
   leftStickDeadZone = GamepadInput.DefaultLeftStickDeadZone;
   idOfGamepad = '';
+  indexOfGamepads = 0;
+  static getGamepad(index: number): Gamepad | null | undefined {
+    const gamepads = navigator.getGamepads();
+    return gamepads[index] ?? gamepads[0];
+  }
   protected override collectInputs(): Map<Direct, number> {
     if (!this.isDestroyed) {
       // 获取手柄
-      const gamepads = navigator.getGamepads();
-      const firstGamepad = gamepads[0];
-      const gp = this.idOfGamepad
-        ? gamepads.find((g) => g && g.id === this.idOfGamepad) ?? firstGamepad
-        : firstGamepad;
+      const gp = GamepadInput.getGamepad(this.indexOfGamepads);
       if (!gp) return super.collectInputs();
       // 清理输入记录
       this.clearInputs();
