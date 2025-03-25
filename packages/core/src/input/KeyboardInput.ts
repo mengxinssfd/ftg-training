@@ -16,10 +16,10 @@ export class KeyboardInput extends Input {
   }
   addListener(): void {
     const kd = (this.keydownListener = (e): void => {
-      this.onKey(e.code, 'add');
+      this.onKey(KeyboardInput.getKeyboardKey(e), 'add');
     });
     const ku = (this.keyupListener = (e): void => {
-      this.onKey(e.code, 'delete');
+      this.onKey(KeyboardInput.getKeyboardKey(e), 'delete');
     });
     window.addEventListener('keydown', kd);
     window.addEventListener('keyup', ku);
@@ -27,5 +27,8 @@ export class KeyboardInput extends Input {
   override destroy(): void {
     window.removeEventListener('keydown', this.keydownListener);
     window.removeEventListener('keyup', this.keyupListener);
+  }
+  static getKeyboardKey(e: KeyboardEvent): string {
+    return e.key;
   }
 }
