@@ -12,24 +12,26 @@ import {
 import { createPlayer } from '@/common';
 import { Checkbox } from 'antd';
 import { useSkillMatch, useTheme, useLocalStorageState } from '@/hooks';
-import { useEffect } from 'react';
 import { socdN, socdLW, socdFW } from '@core';
 
 const { player, xboxInput, hitboxInput, setSocd: _setSocd, skillList } = createPlayer();
 function App() {
   const [skill, frame] = useSkillMatch({ player });
-  const [onlyHistory, setOnlyHistory] = useLocalStorageState(
-    'onlyHistory',
-    false,
-    (v) => v === '1',
-    (v) => (v ? '1' : '0'),
-  );
+  const [onlyHistory, setOnlyHistory] = useLocalStorageState({
+    storageKey: 'onlyHistory',
+    defaultValue: false,
+    parser: (v) => v === '1',
+    stringify: (v) => (v ? '1' : '0'),
+  });
   const [theme, setTheme] = useTheme();
-  const [socd, setSocd] = useLocalStorageState('SOCD', 'socdN');
-  useEffect(() => {
-    const map = { socdN, socdLW, socdFW };
-    _setSocd(map[socd as keyof typeof map]);
-  }, [socd]);
+  const [socd, setSocd] = useLocalStorageState({
+    storageKey: 'SOCD',
+    defaultValue: 'socdN',
+    onChange: (socd): void => {
+      const map = { socdN, socdLW, socdFW };
+      _setSocd(map[socd as keyof typeof map]);
+    },
+  });
 
   return (
     <div className={styles['_']}>
