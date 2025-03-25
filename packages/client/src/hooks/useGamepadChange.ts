@@ -7,8 +7,8 @@ interface Button {
 }
 export function useGamepadChange(
   active: boolean,
-  index: number,
   onChange: (leftStickDirect: Direct, buttons: Button[]) => void,
+  gamepadId = '',
   deadZone = 0.05,
 ): void {
   useEffect(() => {
@@ -16,7 +16,9 @@ export function useGamepadChange(
     if (!running) return;
     const lastInput: { buttons: Button[]; direct: Direct } = { buttons: [], direct: Direct.None };
     requestAnimationFrame(function cb(): void {
-      const gp = navigator.getGamepads()[index];
+      const gps = navigator.getGamepads();
+      const firstGp = gps[0];
+      const gp = gamepadId ? gps.find((g) => g && g.id === gamepadId) ?? firstGp : firstGp;
       if (gp) {
         // 读取按钮状态
         const buttons: Button[] = [];
@@ -49,5 +51,5 @@ export function useGamepadChange(
         return v.index === btn.index && v.value === btn.value;
       });
     }
-  }, [index, deadZone, active]);
+  }, [gamepadId, deadZone, active]);
 }

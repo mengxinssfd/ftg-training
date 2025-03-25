@@ -47,7 +47,7 @@ export function KeymapTable({
                     autoInsertSpace={false}
                     size="small"
                     onClick={() => setActiveKey(key)}>
-                    更改
+                    设置
                   </Button>
                 ) : (
                   <Button

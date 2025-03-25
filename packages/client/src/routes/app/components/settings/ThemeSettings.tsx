@@ -1,6 +1,7 @@
 import { Select } from 'antd';
-import { type Theme, themes } from '@/hooks';
 
+export type Theme = 'light' | 'dark' | 'dark-transparent';
+export const themes: Theme[] = ['light', 'dark', 'dark-transparent'];
 export function ThemeSettings({
   theme,
   setTheme,

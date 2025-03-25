@@ -3,13 +3,18 @@ import { parserDirectsFromAxes } from '../../utils';
 import type { Direct } from '../../enums';
 
 export abstract class GamepadInput extends Input {
+  static readonly DefaultLeftStickDeadZone = 0.05;
   private isDestroyed = false;
-  leftStickDeadZone = 0.05;
+  leftStickDeadZone = GamepadInput.DefaultLeftStickDeadZone;
+  idOfGamepad = '';
   protected override collectInputs(): Map<Direct, number> {
     if (!this.isDestroyed) {
+      // 获取手柄
       const gamepads = navigator.getGamepads();
-      // 获取第一个手柄
-      const gp = gamepads[0];
+      const firstGamepad = gamepads[0];
+      const gp = this.idOfGamepad
+        ? gamepads.find((g) => g && g.id === this.idOfGamepad) ?? firstGamepad
+        : firstGamepad;
       if (!gp) return super.collectInputs();
       // 清理输入记录
       this.clearInputs();

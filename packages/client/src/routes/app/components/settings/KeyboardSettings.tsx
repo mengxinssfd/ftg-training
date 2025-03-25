@@ -1,19 +1,20 @@
 import style from './KeyboardSettings.module.scss';
-import {
-  defKeyboardMapArr,
-  keyboardMap,
-  keyboardStorageKey,
-  resetKeymap,
-  resetKeymapWithSaved,
-  saveKeymap,
-} from '@/common';
-import type { KeyOfKeymap } from '@core';
+import { defKeyboardMapArr, keyboardMap } from '@/common';
+import type { KeyOfKeymap, MapArrayOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
 import { Modal, Button, Space } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
 import { preventDefaultEvent } from '@tool-pack/dom';
 
-export function KeyboardSettings(): JSX.Element {
+export interface KeyboardConfig {
+  keymap: MapArrayOfKeymap;
+}
+export function KeyboardSettings({
+  onChange,
+}: {
+  config: KeyboardConfig;
+  onChange: (value: KeyboardConfig) => void;
+}): JSX.Element {
   const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,6 +23,7 @@ export function KeyboardSettings(): JSX.Element {
     const handler = (e: KeyboardEvent): boolean => {
       keyboardMap.setOrSwap(activeKey, e.code);
       setActiveKey(undefined);
+      onChange({ keymap: keyboardMap.map((v, k) => [k, v]) });
       return preventDefaultEvent(e);
     };
     const eventType = 'keydown';
@@ -43,17 +45,8 @@ export function KeyboardSettings(): JSX.Element {
         onCancel={closeModal}
         footer={
           <Space>
-            <Button
-              color="green"
-              variant="solid"
-              onClick={() => resetKeymap(keyboardMap, defKeyboardMapArr)}>
-              还愿为默认
-            </Button>
-            <Button color="pink" variant="solid" onClick={resetKeyboardMapWithSaved}>
-              还原为已保存
-            </Button>
-            <Button type="primary" onClick={save}>
-              保存
+            <Button color="green" variant="solid" onClick={reset}>
+              默认
             </Button>
             <Button color="default" variant="solid" onClick={closeModal}>
               关闭
@@ -66,16 +59,11 @@ export function KeyboardSettings(): JSX.Element {
       </Modal>
     </>
   );
-
   function closeModal(): void {
     setIsModalOpen(false);
-    resetKeyboardMapWithSaved();
+    setActiveKey(undefined);
   }
-  function save(): void {
-    saveKeymap(keyboardMap, keyboardStorageKey);
-    setIsModalOpen(false);
-  }
-  function resetKeyboardMapWithSaved(): void {
-    resetKeymapWithSaved(keyboardMap, keyboardStorageKey, defKeyboardMapArr);
+  function reset(): void {
+    onChange({ keymap: defKeyboardMapArr });
   }
 }

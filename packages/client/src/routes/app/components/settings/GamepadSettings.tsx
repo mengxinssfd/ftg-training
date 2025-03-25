@@ -1,42 +1,45 @@
 import style from './GamepadSettings.module.scss';
-import {
-  defGamepadMapArr,
-  gamepadMap,
-  gamepadStorageKey,
-  resetKeymap,
-  resetKeymapWithSaved,
-  saveKeymap,
-} from '@/common';
-import type { GamepadInput, KeyOfKeymap } from '@core';
+import { defGamepadMapArr, gamepadMap } from '@/common';
+import { GamepadInput, type KeyOfKeymap, type MapArrayOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
-import { Button, InputNumber, Modal, Space } from 'antd';
+import { Button, InputNumber, Modal, Select, Space } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
 import { useGamepadChange } from '@/hooks';
 
-let initDeadZone = -1;
-const deadZoneKey = 'deadZone';
-export function GamepadSettings({ gamepadInput }: { gamepadInput: GamepadInput }): JSX.Element {
+export interface GamepadConfig {
+  deadZone: number;
+  id: string;
+  keymap: MapArrayOfKeymap;
+}
+export function GamepadSettings({
+  config,
+  onChange,
+}: {
+  config: GamepadConfig;
+  onChange: (value: GamepadConfig) => void;
+}): JSX.Element {
   const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [deadZone, setDeadZone] = useState(loadDeadZone);
+  const [gamepads, setGamepads] = useState<Gamepad[]>(getGamepads);
 
-  useEffect(() => {
-    initDeadZone = gamepadInput.leftStickDeadZone;
-  }, []);
-  useEffect(() => {
-    gamepadInput.leftStickDeadZone = deadZone;
-  }, [deadZone]);
+  // 轮询更新可用手柄
+  useEffect((): void | (() => void) => {
+    if (!isModalOpen) return;
+    const timer = setInterval(() => setGamepads(getGamepads()), 1000);
+    return () => clearInterval(timer);
+  }, [isModalOpen]);
 
   useGamepadChange(
     activeKey !== undefined,
-    0,
     (_leftStickDirect, buttons) => {
       const btn = buttons[0];
       if (!btn || activeKey === undefined) return;
       gamepadMap.setOrSwap(activeKey, btn.index);
+      onChange({ ...config, keymap: gamepadMap.map((v, k) => [k, v]) });
       setActiveKey(undefined);
     },
-    deadZone,
+    config.id,
+    config.deadZone,
   );
 
   return (
@@ -50,14 +53,8 @@ export function GamepadSettings({ gamepadInput }: { gamepadInput: GamepadInput }
         onCancel={closeModal}
         footer={
           <Space>
-            <Button color="green" variant="solid" onClick={reset}>
-              还愿为默认
-            </Button>
-            <Button color="pink" variant="solid" onClick={resetWithSaved}>
-              还原为已保存
-            </Button>
-            <Button type="primary" onClick={save}>
-              保存
+            <Button color="magenta" variant="solid" onClick={reset}>
+              默认
             </Button>
             <Button color="default" variant="solid" onClick={closeModal}>
               关闭
@@ -65,17 +62,35 @@ export function GamepadSettings({ gamepadInput }: { gamepadInput: GamepadInput }
           </Space>
         }>
         <section className={style['_']}>
-          <div>
-            左摇杆死区：
-            <InputNumber
-              min={0}
-              max={1}
-              value={deadZone}
-              onChange={(v) => setDeadZone(+(v ?? 0))}
-              step={0.01}
-            />
-          </div>
           <KeymapTable activeKey={activeKey} setActiveKey={setActiveKey} keymap={gamepadMap} />
+          <section>
+            <div>
+              左摇杆死区：
+              <InputNumber
+                size="small"
+                min={0}
+                max={1}
+                value={config.deadZone}
+                onChange={(v) => onChange({ ...config, deadZone: +(v ?? 0) })}
+                step={0.01}
+              />
+            </div>
+            <div>
+              设备选择：
+              <Select
+                size="small"
+                popupMatchSelectWidth={false}
+                value={config.id}
+                options={gamepads.map((g) => ({
+                  value: g.id,
+                  label: g.id,
+                }))}
+                onChange={(v) => {
+                  if (v) onChange({ ...config, id: v });
+                }}
+              />
+            </div>
+          </section>
         </section>
       </Modal>
     </>
@@ -83,25 +98,12 @@ export function GamepadSettings({ gamepadInput }: { gamepadInput: GamepadInput }
 
   function closeModal(): void {
     setIsModalOpen(false);
-    resetWithSaved();
-  }
-  function save(): void {
-    saveKeymap(gamepadMap, gamepadStorageKey);
-    saveDeadZone();
-    setIsModalOpen(false);
+    setActiveKey(undefined);
   }
   function reset(): void {
-    resetKeymap(gamepadMap, defGamepadMapArr);
-    setDeadZone(initDeadZone);
+    onChange({ deadZone: GamepadInput.DefaultLeftStickDeadZone, keymap: defGamepadMapArr, id: '' });
   }
-  function resetWithSaved(): void {
-    resetKeymapWithSaved(gamepadMap, gamepadStorageKey, defGamepadMapArr);
-    setDeadZone(loadDeadZone());
-  }
-  function saveDeadZone(): void {
-    localStorage.setItem(deadZoneKey, JSON.stringify(gamepadInput.leftStickDeadZone));
-  }
-  function loadDeadZone(): number {
-    return +(localStorage.getItem(deadZoneKey) || gamepadInput.leftStickDeadZone);
+  function getGamepads(): Gamepad[] {
+    return navigator.getGamepads().filter(Boolean) as Gamepad[];
   }
 }

@@ -1,7 +1,7 @@
-import type { KeymapArrayType } from '@/common/keymap/types';
 import { OtherKeys } from '@/common';
+import type { MapArrayOfKeymap } from '@core';
 
-export const emptyKeymap: KeymapArrayType = [
+export const emptyKeymap: MapArrayOfKeymap = [
   // 投
   [[OtherKeys.LK, OtherKeys.LP], ''],
   // 3p

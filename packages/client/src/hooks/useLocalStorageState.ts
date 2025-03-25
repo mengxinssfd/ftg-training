@@ -1,6 +1,21 @@
 import { useState } from 'react';
+import { isFunction } from '@tool-pack/basic';
 
 const prefix = 'local-';
+export function useLocalStorageState<T>(options: {
+  storageKey: string;
+  defaultValue: () => T;
+  parser?: (value: string) => T;
+  stringify?: (value: T) => string;
+  onChange?: (value: T, prevValue: T | undefined) => void;
+}): [T, (value: T) => void];
+export function useLocalStorageState<T>(options: {
+  storageKey: string;
+  defaultValue: T;
+  parser?: (value: string) => T;
+  stringify?: (value: T) => string;
+  onChange?: (value: T, prevValue: T | undefined) => void;
+}): [T, (value: T) => void];
 export function useLocalStorageState<T>({
   storageKey,
   defaultValue,
@@ -10,25 +25,25 @@ export function useLocalStorageState<T>({
   onChange = (): void => {},
 }: {
   storageKey: string;
-  defaultValue: T;
+  defaultValue: T | (() => T);
   parser?: (value: string) => T;
   stringify?: (value: T) => string;
-  onChange?: (value: T) => void;
+  onChange?: (value: T, prevValue: T | undefined) => void;
 }): [T, (value: T) => void] {
   storageKey = prefix + storageKey;
   const [state, setState] = useState<T>(() => {
     const item = localStorage.getItem(storageKey);
-    let value = defaultValue;
-    if (item !== null) value = parser(item);
-    onChange(value);
+    const value =
+      item !== null ? parser(item) : isFunction(defaultValue) ? defaultValue() : defaultValue;
+    onChange(value, undefined);
     return value;
   });
   return [
     state,
     (value: T): void => {
-      setState(value);
       localStorage.setItem(storageKey, stringify(value));
-      onChange(value);
+      setState(value);
+      onChange(value, state);
     },
   ];
 }
