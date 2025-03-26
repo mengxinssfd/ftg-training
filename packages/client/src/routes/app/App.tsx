@@ -84,6 +84,7 @@ function App() {
               theme={config.theme}
               setTheme={(theme) => setConfig({ ...config, theme })}
             />
+            <a href="https://github.com/mengxinssfd/ftg-training">github</a>
           </>
         )}
       </section>
