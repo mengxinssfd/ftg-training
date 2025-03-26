@@ -7,6 +7,8 @@ export abstract class Input {
   // 注意：directs只接收上下左右四个正方向，斜方向不应该接收，否则 socd 不好处理，如果有斜方向应该录入两个正方向
   protected directs = new Map<Direct, number>();
   protected others = new Set<string | number>();
+  protected cancelers: (() => void)[] = [];
+  protected isDestroyed = false;
   constructor(protected map: Keymap, protected socd?: SOCD) {}
   private isDirect(key: unknown): key is Direct {
     const directs = [Direct.Up, Direct.Down, Direct.Left, Direct.Right];
@@ -42,7 +44,17 @@ export abstract class Input {
     this.socd?.(directs);
     return directs;
   }
-  abstract destroy(): void;
+  protected removeCanceller(canceler: () => void): void {
+    const index = this.cancelers.findIndex(canceler);
+    if (index >= 0) {
+      this.cancelers.splice(index, 1);
+    }
+  }
+  destroy(): void {
+    this.cancelers.forEach((cb) => cb());
+    this.cancelers.length = 0;
+    this.isDestroyed = true;
+  }
   static union(inputs: Input[]): InputResult {
     const first = inputs[0];
     if (!first) return { direct: Direct.None, others: [] };

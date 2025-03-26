@@ -41,14 +41,7 @@ export function KeymapTable({
               <td>{btnKey && <div className="btn-key">{btnKey}</div>}</td>
               <td>
                 {activeKey !== key ? (
-                  <Button
-                    color="default"
-                    variant="filled"
-                    autoInsertSpace={false}
-                    size="small"
-                    onClick={() => setActiveKey(key)}>
-                    设置
-                  </Button>
+                  <button onClick={() => setActiveKey(key)}>设置</button>
                 ) : (
                   <Button
                     color="cyan"

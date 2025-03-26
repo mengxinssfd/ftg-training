@@ -22,7 +22,7 @@ import { emptyKeymap } from '@/common/keymap/emptyKeymap';
 //   ...emptyKeymap,
 // ];
 export const defKeyboardMapArr: MapArrayOfKeymap = [
-  [Direct.Up, ' '],
+  [Direct.Up, 'space'],
   [Direct.Left, 'a'],
   [Direct.Down, 's'],
   [Direct.Right, 'd'],

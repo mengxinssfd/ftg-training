@@ -1,6 +1,6 @@
 import style from './KeyboardSettings.module.scss';
 import { defKeyboardMapArr, keyboardMap } from '@/common';
-import { KeyboardInput, type KeyOfKeymap, type MapArrayOfKeymap } from '@core';
+import { addKeyboardListener, type KeyOfKeymap, type MapArrayOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
 import { Modal, Button, Space } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
@@ -20,18 +20,15 @@ export function KeyboardSettings({
 
   useEffect((): void | (() => void) => {
     if (activeKey === undefined) return;
-    const handler = (e: KeyboardEvent): boolean => {
-      keyboardMap.setOrSwap(activeKey, KeyboardInput.getKeyboardKey(e));
-      setActiveKey(undefined);
-      onChange({ keymap: keyboardMap.map((v, k) => [k, v]) });
-      return preventDefaultEvent(e);
-    };
-    const eventType = 'keydown';
-    const options = { capture: true };
-    window.addEventListener(eventType, handler, options);
-    return (): void => {
-      window.removeEventListener(eventType, handler, options);
-    };
+    return addKeyboardListener(
+      (keycode, _isPressed, e): boolean | void => {
+        keyboardMap.setOrSwap(activeKey, keycode);
+        setActiveKey(undefined);
+        onChange({ keymap: keyboardMap.map((v, k) => [k, v]) });
+        return e && preventDefaultEvent(e);
+      },
+      { capture: true },
+    );
   }, [activeKey]);
 
   return (

@@ -4,9 +4,7 @@ import type { Direct } from '../../enums';
 
 export abstract class GamepadInput extends Input {
   static readonly DefaultLeftStickDeadZone = 0.05;
-  private isDestroyed = false;
   leftStickDeadZone = GamepadInput.DefaultLeftStickDeadZone;
-  idOfGamepad = '';
   indexOfGamepads = 0;
   static getGamepad(index: number): Gamepad | null | undefined {
     const gamepads = navigator.getGamepads();
@@ -37,8 +35,5 @@ export abstract class GamepadInput extends Input {
     parserDirectsFromAxes([axes[0] as number, axes[1] as number], this.leftStickDeadZone).forEach(
       (d) => this.directs.set(d, now),
     );
-  }
-  override destroy(): void {
-    this.isDestroyed = true;
   }
 }
