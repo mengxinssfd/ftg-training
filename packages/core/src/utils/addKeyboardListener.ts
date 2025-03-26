@@ -26,13 +26,13 @@ export function addKeyboardListener(
   };
 
   function addLocalListener(): () => void {
-    console.log('addLocalListener');
+    // console.log('addLocalListener');
     const kd = (e: KeyboardEvent): void => callback(getKeyboardKey(e), true, e);
     const ku = (e: KeyboardEvent): void => callback(getKeyboardKey(e), false, e);
     window.addEventListener('keydown', kd, options);
     window.addEventListener('keyup', ku, options);
     return (): void => {
-      console.log('removeLocalListener');
+      // console.log('removeLocalListener');
       window.removeEventListener('keydown', kd, options);
       window.removeEventListener('keyup', ku, options);
       localCanceler = emptyFn;

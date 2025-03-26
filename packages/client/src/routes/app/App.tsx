@@ -8,6 +8,7 @@ import {
   KeyboardSettings,
   GamepadSettings,
   ThemeSettings,
+  themes,
   type KeyboardConfig,
   type GamepadConfig,
   type Theme,
@@ -21,7 +22,7 @@ import {
   resetKeymap,
 } from '@/common';
 import { Checkbox } from 'antd';
-import { useSkillMatch, useLocalStorageState, themes } from '@/hooks';
+import { useSkillMatch, useLocalStorageState } from '@/hooks';
 import { socdN, socdLW, socdFW, XboxGamepadInput } from '@core';
 
 const socdMap = { socdN, socdLW, socdFW } as const;
