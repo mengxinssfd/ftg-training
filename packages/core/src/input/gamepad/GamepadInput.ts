@@ -15,13 +15,12 @@ export abstract class GamepadInput extends Input {
       // 获取手柄
       const gp = GamepadInput.getGamepad(this.indexOfGamepads);
       if (!gp) return super.collectInputs();
-      // 清理输入记录
-      this.clearInputs();
       // 读取按钮状态
       gp.buttons.forEach((btn, k) => {
         if (!btn.pressed) return;
         const key = this.map.getKeyByValue(k);
-        key && this.addKey(k);
+        if (!key) return;
+        this.onKey(k, btn.pressed ? 'add' : 'delete');
         // const btnName = keyMaps[k] as string;
         // console.log(`按钮 ${btnName} 被按下`, key, btn.value);
       });
@@ -31,9 +30,11 @@ export abstract class GamepadInput extends Input {
     return super.collectInputs();
   }
   protected transAxes(axes: readonly number[]): void {
-    const now = Date.now();
-    parserDirectsFromAxes([axes[0] as number, axes[1] as number], this.leftStickDeadZone).forEach(
-      (d) => this.directs.set(d, now),
+    const directs = parserDirectsFromAxes(
+      [axes[0] as number, axes[1] as number],
+      this.leftStickDeadZone,
     );
+    directs.forEach((d) => this.directs.has(d) && this.addKey(d));
+    this.directs.forEach((d) => !directs.includes(d) && this.directs.delete(d));
   }
 }
