@@ -10,7 +10,7 @@ export abstract class Input {
   protected cancelers: (() => void)[] = [];
   protected isDestroyed = false;
   constructor(protected map: Keymap, protected socd?: SOCD) {}
-  private isDirect(key: unknown): key is Direct {
+  protected isDirect(key: unknown): key is Direct {
     const directs = [Direct.Up, Direct.Down, Direct.Left, Direct.Right];
     return directs.includes(key as Direct);
   }
