@@ -1,9 +1,9 @@
 import { Direct, Input } from '@core';
 import type { Keymap } from '@core';
 import styles from './HitBox.module.scss';
-import { iconMap } from '@/common/iconMap';
 import { OtherKeys } from '@/common/OtherKeys';
 import { DynamicEnum } from '@tool-pack/basic';
+import { HitBox as Hitbox } from './HitBox';
 
 function arrToObj(arr: (string | number)[]): Keymap {
   return arr.reduce((acc: Keymap, item: string | number) => {
@@ -12,10 +12,10 @@ function arrToObj(arr: (string | number)[]): Keymap {
   }, new DynamicEnum(new Map()));
 }
 const list = [
-  Direct.Up,
-  Direct.Down,
   Direct.Left,
+  Direct.Down,
   Direct.Right,
+  Direct.Up,
 
   OtherKeys.LP,
   OtherKeys.MP,
@@ -38,30 +38,22 @@ export class HitBoxInput extends Input {
           e.stopPropagation();
           return false;
         }}>
-        {list.map((item) => {
-          return (
-            <button
-              className={String(Direct[item as Direct] ?? item).toLowerCase()}
-              key={item}
-              onTouchCancel={() => {
-                this.onKey(item, 'delete');
-              }}
-              onMouseUp={() => {
-                this.onKey(item, 'delete');
-              }}
-              onTouchEnd={() => {
-                this.onKey(item, 'delete');
-              }}
-              onMouseDown={() => {
-                this.onKey(item, 'add');
-              }}
-              onTouchStart={() => {
-                this.onKey(item, 'add');
-              }}>
-              {iconMap[item as Direct] ?? item}
-            </button>
-          );
-        })}
+        <Hitbox
+          onInput={(input) => {
+            const lastDirects = this.directs;
+            this.directs = new Map();
+            this.clearInputs();
+            input.forEach((i) => {
+              const v = list[i] as number | string;
+              if (this.isDirect(v)) {
+                if (lastDirects.has(v)) {
+                  this.directs.set(v, lastDirects.get(v) as number);
+                }
+              }
+              this.addKey(v);
+            });
+          }}
+        />
       </section>
     );
   };
