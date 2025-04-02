@@ -6,6 +6,7 @@ export abstract class GamepadInput extends Input {
   static readonly DefaultLeftStickDeadZone = 0.05;
   leftStickDeadZone = GamepadInput.DefaultLeftStickDeadZone;
   indexOfGamepads = 0;
+  private axesDirects = new Map<Direct, number>();
   static getGamepad(index: number): Gamepad | null | undefined {
     const gamepads = navigator.getGamepads();
     return gamepads[index] ?? gamepads[0];
@@ -15,14 +16,15 @@ export abstract class GamepadInput extends Input {
       // 获取手柄
       const gp = GamepadInput.getGamepad(this.indexOfGamepads);
       if (!gp) return super.collectInputs();
+      this.others.clear();
       // 读取按钮状态
       gp.buttons.forEach((btn, k) => {
-        if (!btn.pressed) return;
         const key = this.map.getKeyByValue(k);
-        if (!key) return;
-        this.onKey(k, btn.pressed ? 'add' : 'delete');
-        // const btnName = keyMaps[k] as string;
-        // console.log(`按钮 ${btnName} 被按下`, key, btn.value);
+        if (this.isDirect(key)) {
+          this.onKey(k, btn.pressed ? 'add' : 'delete');
+          return;
+        }
+        btn.pressed && this.addKey(k);
       });
       // 读取轴状态
       this.transAxes(gp.axes);
@@ -30,11 +32,20 @@ export abstract class GamepadInput extends Input {
     return super.collectInputs();
   }
   protected transAxes(axes: readonly number[]): void {
+    // 转换小摇杆方向
     const directs = parserDirectsFromAxes(
       [axes[0] as number, axes[1] as number],
       this.leftStickDeadZone,
     );
-    directs.forEach((d) => this.directs.has(d) && this.addKey(d));
-    this.directs.forEach((d) => !directs.includes(d) && this.directs.delete(d));
+    // 合并新旧方向
+    const lastAxesDirects = this.axesDirects;
+    this.axesDirects = new Map();
+    directs.forEach((d) => this.axesDirects.set(d, lastAxesDirects.get(d) ?? Date.now()));
+    // 合并小摇杆和十字键的方向
+    this.axesDirects.forEach((axesTime, direct) => {
+      const padTime = this.directs.get(direct);
+      if (padTime !== undefined && axesTime >= padTime) return;
+      this.directs.set(direct, axesTime);
+    });
   }
 }
