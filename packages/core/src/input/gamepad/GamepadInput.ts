@@ -1,26 +1,26 @@
 import { Input } from '../Input';
 import { parserDirectsFromAxes } from '../../utils';
-import type { Direct } from '../../enums';
+import { DirectCollector } from '../DirectCollector';
 
 export abstract class GamepadInput extends Input {
   static readonly DefaultLeftStickDeadZone = 0.05;
   leftStickDeadZone = GamepadInput.DefaultLeftStickDeadZone;
   indexOfGamepads = 0;
-  private axesDirects = new Map<Direct, number>();
+  private axesDirects = new DirectCollector();
   static getGamepad(index: number): Gamepad | null | undefined {
     const gamepads = navigator.getGamepads();
     return gamepads[index] ?? gamepads[0];
   }
-  protected override collectInputs(): Map<Direct, number> {
+  protected override collectDirects(): DirectCollector {
     if (!this.isDestroyed) {
       // 获取手柄
       const gp = GamepadInput.getGamepad(this.indexOfGamepads);
-      if (!gp) return super.collectInputs();
-      this.others.clear();
+      if (!gp) return super.collectDirects();
+      this.clearOthers();
       // 读取按钮状态
       gp.buttons.forEach((btn, k) => {
         const key = this.map.getKeyByValue(k);
-        if (this.isDirect(key)) {
+        if (DirectCollector.isDirect(key)) {
           this.onKey(k, btn.pressed ? 'add' : 'delete');
           return;
         }
@@ -29,7 +29,7 @@ export abstract class GamepadInput extends Input {
       // 读取轴状态
       this.transAxes(gp.axes);
     }
-    return super.collectInputs();
+    return super.collectDirects();
   }
   protected transAxes(axes: readonly number[]): void {
     // 转换小摇杆方向
@@ -38,14 +38,8 @@ export abstract class GamepadInput extends Input {
       this.leftStickDeadZone,
     );
     // 合并新旧方向
-    const lastAxesDirects = this.axesDirects;
-    this.axesDirects = new Map();
-    directs.forEach((d) => this.axesDirects.set(d, lastAxesDirects.get(d) ?? Date.now()));
+    this.axesDirects.updateWithDirects(directs);
     // 合并小摇杆和十字键的方向
-    this.axesDirects.forEach((axesTime, direct) => {
-      const padTime = this.directs.get(direct);
-      if (padTime !== undefined && axesTime >= padTime) return;
-      this.directs.set(direct, axesTime);
-    });
+    this.directs.innerUnion(this.axesDirects);
   }
 }

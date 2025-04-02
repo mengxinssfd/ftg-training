@@ -1,4 +1,4 @@
-import { Direct, Input } from '@core';
+import { Direct, DirectCollector, Input } from '@core';
 import type { Keymap } from '@core';
 import styles from './HitBox.module.scss';
 import { OtherKeys } from '@/common/OtherKeys';
@@ -40,24 +40,17 @@ export class HitBoxInput extends Input {
         }}>
         <Hitbox
           onInput={(input) => {
-            const lastDirects = this.directs;
-            this.directs = new Map();
-            this.clearInputs();
+            this.clearOthers();
+            const directs: Direct[] = [];
             input.forEach((i) => {
               const v = list[i] as number | string;
-              if (this.isDirect(v)) {
-                if (lastDirects.has(v)) {
-                  this.directs.set(v, lastDirects.get(v) as number);
-                }
-              }
-              this.addKey(v);
+              if (DirectCollector.isDirect(v)) directs.push(v);
+              else this.addKey(v);
             });
+            this.directs.updateWithDirects(directs);
           }}
         />
       </section>
     );
   };
-  override destroy(): void {
-    //
-  }
 }
