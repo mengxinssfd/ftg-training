@@ -5,6 +5,7 @@ export function addKeyboardListener(
   callback: (keycode: string, isPressed: boolean, e?: KeyboardEvent) => any,
   options?: EventListenerOptions,
 ): () => void {
+  let closed = false;
   let localCanceler = addLocalListener();
   const channel = { close: emptyFn };
   addObsListener({
@@ -15,12 +16,14 @@ export function addKeyboardListener(
       localCanceler();
     },
     onerror: (): void => {
+      if (closed) return;
       // obs关闭时开启本地键盘事件监听
       if (localCanceler === emptyFn) localCanceler = addLocalListener();
     },
   });
 
   return (): void => {
+    closed = true;
     localCanceler();
     channel.close();
   };

@@ -14,6 +14,7 @@ export function addObsListener({
   onopen?: typeof WebSocket.prototype.onopen;
   channel?: { close: () => void };
 }): void {
+  let closed = false;
   startWebsocket();
   function onKeyEvent(data?: { event_type: string; keycode: string }): void {
     if (!data || !data.event_type) return;
@@ -28,6 +29,7 @@ export function addObsListener({
     }
   }
   function startWebsocket() {
+    if (closed) return;
     let ws: WebSocket | null = new WebSocket('ws://localhost:16899/');
     ws.onmessage = (e) => onKeyEvent(JSON.parse(e.data));
     ws.onerror = function (e): void {
@@ -42,6 +44,7 @@ export function addObsListener({
     };
     if (channel) {
       channel.close = (): void => {
+        closed = true;
         if (!ws) return;
         // 事件带重连，关闭前需要先移除事件
         ws.onclose = null;
