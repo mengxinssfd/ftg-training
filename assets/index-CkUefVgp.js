@@ -58,7 +58,7 @@ Please change the parent <Route path="${E}"> to <Route path="${E==="/"?"*":`${E}
  * LICENSE.md file in the root directory of this source tree.
  *
  * @license MIT
- */function U$(e){return m.createElement(i$,{flushSync:Di.flushSync,...e})}function G$(){return Oe.jsx(we.Fragment,{children:Oe.jsx(we.Suspense,{children:Oe.jsx(s$,{})})})}function K$(){const e=wS();return Oe.jsxs(we.Fragment,{children:[Oe.jsxs("strong",{children:["Error ",e.status||500]}),": ",e.statusText??e.message]})}const q$="___m3612_1",X$="_nav_m3612_15",Gp={_:q$,nav:X$},Q$="___lwo5k_1",Y$={_:Q$};var ie=(e=>(e[e.DownLeft=1]="DownLeft",e[e.Down=2]="Down",e[e.DownRight=3]="DownRight",e[e.Left=4]="Left",e[e.None=5]="None",e[e.Right=6]="Right",e[e.UpLeft=7]="UpLeft",e[e.Up=8]="Up",e[e.UpRight=9]="UpRight",e))(ie||{}),Gl=(e=>(e[e.Left=0]="Left",e[e.Right=1]="Right",e))(Gl||{});/*!
+ */function U$(e){return m.createElement(i$,{flushSync:Di.flushSync,...e})}function G$(){return Oe.jsx(we.Fragment,{children:Oe.jsx(we.Suspense,{children:Oe.jsx(s$,{})})})}function K$(){const e=wS();return Oe.jsxs(we.Fragment,{children:[Oe.jsxs("strong",{children:["Error ",e.status||500]}),": ",e.statusText??e.message]})}const q$="___m3612_1",X$="_nav_m3612_15",Gp={_:q$,nav:X$},Q$="___1a7ct_1",Y$={_:Q$};var ie=(e=>(e[e.DownLeft=1]="DownLeft",e[e.Down=2]="Down",e[e.DownRight=3]="DownRight",e[e.Left=4]="Left",e[e.None=5]="None",e[e.Right=6]="Right",e[e.UpLeft=7]="UpLeft",e[e.Up=8]="Up",e[e.UpRight=9]="UpRight",e))(ie||{}),Gl=(e=>(e[e.Left=0]="Left",e[e.Right=1]="Right",e))(Gl||{});/*!
  * ToolPackBasic(@tool-pack/basic) v0.9.6
  * Author: DYH
  * Documentation: https://github.com/js-tool-pack/basic#readme
