@@ -1,6 +1,5 @@
 ._ {
   position: fixed;
-  width: 120px;
   top: 20px;
   left: 20px;
   bottom: 20px;
@@ -8,8 +7,8 @@
   :global {
     li {
       position: relative;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      align-items: center;
       line-height: 32px;
       &:after {
         position: absolute;
@@ -23,20 +22,23 @@
       .direct {
         font-weight: bolder;
         text-align: center;
+        width: 40px;
       }
       .frame {
         text-align: right;
+        width: 30px;
       }
       .attacks {
         display: flex;
         align-items: center;
-        width: 60px;
         font-weight: bolder;
         span {
           display: block;
           $w: 22px;
           width: $w;
           height: $w;
+          flex-basis: $w;
+          flex-shrink: $w;
           margin-right: 4px;
           border-radius: 50%;
           line-height: $w;
