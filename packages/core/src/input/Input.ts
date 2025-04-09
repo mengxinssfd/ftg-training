@@ -1,24 +1,20 @@
 import { Direct } from '../enums';
 import type { InputResult, Keymap, SOCD } from '../types';
-import { transDirect4To8 } from '../utils';
 import { castArray } from '@tool-pack/basic';
+import { DirectCollector } from './DirectCollector';
 
 export abstract class Input {
   // 注意：directs只接收上下左右四个正方向，斜方向不应该接收，否则 socd 不好处理，如果有斜方向应该录入两个正方向
-  protected directs = new Map<Direct, number>();
+  protected directs = new DirectCollector();
   protected others = new Set<string | number>();
   protected cancelers: (() => void)[] = [];
   protected isDestroyed = false;
   constructor(protected map: Keymap, protected socd?: SOCD) {}
-  private isDirect(key: unknown): key is Direct {
-    const directs = [Direct.Up, Direct.Down, Direct.Left, Direct.Right];
-    return directs.includes(key as Direct);
-  }
   protected onKey(k: string | number, type: 'add' | 'delete'): void {
     const keys = this.map.getKeyByValue(k);
     if (!keys) return;
     castArray(keys).forEach((key): void => {
-      if (this.isDirect(key)) {
+      if (DirectCollector.isDirect(key)) {
         if (type === 'delete') this.directs.delete(key);
         else {
           if (!this.directs.has(key)) this.directs.set(key, Date.now());
@@ -31,16 +27,22 @@ export abstract class Input {
   }
   getInputResult(): InputResult {
     return {
-      direct: transDirect4To8(new Set(this.collectInputs().keys())),
+      direct: this.collectDirects().toDirect(),
       others: [...this.others],
     };
   }
   protected clearInputs(): void {
-    this.directs.clear();
+    this.clearDirects();
+    this.clearOthers();
+  }
+  protected clearOthers(): void {
     this.others.clear();
   }
-  protected collectInputs(): Map<Direct, number> {
-    const directs = new Map(this.directs);
+  protected clearDirects(): void {
+    this.directs.clear();
+  }
+  protected collectDirects(): DirectCollector {
+    const directs = new DirectCollector(this.directs);
     this.socd?.(directs);
     return directs;
   }
@@ -60,17 +62,10 @@ export abstract class Input {
     if (!first) return { direct: Direct.None, others: [] };
     if (inputs.length === 1) return first.getInputResult();
     const [directs, others] = inputs.reduce(
-      (res, v) => {
-        const d = res[0];
-        v.collectInputs().forEach((v, k) => {
-          const mv = d.get(k);
-          if (mv === undefined || mv < v) d.set(k, v);
-        });
-        return [d, res[1].union(v.others)];
-      },
-      [new Map<Direct, number>(), new Set<string | number>()],
+      (res, v) => [res[0].union(v.collectDirects()), res[1].union(v.others)],
+      [new DirectCollector(), new Set<string | number>()],
     );
     first.socd?.(directs);
-    return { direct: transDirect4To8(new Set(directs.keys())), others: [...others] };
+    return { direct: directs.toDirect(), others: [...others] };
   }
 }

@@ -1,9 +1,9 @@
-import { Direct, Input } from '@core';
+import { Direct, DirectCollector, Input } from '@core';
 import type { Keymap } from '@core';
 import styles from './HitBox.module.scss';
-import { iconMap } from '@/common/iconMap';
 import { OtherKeys } from '@/common/OtherKeys';
 import { DynamicEnum } from '@tool-pack/basic';
+import { HitBox as Hitbox } from './HitBox';
 
 function arrToObj(arr: (string | number)[]): Keymap {
   return arr.reduce((acc: Keymap, item: string | number) => {
@@ -12,10 +12,10 @@ function arrToObj(arr: (string | number)[]): Keymap {
   }, new DynamicEnum(new Map()));
 }
 const list = [
-  Direct.Up,
-  Direct.Down,
   Direct.Left,
+  Direct.Down,
   Direct.Right,
+  Direct.Up,
 
   OtherKeys.LP,
   OtherKeys.MP,
@@ -38,34 +38,19 @@ export class HitBoxInput extends Input {
           e.stopPropagation();
           return false;
         }}>
-        {list.map((item) => {
-          return (
-            <button
-              className={String(Direct[item as Direct] ?? item).toLowerCase()}
-              key={item}
-              onTouchCancel={() => {
-                this.onKey(item, 'delete');
-              }}
-              onMouseUp={() => {
-                this.onKey(item, 'delete');
-              }}
-              onTouchEnd={() => {
-                this.onKey(item, 'delete');
-              }}
-              onMouseDown={() => {
-                this.onKey(item, 'add');
-              }}
-              onTouchStart={() => {
-                this.onKey(item, 'add');
-              }}>
-              {iconMap[item as Direct] ?? item}
-            </button>
-          );
-        })}
+        <Hitbox
+          onInput={(input) => {
+            this.clearOthers();
+            const directs: Direct[] = [];
+            input.forEach((i) => {
+              const v = list[i] as number | string;
+              if (DirectCollector.isDirect(v)) directs.push(v);
+              else this.addKey(v);
+            });
+            this.directs.updateWithDirects(directs);
+          }}
+        />
       </section>
     );
   };
-  override destroy(): void {
-    //
-  }
 }

@@ -1,8 +1,8 @@
-import { Direct, socdLW } from '../src';
+import { Direct, DirectCollector, socdLW } from '../src';
 
 describe('socdLW', () => {
   test('up down', () => {
-    const map = new Map<Direct, number>([
+    const map = new DirectCollector([
       [Direct.Down, 0],
       [Direct.Up, 1],
     ]);
@@ -12,7 +12,7 @@ describe('socdLW', () => {
     expect(map.has(Direct.Up)).toBe(true);
   });
   test('left right', () => {
-    const map = new Map<Direct, number>([
+    const map = new DirectCollector([
       [Direct.Left, 0],
       [Direct.Right, 1],
     ]);
@@ -22,7 +22,7 @@ describe('socdLW', () => {
     expect(map.has(Direct.Right)).toBe(true);
   });
   test('all', () => {
-    const map = new Map<Direct, number>([
+    const map = new DirectCollector([
       [Direct.Down, 0],
       [Direct.Up, 1],
       [Direct.Left, 2],

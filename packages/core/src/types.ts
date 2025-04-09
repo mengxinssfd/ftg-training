@@ -1,5 +1,6 @@
 import type { Direct, PlayerLocation } from './enums';
 import type { DynamicEnum } from '@tool-pack/basic';
+import type { DirectCollector } from './input';
 
 export interface InputHistory {
   others: (string | number)[];
@@ -25,4 +26,4 @@ export type MapOfKeymap = Map<KeyOfKeymap, ValueOfKeymap>;
 export type MapArrayOfKeymap = readonly [key: KeyOfKeymap, value: ValueOfKeymap][];
 export type Keymap = DynamicEnum<KeyOfKeymap, ValueOfKeymap>;
 export type InputResult = Pick<InputHistory, 'direct' | 'others'>;
-export type SOCD = (directs: Map<Direct, number>) => void;
+export type SOCD = (directs: DirectCollector) => void;
