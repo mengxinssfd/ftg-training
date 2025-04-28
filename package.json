@@ -87,6 +87,7 @@
     "tslib": "^2.5.0",
     "tsx": "^3.12.6",
     "typedoc": "^0.24.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vite-plugin-singlefile": "^2.2.0"
   }
 }

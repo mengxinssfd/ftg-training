@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import Path from 'path';
+import { viteSingleFile } from 'vite-plugin-singlefile';
 
 /**
  * Vite configuration
@@ -26,6 +27,7 @@ export default defineConfig((c) => {
     plugins: [
       // https://github.com/vitejs/vite/tree/main/packages/plugin-react
       react(),
+      viteSingleFile(),
     ],
   };
 });
