@@ -37,7 +37,7 @@ const keyboardMap = new DynamicEnum(
 
 function input(value: string, type: 'down' | 'up') {
   const event = new Event(type === 'up' ? 'keyup' : 'keydown');
-  (event as any).code = value;
+  (event as any).key = value;
   window.dispatchEvent(event);
 }
 

@@ -1,5 +1,13 @@
 import type { InputHistory } from '../types';
-
+/**
+ * 在给定的帧数限制内，通过条件处理函数查找第一个匹配的输入历史记录的索引。
+ *
+ * @param {InputHistory[]} ih - 需要搜索的输入历史记录数组
+ * @param {number} limitFrame - 匹配时考虑的最大帧数限制
+ * @param {number} frame - 用于计算帧差值的当前帧
+ * @param {function} handler - 回调函数，接收一个 `InputHistory` 对象并返回一个布尔值，表示是否符合所需条件
+ * @return {number} 返回匹配的输入历史记录的索引，如果未找到匹配项或超出帧数限制则返回 -1
+ */
 export function findIndexOfInputHistories(
   ih: InputHistory[],
   limitFrame: number,

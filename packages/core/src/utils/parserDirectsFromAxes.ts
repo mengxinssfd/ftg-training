@@ -2,9 +2,38 @@ import { Direct } from '@core';
 import { getAngle, getDistance } from '@tool-pack/basic';
 
 /**
- * 把手柄摇杆的轴状态转为对应的方向
- * @param axes
- * @param deadZone
+ * 将坐标轴输入值解析为方向指令
+ *
+ * @param {[number, number]} param0 - 输入的坐标轴值，[x, y] 坐标
+ * @param {number} [deadZone=0.005] - 死区值，小于该值的输入将被视为无输入，默认为 0.005
+ * @returns {Direct[]} 返回解析后的方向指令数组
+ *
+ * @description
+ * 该函数将二维坐标输入（如摇杆输入）转换为 8 个方向的指令。
+ * 转换规则如下：
+ * - 当输入值在死区范围内时，返回 [Direct.None]
+ * - 将 360 度平均分为 8 个方向，每个方向占据 45 度角
+ * - 每个方向的判定范围是以其正方位为中心，前后各 22.5 度
+ * - 斜向输入会被解析为两个相邻方向的组合（如右上、左下等）
+ *
+ * 方向角度对应关系：
+ * - 0度：上
+ * - 45度：右上
+ * - 90度：右
+ * - 135度：右下
+ * - 180度：下
+ * - 225度：左下
+ * - 270度：左
+ * - 315度：左上
+ *
+ * @example
+ * // 向右下方输入
+ * const directs = parserDirectsFromAxes([0.7, 0.7]);
+ * // 返回 [Direct.Down, Direct.Right]
+ *
+ * // 在死区范围内的输入
+ * const noInput = parserDirectsFromAxes([0.001, 0.001]);
+ * // 返回 [Direct.None]
  */
 export function parserDirectsFromAxes([x, y]: [x: number, y: number], deadZone = 0.005): Direct[] {
   // 如果输入的数值小于死区则判定为未输入
