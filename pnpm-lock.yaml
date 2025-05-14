@@ -33,8 +33,8 @@ importers:
         specifier: ^0.9.6
         version: 0.9.6
       '@tool-pack/dom':
-        specifier: ^0.4.2
-        version: 0.4.2
+        specifier: ^0.4.3
+        version: 0.4.3
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -2137,8 +2137,8 @@ packages:
   '@tool-pack/basic@0.9.6':
     resolution: {integrity: sha512-9OF/vNbJJUa1ff13dPLyHeIlYpxLDm0aQsmGCDXi3BrdeBtO+/0Z9XefAPIp6CC/mgPzBdc/LyqlPsrEMoTkIQ==}
 
-  '@tool-pack/dom@0.4.2':
-    resolution: {integrity: sha512-6zXfjzXjK3uHZuQQMt3HIOjkUz05GV193jM8BSosNAgtc9ieu34Vld7xz8gPcB1K/Gj87iVu7c6jNk3zXvRtfA==}
+  '@tool-pack/dom@0.4.3':
+    resolution: {integrity: sha512-T80SEvt4QPr0mkntraG9RalxmUkbf/bini6TKFovmuOTeFITS/z1zm9c+LB0VzTninuOT+Xyyj6rQ7XBNQqzww==}
 
   '@tool-pack/types@0.3.0':
     resolution: {integrity: sha512-JjiuX2YL67PnVesIexsSvKsZeAU+whjvXrUzqij5nXWLCuRGnRAIass1+t/tyZWDtOj1dAcdIccTlnGi/DLh9g==}
@@ -11066,7 +11066,7 @@ snapshots:
     dependencies:
       '@tool-pack/types': 0.3.0
 
-  '@tool-pack/dom@0.4.2':
+  '@tool-pack/dom@0.4.3':
     dependencies:
       '@tool-pack/basic': 0.9.6
       '@tool-pack/types': 0.3.0
