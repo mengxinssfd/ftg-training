@@ -15,21 +15,25 @@ export abstract class GamepadInput extends Input {
     if (!this.isDestroyed) {
       // 获取手柄
       const gp = GamepadInput.getGamepad(this.indexOfGamepads);
-      if (!gp) return super.collectDirects();
-      this.clearOthers();
-      // 读取按钮状态
-      gp.buttons.forEach((btn, k) => {
-        const key = this.map.getKeyByValue(k);
-        if (DirectCollector.isDirect(key)) {
-          this.onKey(k, btn.pressed ? 'add' : 'delete');
-          return;
-        }
-        btn.pressed && this.addKey(k);
-      });
-      // 读取轴状态
-      this.transAxes(gp.axes);
+      if (gp) {
+        this.collectButtons(gp);
+        // 读取轴状态
+        this.transAxes(gp.axes);
+      }
     }
     return super.collectDirects();
+  }
+  private collectButtons(gp: Gamepad): void {
+    this.clearOthers();
+    // 读取按钮状态
+    gp.buttons.forEach((btn, k) => {
+      const key = this.map.getKeyByValue(k);
+      if (DirectCollector.isDirect(key)) {
+        this.onKey(k, btn.pressed ? 'add' : 'delete');
+        return;
+      }
+      btn.pressed && this.addKey(k);
+    });
   }
   protected transAxes(axes: readonly number[]): void {
     // 转换小摇杆方向

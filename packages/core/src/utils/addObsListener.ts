@@ -1,6 +1,17 @@
 import { ObsKeycodes } from '@core';
 import { emptyFn } from '@tool-pack/basic';
 
+/**
+ * 通过 WebSocket 连接注册一个监听器用于观察按键相关事件。
+ *
+ * @param {Object} options - 监听器的配置对象
+ * @param {Function} options.callback - 当按键事件发生时被调用的函数。接收按键码和其按压状态作为参数
+ * @param {Function} [options.onclose] - WebSocket 连接关闭时触发的回调函数
+ * @param {Function} [options.onerror] - WebSocket 连接发生错误时触发的回调函数
+ * @param {Function} [options.onopen] - WebSocket 连接成功打开时触发的回调函数
+ * @param {Object} [options.channel] - 可用于手动关闭 WebSocket 连接的通道对象。必须包含 `close` 方法
+ * @return {void} 此函数没有返回值
+ */
 export function addObsListener({
   callback,
   onclose,
