@@ -33,6 +33,7 @@ export const defKeyboardMapArr: MapArrayOfKeymap = [
   [OtherKeys.LK, 'j'],
   [OtherKeys.MK, 'k'],
   [OtherKeys.HK, 'l'],
+  [OtherKeys['3X'], 'm'],
   [[OtherKeys.HP, OtherKeys.HK], ''],
   [[OtherKeys.MK, OtherKeys.MP], ''],
   ...emptyKeymap,

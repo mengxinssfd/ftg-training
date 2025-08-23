@@ -27,3 +27,5 @@ export type MapArrayOfKeymap = readonly [key: KeyOfKeymap, value: ValueOfKeymap]
 export type Keymap = DynamicEnum<KeyOfKeymap, ValueOfKeymap>;
 export type InputResult = Pick<InputHistory, 'direct' | 'others'>;
 export type SOCD = (directs: DirectCollector) => void;
+
+export type InputHandler = (directs: DirectCollector, others: Set<ValueOfKeymap>) => void;
