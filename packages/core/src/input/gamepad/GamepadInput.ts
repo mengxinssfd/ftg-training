@@ -1,5 +1,5 @@
 import { Input } from '../Input';
-import { parserDirectsFromAxes } from '../../utils';
+import { parseDirectsFromAxes } from '../../utils';
 import { DirectCollector } from '../DirectCollector';
 
 export abstract class GamepadInput extends Input {
@@ -37,7 +37,7 @@ export abstract class GamepadInput extends Input {
   }
   protected transAxes(axes: readonly number[]): void {
     // 转换小摇杆方向
-    const directs = parserDirectsFromAxes(
+    const directs = parseDirectsFromAxes(
       [axes[0] as number, axes[1] as number],
       this.leftStickDeadZone,
     );

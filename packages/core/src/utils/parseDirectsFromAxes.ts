@@ -28,14 +28,14 @@ import { getAngle, getDistance } from '@tool-pack/basic';
  *
  * @example
  * // 向右下方输入
- * const directs = parserDirectsFromAxes([0.7, 0.7]);
+ * const directs = parseDirectsFromAxes([0.7, 0.7]);
  * // 返回 [Direct.Down, Direct.Right]
  *
  * // 在死区范围内的输入
- * const noInput = parserDirectsFromAxes([0.001, 0.001]);
+ * const noInput = parseDirectsFromAxes([0.001, 0.001]);
  * // 返回 [Direct.None]
  */
-export function parserDirectsFromAxes([x, y]: [x: number, y: number], deadZone = 0.005): Direct[] {
+export function parseDirectsFromAxes([x, y]: [x: number, y: number], deadZone = 0.005): Direct[] {
   // 如果输入的数值小于死区则判定为未输入
   // if (axes.every((v) => Math.abs(v) < deadZone)) return [Direct.None];
   if (getDistance([0, 0], [x, y]) < deadZone) return [Direct.None];
