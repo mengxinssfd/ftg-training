@@ -21,7 +21,7 @@ import {
   keyboardMap,
   resetKeymap,
 } from '@/common';
-import { Checkbox } from 'antd';
+import { Checkbox, Switch } from 'antd';
 import { useSkillMatch, useLocalStorageState } from '@/hooks';
 import { socdN, socdLW, socdFW, XboxGamepadInput } from '@core';
 
@@ -31,10 +31,16 @@ function App() {
   const [skill, frame] = useSkillMatch({ player });
   const [config, setConfig] = useLocalStorageState({
     storageKey: 'config',
-    defaultValue: (): { socd: keyof typeof socdMap; onlyHistory: boolean; theme: Theme } => ({
+    defaultValue: (): {
+      socd: keyof typeof socdMap;
+      onlyHistory: boolean;
+      theme: Theme;
+      historyLay: 'vertical' | 'horizontal';
+    } => ({
       socd: 'socdN',
       onlyHistory: false,
       theme: 'light',
+      historyLay: 'vertical',
     }),
     onChange(v, p): void {
       setSocd(socdMap[v.socd]);
@@ -72,6 +78,14 @@ function App() {
           onChange={(e) => setConfig({ ...config, onlyHistory: e.target.checked })}>
           <span style={{ color: 'pink' }}>只显示输入历史</span>
         </Checkbox>
+        {config.onlyHistory && (
+          <Switch
+            checkedChildren="垂直"
+            unCheckedChildren="水平"
+            checked={config.historyLay === 'vertical'}
+            onChange={(c) => setConfig({ ...config, historyLay: c ? 'vertical' : 'horizontal' })}
+          />
+        )}
         {!config.onlyHistory && (
           <>
             <GamepadSettings config={gamepadConfig} onChange={setGamepadConfig} />
@@ -89,7 +103,11 @@ function App() {
           </>
         )}
       </section>
-      <InputHistory inputHistories={player.inputManager.inputHistories} frame={frame} />
+      <InputHistory
+        inputHistories={player.inputManager.inputHistories}
+        frame={frame}
+        lay={config.historyLay}
+      />
       {!config.onlyHistory && (
         <>
           <InputViewer inputHistories={player.inputManager.inputHistories} />

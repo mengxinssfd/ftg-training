@@ -1,31 +1,19 @@
 ._ {
   position: fixed;
-  top: 20px;
   left: 20px;
   bottom: 20px;
   overflow: hidden;
   :global {
     li {
       position: relative;
-      display: flex;
       align-items: center;
       line-height: 32px;
-      &:after {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, currentColor, rgba(0, 0, 0, 0));
-        content: '';
-      }
       .direct {
         font-weight: bolder;
         text-align: center;
         width: 40px;
       }
       .frame {
-        text-align: right;
         width: 30px;
       }
       .attacks {
@@ -60,6 +48,54 @@
             background: rgba(133, 6, 6, 0.15);
           }
         }
+      }
+    }
+  }
+}
+.vertical {
+  top: 20px;
+  :global {
+    li {
+      display: flex;
+      &:after {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, currentColor, rgba(0, 0, 0, 0));
+        content: '';
+      }
+      .frame {
+        text-align: right;
+      }
+    }
+  }
+}
+.horizontal {
+  display: flex;
+  align-items: end;
+  flex-direction: row-reverse;
+  right: 20px;
+  white-space: nowrap;
+  :global {
+    li {
+      display: inline-flex;
+      flex-direction: column-reverse;
+      &:after {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        width: 1px;
+        background: linear-gradient(0deg, currentColor, rgba(0, 0, 0, 0));
+        content: '';
+      }
+      .frame {
+        text-align: center;
+      }
+      .attacks {
+        flex-direction: column-reverse;
       }
     }
   }
