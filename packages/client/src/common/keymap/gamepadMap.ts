@@ -17,6 +17,7 @@ export const defGamepadMapArr: MapArrayOfKeymap = [
   [OtherKeys.LK, gamepadKeyMaps.A],
   [OtherKeys.MK, gamepadKeyMaps.B],
   [OtherKeys.HK, gamepadKeyMaps.RT],
+  [OtherKeys['3X'], gamepadKeyMaps.LS],
   [[OtherKeys.MK, OtherKeys.MP], gamepadKeyMaps.LT],
   [[OtherKeys.HK, OtherKeys.HP], gamepadKeyMaps.LB],
   ...emptyKeymap,

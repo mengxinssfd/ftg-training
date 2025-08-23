@@ -5,4 +5,5 @@ export const OtherKeys = {
   LK: 'lk',
   MK: 'mk',
   HK: 'hk',
+  '3X': '3x',
 };
