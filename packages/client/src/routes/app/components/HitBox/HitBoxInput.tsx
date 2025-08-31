@@ -26,8 +26,11 @@ const list = [
 ];
 const map = arrToObj(list);
 export class HitBoxInput extends Input {
-  constructor(socd: typeof HitBoxInput.prototype.socd) {
-    super(map, socd);
+  constructor(
+    socd: typeof HitBoxInput.prototype.socd,
+    inputHandler: typeof HitBoxInput.prototype.inputHandler,
+  ) {
+    super(map, socd, inputHandler);
   }
   HitBox = () => {
     return (

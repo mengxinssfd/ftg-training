@@ -28,23 +28,33 @@ import { getAngle, getDistance } from '@tool-pack/basic';
  *
  * @example
  * // 向右下方输入
- * const directs = parserDirectsFromAxes([0.7, 0.7]);
+ * const directs = parseDirectsFromAxes([0.7, 0.7]);
  * // 返回 [Direct.Down, Direct.Right]
  *
  * // 在死区范围内的输入
- * const noInput = parserDirectsFromAxes([0.001, 0.001]);
+ * const noInput = parseDirectsFromAxes([0.001, 0.001]);
  * // 返回 [Direct.None]
  */
-export function parserDirectsFromAxes([x, y]: [x: number, y: number], deadZone = 0.005): Direct[] {
+export function parseDirectsFromAxes([x, y]: [x: number, y: number], deadZone = 0.005): Direct[] {
   // 如果输入的数值小于死区则判定为未输入
   // if (axes.every((v) => Math.abs(v) < deadZone)) return [Direct.None];
   if (getDistance([0, 0], [x, y]) < deadZone) return [Direct.None];
+  // 0是上、90 是右、180 是下、270 是左
+  const angle = getAngle([0, 0], [x, y]);
+  const match = getMatches().find((v) => v[0] > angle);
+  if (match) return match[1];
+  return [Direct.None];
+}
 
+type Matches = [range: number, direct: Direct[]][];
+let _matches: Matches | null = null;
+function getMatches(): Matches {
+  if (_matches) return _matches;
   // 8 向的话 360 / 8 就是每个方位占据 45 度角
   const unit = 45;
   // 以正方位前后减去 45 的一半也就是 22.5 度角
   const halfUnit = 22.5;
-  const matches: [range: number, direct: Direct[]][] = [
+  _matches = [
     [halfUnit, [Direct.Up]],
     [halfUnit + unit, [Direct.Up, Direct.Right]],
     [halfUnit + unit * 2, [Direct.Right]],
@@ -55,10 +65,5 @@ export function parserDirectsFromAxes([x, y]: [x: number, y: number], deadZone =
     [halfUnit + unit * 7, [Direct.Left, Direct.Up]],
     [unit * 8, [Direct.Up]],
   ];
-
-  // 0是上、90 是右、180 是下、270 是左
-  const angle = getAngle([0, 0], [x, y]);
-  const match = matches.find((v) => v[0] > angle);
-  if (match) return match[1];
-  return [Direct.None];
+  return _matches;
 }
