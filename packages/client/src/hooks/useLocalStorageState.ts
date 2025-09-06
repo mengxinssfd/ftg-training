@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { isFunction } from '@tool-pack/basic';
+import { isFunction, defaults } from '@tool-pack/basic';
 
 const prefix = 'local-';
 export function useLocalStorageState<T>(options: {
@@ -33,8 +33,8 @@ export function useLocalStorageState<T>({
   storageKey = prefix + storageKey;
   const [state, setState] = useState<T>(() => {
     const item = localStorage.getItem(storageKey);
-    const value =
-      item !== null ? parser(item) : isFunction(defaultValue) ? defaultValue() : defaultValue;
+    const dfv = isFunction(defaultValue) ? defaultValue() : defaultValue;
+    const value = item !== null ? defaults(parser(item), dfv) : dfv;
     onChange(value, undefined);
     return value;
   });
