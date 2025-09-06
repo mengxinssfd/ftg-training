@@ -1,17 +1,15 @@
 import styles from './App.module.scss';
 import {
+  type GamepadConfig,
+  GamepadSettings,
   InputHistory,
   InputViewer,
-  SkillList,
-  LocationSettings,
-  SocdSettings,
-  KeyboardSettings,
-  GamepadSettings,
-  ThemeSettings,
-  themes,
   type KeyboardConfig,
-  type GamepadConfig,
-  type Theme,
+  KeyboardSettings,
+  type OtherConfig,
+  OtherSettings,
+  SkillList,
+  themes,
 } from './components';
 import {
   createPlayer,
@@ -21,9 +19,9 @@ import {
   keyboardMap,
   resetKeymap,
 } from '@/common';
-import { Checkbox, Switch } from 'antd';
-import { useSkillMatch, useLocalStorageState } from '@/hooks';
-import { socdN, socdLW, socdFW, XboxGamepadInput } from '@core';
+import { Checkbox } from 'antd';
+import { useLocalStorageState, useSkillMatch } from '@/hooks';
+import { socdFW, socdLW, socdN, XboxGamepadInput } from '@core';
 
 const socdMap = { socdN, socdLW, socdFW } as const;
 const { player, xboxInput, hitboxInput, setSocd, skillList } = createPlayer();
@@ -31,19 +29,20 @@ function App() {
   const [skill, frame] = useSkillMatch({ player });
   const [config, setConfig] = useLocalStorageState({
     storageKey: 'config',
-    defaultValue: (): {
-      socd: keyof typeof socdMap;
-      onlyHistory: boolean;
-      theme: Theme;
-      historyLay: 'vertical' | 'horizontal';
-    } => ({
+    defaultValue: (): OtherConfig => ({
       socd: 'socdN',
       onlyHistory: false,
       theme: 'light',
       historyLay: 'vertical',
+      location: player.location,
+      skillListVisible: true,
+      hitboxVisible: true,
+      inputViewerVisible: true,
+      skillMatchVisible: true,
     }),
     onChange(v, p): void {
       setSocd(socdMap[v.socd]);
+      player.location = v.location;
       if (p?.theme !== v.theme) {
         const prefix = 'theme-';
         document.body.classList.remove(...themes.map((t) => prefix + t));
@@ -78,26 +77,14 @@ function App() {
           onChange={(e) => setConfig({ ...config, onlyHistory: e.target.checked })}>
           <span style={{ color: 'pink' }}>只显示输入历史</span>
         </Checkbox>
-        {config.onlyHistory && (
-          <Switch
-            checkedChildren="垂直"
-            unCheckedChildren="水平"
-            checked={config.historyLay === 'vertical'}
-            onChange={(c) => setConfig({ ...config, historyLay: c ? 'vertical' : 'horizontal' })}
-          />
-        )}
         {!config.onlyHistory && (
           <>
             <GamepadSettings config={gamepadConfig} onChange={setGamepadConfig} />
             <KeyboardSettings config={keyboardConfig} onChange={setKeyboardConfig} />
-            <LocationSettings location={player.location} onChange={(l) => (player.location = l)} />
-            <SocdSettings
-              socd={config.socd}
-              onChange={(v) => setConfig({ ...config, socd: v as keyof typeof socdMap })}
-            />
-            <ThemeSettings
-              theme={config.theme}
-              setTheme={(theme) => setConfig({ ...config, theme })}
+            <OtherSettings
+              config={config}
+              onChange={setConfig}
+              clearInputs={() => player.clearInputs()}
             />
             <a href="https://github.com/mengxinssfd/ftg-training">github</a>
           </>
@@ -110,13 +97,17 @@ function App() {
       />
       {!config.onlyHistory && (
         <>
-          <InputViewer inputHistories={player.inputManager.inputHistories} />
-          <div className="skill">
-            <div>{skill?.commandView}</div>
-            <div>{skill?.name}</div>
-          </div>
-          <hitboxInput.HitBox />
-          <SkillList skillList={skillList} />
+          {config.inputViewerVisible && (
+            <InputViewer inputHistories={player.inputManager.inputHistories} />
+          )}
+          {config.skillMatchVisible && (
+            <div className="skill">
+              <div>{skill?.commandView}</div>
+              <div>{skill?.name}</div>
+            </div>
+          )}
+          {config.hitboxVisible && <hitboxInput.HitBox />}
+          {config.skillListVisible && <SkillList skillList={skillList} />}
         </>
       )}
     </div>
