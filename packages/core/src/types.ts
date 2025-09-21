@@ -3,7 +3,7 @@ import type { DynamicEnum } from '@tool-pack/basic';
 import type { DirectCollector } from './input';
 
 export interface InputHistory {
-  others: (string | number)[];
+  others: ValueOfKeymap[];
   direct: Direct;
   startFrame: number;
   location: PlayerLocation;
@@ -27,5 +27,6 @@ export type MapArrayOfKeymap = readonly [key: KeyOfKeymap, value: ValueOfKeymap]
 export type Keymap = DynamicEnum<KeyOfKeymap, ValueOfKeymap>;
 export type InputResult = Pick<InputHistory, 'direct' | 'others'>;
 export type SOCD = (directs: DirectCollector) => void;
+export type OthersMap = Map<ValueOfKeymap, number>;
 
-export type InputHandler = (directs: DirectCollector, others: Set<ValueOfKeymap>) => void;
+export type InputHandler = (directs: DirectCollector, others: OthersMap) => void;
