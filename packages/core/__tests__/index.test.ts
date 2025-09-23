@@ -102,4 +102,21 @@ describe('ftg-training-core', function () {
     expect(sm.match()).toBe(Shoryuken);
     expect(sm.match()).not.toBe(Hadouken);
   });
+  it('拳脚提前输入时不应该匹配成功', () => {
+    const ih = new InputManager([new KeyboardInput(keyboardMap)]);
+    const sm = new SkillManager(ih);
+    sm.registerSkills([Shoryuken, Hadouken]);
+
+    input('KeyU', 'down');
+    input('KeyD', 'down');
+    ih.frameAdd(PlayerLocation.Left, 1);
+    input('KeyD', 'up');
+    ih.frameAdd(PlayerLocation.Left, 2);
+    input('KeyS', 'down');
+    ih.frameAdd(PlayerLocation.Left, 3);
+    input('KeyD', 'down');
+    ih.frameAdd(PlayerLocation.Left, 4);
+
+    expect(sm.match()).toBe(null);
+  });
 });

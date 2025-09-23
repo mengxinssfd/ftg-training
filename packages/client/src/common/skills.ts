@@ -1,12 +1,14 @@
 import { iconMap } from './iconMap';
 import { Direct, findIndexOfInputHistories, matchCommand, presetDirects } from '@core';
-import type { Skill, InputHistory } from '@core';
+import type { Skill, SkillTrigger } from '@core';
 import { OtherKeys } from './OtherKeys';
 
-export enum SkillType {
-  Common,
-  OD,
+enum Priorities {
+  DEF,
+  SP,
   SA,
+  OD,
+  SPOD,
 }
 
 export interface ImpSkill extends Skill {
@@ -20,26 +22,24 @@ const punches2 = [
   [OtherKeys.LP, OtherKeys.HP],
   [OtherKeys.MP, OtherKeys.HP],
 ];
-const anyPunch = (i: InputHistory): boolean => punches.some((k) => i.others.includes(k));
-const anyPunch2 = (i: InputHistory): boolean =>
-  punches2.some((ks) => ks.every((k) => i.others.includes(k)));
+const anyPunch: SkillTrigger = (i) => punches.filter((k) => i.others.includes(k));
+const anyPunch2: SkillTrigger = (i) => punches2.find((ks) => ks.every((k) => i.others.includes(k)));
 const kicks = [OtherKeys.LK, OtherKeys.MK, OtherKeys.HK];
 const kicks2 = [
   [OtherKeys.LK, OtherKeys.MK],
   [OtherKeys.LK, OtherKeys.HK],
   [OtherKeys.MK, OtherKeys.HK],
 ];
-const anyKick = (i: InputHistory): boolean => kicks.some((k) => i.others.includes(k));
-const anyKick2 = (i: InputHistory): boolean =>
-  kicks2.some((ks) => ks.every((k) => i.others.includes(k)));
+const anyKick: SkillTrigger = (i) => kicks.filter((k) => i.others.includes(k));
+const anyKick2: SkillTrigger = (i) => kicks2.find((ks) => ks.every((k) => i.others.includes(k)));
 
-function createODSkill(skill: ImpSkill): ImpSkill {
+function createODSkill(skill: ImpSkill, priority = Priorities.OD): ImpSkill {
   // 不会传函数的过来
   const directs = skill.directs as Direct[][];
   return {
     ...skill,
     extends: skill,
-    matchPriority: skill.matchPriority + 1,
+    matchPriority: priority,
     name: 'OD' + skill.name,
     commandView:
       directs[0]!.map((d) => iconMap[d]).join('') +
@@ -51,7 +51,7 @@ function createODSkill(skill: ImpSkill): ImpSkill {
 
 export const P236: ImpSkill = {
   limitFrame: 20,
-  matchPriority: 0,
+  matchPriority: Priorities.DEF,
   name: '波动拳',
   commandView: `${presetDirects['236'].map((d) => iconMap[d]).join('')} + p`,
   directs: [presetDirects['236']],
@@ -61,7 +61,7 @@ export const P236: ImpSkill = {
 export const P236OD = createODSkill(P236);
 
 export const K214: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '龙卷旋风腿',
   commandView: `${presetDirects['214'].map((d) => iconMap[d]).join('')} + k`,
@@ -70,7 +70,7 @@ export const K214: ImpSkill = {
 };
 export const K214OD = createODSkill(K214);
 export const P214: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '波掌击',
   commandView: `${presetDirects['214'].map((d) => iconMap[d]).join('')} + k`,
@@ -79,7 +79,7 @@ export const P214: ImpSkill = {
 };
 export const P214OD = createODSkill(P214);
 export const K236: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '上段足刀踢',
   commandView: `${presetDirects['236'].map((d) => iconMap[d]).join('')} + k`,
@@ -89,7 +89,7 @@ export const K236: ImpSkill = {
 export const k236OD = createODSkill(K236);
 
 export const K22: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '电刃炼气',
   commandView: `${presetDirects['22'].map((d) => iconMap[d]).join('')} + p`,
@@ -99,7 +99,7 @@ export const K22: ImpSkill = {
 // export const K22OD = createODSkill(K22);
 
 export const P623: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.SP,
   limitFrame: 20,
   name: '升龙拳',
   commandView: `${presetDirects['623'].map((d) => iconMap[d]).join('')} + p`,
@@ -111,10 +111,10 @@ export const P623: ImpSkill = {
   ],
   trigger: anyPunch,
 };
-export const P623OD = createODSkill(P623);
+export const P623OD = createODSkill(P623, Priorities.SPOD);
 
 export const K2149: ImpSkill = {
-  matchPriority: 2,
+  matchPriority: Priorities.SP,
   limitFrame: 25,
   name: '空箭',
   commandView: `${presetDirects['2149'].map((d) => iconMap[d]).join('')} + k`,
@@ -124,7 +124,7 @@ export const K2149: ImpSkill = {
 export const K2149OD = createODSkill(K2149);
 
 export const Sa1: ImpSkill = {
-  matchPriority: 2,
+  matchPriority: Priorities.SA,
   limitFrame: 30,
   name: '真空波动拳',
   commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + p`,
@@ -132,7 +132,7 @@ export const Sa1: ImpSkill = {
   trigger: anyPunch,
 };
 export const Sa2: ImpSkill = {
-  matchPriority: 2,
+  matchPriority: Priorities.SA,
   limitFrame: 30,
   name: '真·波掌击',
   commandView: `${presetDirects['214214'].map((d) => iconMap[d]).join('')} + p`,
@@ -140,7 +140,7 @@ export const Sa2: ImpSkill = {
   trigger: anyPunch,
 };
 export const Sa3: ImpSkill = {
-  matchPriority: 2,
+  matchPriority: Priorities.SA,
   limitFrame: 30,
   name: '真·升龙拳',
   commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + k`,
@@ -149,7 +149,7 @@ export const Sa3: ImpSkill = {
 };
 
 export const P180: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.SP,
   limitFrame: 35,
   name: '180指令投',
   commandView: `180 + p`,
@@ -158,7 +158,7 @@ export const P180: ImpSkill = {
 };
 
 export const D360: ImpSkill = {
-  matchPriority: 2,
+  matchPriority: Priorities.SP,
   limitFrame: 50,
   name: '360指令投',
   commandView: `360 + p`,
@@ -167,7 +167,7 @@ export const D360: ImpSkill = {
 };
 
 export const D720: ImpSkill = {
-  matchPriority: 3,
+  matchPriority: Priorities.SP,
   limitFrame: 50,
   name: '720指令投',
   commandView: `720 + p`,
@@ -178,7 +178,7 @@ export const D720: ImpSkill = {
 const driveParryKeys = [OtherKeys.MK, OtherKeys.MP];
 const lOrR = [Direct.Left, Direct.Right];
 export const DriveRush: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '斗气疾跑',
   commandView: `mk,mp + ${presetDirects['66'].map((d) => iconMap[d]).join('')}`,
@@ -192,12 +192,14 @@ export const DriveRush: ImpSkill = {
   },
   trigger: (ih) => {
     // 两种情况：一种是先蓝防后 66，一种是先 66 后蓝防
-    return lOrR.includes(ih.direct) || driveParryKeys.every((k) => ih.others.includes(k));
+    if (lOrR.includes(ih.direct)) return [ih.direct];
+    if (driveParryKeys.every((k) => ih.others.includes(k))) return driveParryKeys;
+    return void 0;
   },
 };
 
 export const P46: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '头槌',
   commandView: `${iconMap[Direct.Left]}(蓄力)${iconMap[Direct.Right]} + p`,
@@ -206,13 +208,13 @@ export const P46: ImpSkill = {
 };
 export const OD46: ImpSkill = {
   ...P46,
-  matchPriority: 2,
+  matchPriority: Priorities.OD,
   name: 'OD' + P46.name,
   commandView: P46.commandView + 'p',
   trigger: anyPunch2,
 };
 export const P28: ImpSkill = {
-  matchPriority: 1,
+  matchPriority: Priorities.DEF,
   limitFrame: 20,
   name: '大屁股',
   commandView: `${iconMap[Direct.Down]}(蓄力)${iconMap[Direct.Up]} + p`,
@@ -221,7 +223,7 @@ export const P28: ImpSkill = {
 };
 export const OD28: ImpSkill = {
   ...P28,
-  matchPriority: 2,
+  matchPriority: Priorities.OD,
   name: 'OD' + P28.name,
   commandView: P28.commandView + 'p',
   trigger: anyPunch2,

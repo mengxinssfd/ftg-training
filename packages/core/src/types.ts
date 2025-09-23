@@ -9,13 +9,14 @@ export interface InputHistory {
   location: PlayerLocation;
 }
 
+export type SkillTrigger = (input: InputHistory) => ValueOfKeymap[] | void;
 export type SkillDirectsTrigger = (ih: InputHistory[], skill: Skill, frame: number) => boolean;
 export interface Skill {
   matchPriority: number;
   limitFrame: number;
   name: string;
   directs: Direct[][] | SkillDirectsTrigger;
-  trigger: string | ((input: InputHistory) => boolean);
+  trigger: ValueOfKeymap | SkillTrigger;
   chargeFrame?: number;
   handler?: () => void;
 }
