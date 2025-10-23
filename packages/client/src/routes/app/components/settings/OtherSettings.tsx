@@ -1,7 +1,8 @@
 import style from './OtherSettings.module.scss';
 import { useState } from 'react';
-import { Button, Modal, Select, Space, Switch } from 'antd';
+import { Button, Modal, Select, Space, Switch, InputNumber } from 'antd';
 import { PlayerLocation } from '@core';
+import { DefaultInputHistoryFontSize } from '../InputHistory';
 
 export function OtherSettings({
   config,
@@ -76,6 +77,29 @@ export function OtherSettings({
                   }
                 />
               </label>
+            </div>
+            <div>
+              <Space>
+                <label>
+                  输入历史字体大小：
+                  <InputNumber
+                    size="small"
+                    min={1}
+                    max={100}
+                    value={config.inputHistory.fontSize}
+                    onChange={(v) =>
+                      changeConfigObj('inputHistory')('fontSize')(v ?? DefaultInputHistoryFontSize)
+                    }
+                  />
+                </label>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    changeConfigObj('inputHistory')('fontSize')(DefaultInputHistoryFontSize)
+                  }>
+                  默认
+                </Button>
+              </Space>
             </div>
             <div>
               <label>
@@ -153,6 +177,7 @@ export interface OtherConfig {
   inputHistory: {
     layout: 'vertical' | 'horizontal';
     only: boolean;
+    fontSize: number;
   };
   visibles: {
     skillList: boolean;

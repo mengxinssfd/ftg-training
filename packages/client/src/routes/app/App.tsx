@@ -3,6 +3,7 @@ import {
   type GamepadConfig,
   GamepadSettings,
   InputHistory,
+  DefaultInputHistoryFontSize,
   InputViewer,
   type KeyboardConfig,
   KeyboardSettings,
@@ -34,6 +35,7 @@ function App() {
       theme: 'light',
       location: player.location,
       inputHistory: {
+        fontSize: DefaultInputHistoryFontSize,
         layout: 'vertical',
         only: false,
       },
@@ -103,6 +105,7 @@ function App() {
         inputHistories={player.inputManager.inputHistories}
         frame={frame}
         lay={config.inputHistory.layout}
+        fontSize={config.inputHistory.fontSize}
       />
       {!config.inputHistory.only && (
         <>
