@@ -1,6 +1,7 @@
 import type { InputManager } from './InputManager';
-import type { InputHistory, Skill } from './types';
+import type { InputHistory, Skill, SkillTrigger, ValueOfKeymap } from './types';
 import { matchCommand } from './utils';
+import { isEqual, isFunction } from '@tool-pack/basic';
 
 /**
  * 技能管理器类
@@ -66,11 +67,11 @@ export class SkillManager {
    */
   match<S extends Skill>(): S | null {
     const len = this._skills.length;
-    const lastHistory = this.inputManager.inputHistories.at(-1);
+    const [befHistory, lastHistory] = this.inputManager.inputHistories.slice(-2);
     if (!lastHistory) return null;
     for (let i = 0; i < len; i++) {
       const skill = this._skills[i] as S;
-      if (this.matchSkill(this.inputManager, skill, lastHistory)) {
+      if (this.matchSkill(this.inputManager, skill, lastHistory, befHistory)) {
         skill.handler?.();
         return skill;
       }
@@ -84,7 +85,8 @@ export class SkillManager {
    * @private
    * @param im 输入管理器实例
    * @param skill 要检查的技能
-   * @param lastHistory 最后一次输入记录
+   * @param currHistory 最后一次输入记录
+   * @param befHistory 上一次的输入记录
    * @returns 是否匹配成功
    *
    * @description
@@ -93,19 +95,29 @@ export class SkillManager {
    * 2. 检查方向输入序列
    * 3. 验证其他特殊条件
    */
-  private matchSkill(im: InputManager, skill: Skill, lastHistory: InputHistory): boolean {
-    const trigger = skill.trigger;
-    if (typeof trigger === 'function') {
-      if (!trigger(lastHistory)) return false;
-    } else {
-      if (!(lastHistory.others.includes(trigger) || (lastHistory.direct as any) === trigger))
-        return false;
+  private matchSkill(
+    im: InputManager,
+    skill: Skill,
+    currHistory: InputHistory,
+    befHistory?: InputHistory,
+  ): boolean {
+    const { trigger: t, directs } = skill;
+    const tri: SkillTrigger = isFunction(t)
+      ? t
+      : (i) => (i.others.includes(t) || (i.direct as ValueOfKeymap) === t ? [t] : void 0);
+
+    if (!matchTrigger(tri)) return false;
+    if (isFunction(directs)) return directs(im.inputHistories, skill, im.frame);
+    return directs.some((d) => matchCommand(d, im.inputHistories, skill.limitFrame, im.frame));
+
+    function matchTrigger(trigger: SkillTrigger): boolean {
+      const v = trigger(currHistory);
+      if (!v || !v.length) return false;
+      if (befHistory) {
+        const v2 = trigger(befHistory);
+        if (v2 && v2.length && isEqual(v2, v)) return false;
+      }
+      return true;
     }
-    if (typeof skill.directs === 'function') {
-      return skill.directs(im.inputHistories, skill, im.frame);
-    }
-    return skill.directs.some((d) =>
-      matchCommand(d, im.inputHistories, skill.limitFrame, im.frame),
-    );
   }
 }

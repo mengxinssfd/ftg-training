@@ -3,6 +3,7 @@ import {
   type GamepadConfig,
   GamepadSettings,
   InputHistory,
+  DefaultInputHistoryFontSize,
   InputViewer,
   type KeyboardConfig,
   KeyboardSettings,
@@ -31,14 +32,19 @@ function App() {
     storageKey: 'config',
     defaultValue: (): OtherConfig => ({
       socd: 'socdN',
-      onlyHistory: false,
       theme: 'light',
-      historyLay: 'vertical',
       location: player.location,
-      skillListVisible: true,
-      hitboxVisible: true,
-      inputViewerVisible: true,
-      skillMatchVisible: true,
+      inputHistory: {
+        fontSize: DefaultInputHistoryFontSize,
+        layout: 'vertical',
+        only: false,
+      },
+      visibles: {
+        skillList: true,
+        hitbox: true,
+        inputViewer: true,
+        skillMatch: true,
+      },
     }),
     onChange(v, p): void {
       setSocd(socdMap[v.socd]);
@@ -73,11 +79,16 @@ function App() {
     <div className={styles['_']}>
       <section className={styles['nav']}>
         <Checkbox
-          checked={config.onlyHistory}
-          onChange={(e) => setConfig({ ...config, onlyHistory: e.target.checked })}>
+          checked={config.inputHistory.only}
+          onChange={(e) =>
+            setConfig({
+              ...config,
+              inputHistory: { ...config.inputHistory, only: e.target.checked },
+            })
+          }>
           <span style={{ color: 'pink' }}>只显示输入历史</span>
         </Checkbox>
-        {!config.onlyHistory && (
+        {!config.inputHistory.only && (
           <>
             <GamepadSettings config={gamepadConfig} onChange={setGamepadConfig} />
             <KeyboardSettings config={keyboardConfig} onChange={setKeyboardConfig} />
@@ -93,21 +104,22 @@ function App() {
       <InputHistory
         inputHistories={player.inputManager.inputHistories}
         frame={frame}
-        lay={config.historyLay}
+        lay={config.inputHistory.layout}
+        fontSize={config.inputHistory.fontSize}
       />
-      {!config.onlyHistory && (
+      {!config.inputHistory.only && (
         <>
-          {config.inputViewerVisible && (
+          {config.visibles.inputViewer && (
             <InputViewer inputHistories={player.inputManager.inputHistories} />
           )}
-          {config.skillMatchVisible && (
+          {config.visibles.skillMatch && (
             <div className="skill">
               <div>{skill?.commandView}</div>
               <div>{skill?.name}</div>
             </div>
           )}
-          {config.hitboxVisible && <hitboxInput.HitBox />}
-          {config.skillListVisible && <SkillList skillList={skillList} />}
+          {config.visibles.hitbox && <hitboxInput.HitBox />}
+          {config.visibles.skillList && <SkillList skillList={skillList} />}
         </>
       )}
     </div>

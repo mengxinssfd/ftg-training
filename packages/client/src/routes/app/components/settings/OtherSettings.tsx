@@ -1,7 +1,8 @@
 import style from './OtherSettings.module.scss';
 import { useState } from 'react';
-import { Button, Modal, Select, Space, Switch } from 'antd';
+import { Button, Modal, Select, Space, Switch, InputNumber } from 'antd';
 import { PlayerLocation } from '@core';
+import { DefaultInputHistoryFontSize } from '../InputHistory';
 
 export function OtherSettings({
   config,
@@ -70,12 +71,35 @@ export function OtherSettings({
                 <Switch
                   checkedChildren="垂直"
                   unCheckedChildren="水平"
-                  checked={config.historyLay === 'vertical'}
+                  checked={config.inputHistory.layout === 'vertical'}
                   onChange={(c) =>
-                    onChange({ ...config, historyLay: c ? 'vertical' : 'horizontal' })
+                    changeConfigObj('inputHistory')('layout')(c ? 'vertical' : 'horizontal')
                   }
                 />
               </label>
+            </div>
+            <div>
+              <Space>
+                <label>
+                  输入历史字体大小：
+                  <InputNumber
+                    size="small"
+                    min={1}
+                    max={100}
+                    value={config.inputHistory.fontSize}
+                    onChange={(v) =>
+                      changeConfigObj('inputHistory')('fontSize')(v ?? DefaultInputHistoryFontSize)
+                    }
+                  />
+                </label>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    changeConfigObj('inputHistory')('fontSize')(DefaultInputHistoryFontSize)
+                  }>
+                  默认
+                </Button>
+              </Space>
             </div>
             <div>
               <label>
@@ -83,8 +107,8 @@ export function OtherSettings({
                 <Switch
                   checkedChildren="显示"
                   unCheckedChildren="隐藏"
-                  checked={config.skillListVisible}
-                  onChange={changeConfig('skillListVisible')}
+                  checked={config.visibles.skillList}
+                  onChange={changeConfigObj('visibles')('skillList')}
                 />
               </label>
             </div>
@@ -94,8 +118,8 @@ export function OtherSettings({
                 <Switch
                   checkedChildren="显示"
                   unCheckedChildren="隐藏"
-                  checked={config.hitboxVisible}
-                  onChange={changeConfig('hitboxVisible')}
+                  checked={config.visibles.hitbox}
+                  onChange={changeConfigObj('visibles')('hitbox')}
                 />
               </label>
             </div>
@@ -105,8 +129,8 @@ export function OtherSettings({
                 <Switch
                   checkedChildren="显示"
                   unCheckedChildren="隐藏"
-                  checked={config.inputViewerVisible}
-                  onChange={changeConfig('inputViewerVisible')}
+                  checked={config.visibles.inputViewer}
+                  onChange={changeConfigObj('visibles')('inputViewer')}
                 />
               </label>
             </div>
@@ -116,8 +140,8 @@ export function OtherSettings({
                 <Switch
                   checkedChildren="显示"
                   unCheckedChildren="隐藏"
-                  checked={config.skillMatchVisible}
-                  onChange={changeConfig('skillMatchVisible')}
+                  checked={config.visibles.skillMatch}
+                  onChange={changeConfigObj('visibles')('skillMatch')}
                 />
               </label>
             </div>
@@ -135,18 +159,32 @@ export function OtherSettings({
       onChange({ ...config, [k]: v });
     };
   }
+  function changeConfigObj<K extends keyof OtherConfig>(k: K) {
+    return function getObjK<OK extends keyof OtherConfig[K]>(objK: OK) {
+      return (v: OtherConfig[K][OK]): void => {
+        const obj = config[k];
+        if (typeof obj !== 'object') return;
+        onChange({ ...config, [k]: { ...obj, [objK]: v } });
+      };
+    };
+  }
 }
 
 export interface OtherConfig {
   socd: 'socdN' | 'socdLW' | 'socdFW';
-  onlyHistory: boolean;
   theme: Theme;
-  historyLay: 'vertical' | 'horizontal';
   location: PlayerLocation;
-  skillListVisible: boolean;
-  hitboxVisible: boolean;
-  inputViewerVisible: boolean;
-  skillMatchVisible: boolean;
+  inputHistory: {
+    layout: 'vertical' | 'horizontal';
+    only: boolean;
+    fontSize: number;
+  };
+  visibles: {
+    skillList: boolean;
+    hitbox: boolean;
+    inputViewer: boolean;
+    skillMatch: boolean;
+  };
 }
 type Theme = 'light' | 'dark' | 'dark-transparent';
 export const themes: Theme[] = ['light', 'dark', 'dark-transparent'];
