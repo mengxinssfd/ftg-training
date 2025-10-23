@@ -7,14 +7,15 @@
     li {
       position: relative;
       align-items: center;
-      line-height: 32px;
+      line-height: 2em;
+      font-size: var(--ih-fs);
       .direct {
         font-weight: bolder;
         text-align: center;
-        width: 40px;
+        width: 2.5em;
       }
       .frame {
-        width: 30px;
+        width: 1.875em;
       }
       .attacks {
         display: flex;
@@ -22,16 +23,14 @@
         font-weight: bolder;
         span {
           display: block;
-          $w: 22px;
+          $w: 1.56em;
           width: $w;
           height: $w;
           flex-basis: $w;
-          flex-shrink: $w;
-          margin-right: 4px;
           border-radius: 50%;
           line-height: $w;
           text-align: center;
-          font-size: 12px;
+          font-size: 0.75em;
           &.lp,
           &.lk {
             color: #00f7ff;
@@ -69,6 +68,11 @@
       .frame {
         text-align: right;
       }
+      .attacks {
+        span {
+          margin-right: 4px;
+        }
+      }
     }
   }
 }
@@ -96,6 +100,9 @@
       }
       .attacks {
         flex-direction: column-reverse;
+        span {
+          margin-top: 4px;
+        }
       }
     }
   }
