@@ -5,21 +5,14 @@ import {
   InputHistory,
   DefaultInputHistoryFontSize,
   InputViewer,
-  type KeyboardConfig,
   KeyboardSettings,
   type OtherConfig,
   OtherSettings,
   SkillList,
   themes,
+  useKeyboardSettings,
 } from './components';
-import {
-  createPlayer,
-  defGamepadMapArr,
-  defKeyboardMapArr,
-  gamepadMap,
-  keyboardMap,
-  resetKeymap,
-} from '@/common';
+import { createPlayer, defGamepadMapArr, gamepadMap, resetKeymap } from '@/common';
 import { Checkbox } from 'antd';
 import { useLocalStorageState, useSkillMatch } from '@/hooks';
 import { socdFW, socdLW, socdN, XboxGamepadInput } from '@core';
@@ -69,11 +62,8 @@ function App() {
       resetKeymap(gamepadMap, v.keymap);
     },
   });
-  const [keyboardConfig, setKeyboardConfig] = useLocalStorageState({
-    storageKey: 'keyboardConfig',
-    defaultValue: (): KeyboardConfig => ({ keymap: defKeyboardMapArr }),
-    onChange: (v): void => resetKeymap(keyboardMap, v.keymap),
-  });
+  const { isKeyboardClear, setKeyboardClear, setKeyboardConfig } =
+    useKeyboardSettings(clearHistory);
 
   return (
     <div className={styles['_']}>
@@ -91,7 +81,11 @@ function App() {
         {!config.inputHistory.only && (
           <>
             <GamepadSettings config={gamepadConfig} onChange={setGamepadConfig} />
-            <KeyboardSettings config={keyboardConfig} onChange={setKeyboardConfig} />
+            <KeyboardSettings
+              isClear={isKeyboardClear}
+              setClear={setKeyboardClear}
+              onChange={setKeyboardConfig}
+            />
             <OtherSettings
               config={config}
               onChange={setConfig}
@@ -124,6 +118,10 @@ function App() {
       )}
     </div>
   );
+
+  function clearHistory(): void {
+    player.clearInputs();
+  }
 }
 
 export default App;
