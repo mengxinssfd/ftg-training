@@ -27,7 +27,6 @@ import { socdFW, socdLW, socdN, XboxGamepadInput } from '@core';
 const socdMap = { socdN, socdLW, socdFW } as const;
 const { player, xboxInput, hitboxInput, setSocd, skillList } = createPlayer();
 function App() {
-  const [skill, frame] = useSkillMatch({ player });
   const [config, setConfig] = useLocalStorageState({
     storageKey: 'config',
     defaultValue: (): OtherConfig => ({
@@ -56,6 +55,7 @@ function App() {
       }
     },
   });
+  const [skill, frame] = useSkillMatch(player, !config.inputHistory.only);
   const [gamepadConfig, setGamepadConfig] = useLocalStorageState({
     storageKey: 'gamepadConfig',
     defaultValue: (): GamepadConfig => ({
