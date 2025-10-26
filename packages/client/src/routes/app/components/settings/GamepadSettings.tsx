@@ -1,10 +1,10 @@
 import style from './GamepadSettings.module.scss';
-import { defGamepadMapArr, gamepadMap } from '@/common';
-import { GamepadInput, type KeyOfKeymap, type MapArrayOfKeymap } from '@core';
+import { defGamepadMapArr, gamepadMap, resetKeymap } from '@/common';
+import { GamepadInput, type KeyOfKeymap, type MapArrayOfKeymap, XboxGamepadInput } from '@core';
 import { useEffect, useState } from 'react';
-import { Button, InputNumber, Modal, Select, Space } from 'antd';
+import { Button, InputNumber, Modal, Select, Space, Switch } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
-import { useGamepadChange } from '@/hooks';
+import { useGamepadChange, useLocalStorageState } from '@/hooks';
 
 export interface GamepadConfig {
   deadZone: number;
@@ -14,9 +14,13 @@ export interface GamepadConfig {
 export function GamepadSettings({
   config,
   onChange,
+  isClear,
+  setClear,
 }: {
   config: GamepadConfig;
   onChange: (value: GamepadConfig) => void;
+  isClear: boolean;
+  setClear: (value: boolean) => void;
 }): JSX.Element {
   const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,6 +94,17 @@ export function GamepadSettings({
                 }}
               />
             </div>
+            <div>
+              <label>
+                按 Menu(菜单) 键清理输入历史：
+                <Switch
+                  checkedChildren="是"
+                  unCheckedChildren="否"
+                  checked={isClear}
+                  onChange={setClear}
+                />
+              </label>
+            </div>
           </section>
         </section>
       </Modal>
@@ -110,4 +125,37 @@ export function GamepadSettings({
   function getGamepads(): Gamepad[] {
     return navigator.getGamepads().filter(Boolean) as Gamepad[];
   }
+}
+
+export function useGamepadSettings(xboxInput: XboxGamepadInput, clearHistory: () => void) {
+  const [gamepadConfig, setGamepadConfig] = useLocalStorageState({
+    storageKey: 'gamepadConfig',
+    defaultValue: (): GamepadConfig => ({
+      deadZone: XboxGamepadInput.DefaultLeftStickDeadZone,
+      keymap: defGamepadMapArr,
+      indexOfGamepads: 0,
+    }),
+    onChange: (v): void => {
+      xboxInput.leftStickDeadZone = v.deadZone;
+      xboxInput.indexOfGamepads = v.indexOfGamepads;
+      resetKeymap(gamepadMap, v.keymap);
+    },
+  });
+
+  const [isClear, setClear] = useLocalStorageState({
+    storageKey: 'gpClearHistory',
+    defaultValue: false,
+  });
+  useGamepadChange(
+    isClear,
+    (_leftStickDirect, buttons) => {
+      console.log('1111', buttons, XboxGamepadInput.Keymap.Menu);
+      // todo: 测试
+      if (buttons.find((v) => v.index === XboxGamepadInput.Keymap.Menu)) clearHistory();
+    },
+    gamepadConfig.indexOfGamepads,
+    gamepadConfig.deadZone,
+  );
+
+  return { gamepadConfig, setGamepadConfig, isGamepadClear: isClear, setGamepadClear: setClear };
 }
