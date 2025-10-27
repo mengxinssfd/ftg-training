@@ -149,8 +149,7 @@ export function useGamepadSettings(xboxInput: XboxGamepadInput, clearHistory: ()
   useGamepadChange(
     isClear,
     (_leftStickDirect, buttons) => {
-      console.log('1111', buttons, XboxGamepadInput.Keymap.Menu);
-      // todo: 测试
+      // 按下 menu 键，清除输入历史
       if (buttons.find((v) => v.index === XboxGamepadInput.Keymap.Menu)) clearHistory();
     },
     gamepadConfig.indexOfGamepads,
