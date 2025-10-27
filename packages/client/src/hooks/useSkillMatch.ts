@@ -6,11 +6,10 @@ const f = 1000 / 60;
 const odReplaceFrame = 5; // od技和普通技能在 odTime 帧数内则替换为 od 技
 const nextSkillFrame = 50; // 50 帧内不得再次匹配技能
 
-export function useSkillMatch({
-  player,
-}: {
-  player: Player;
-}): [skill: ImpSkill | undefined, frame: number] {
+export function useSkillMatch(
+  player: Player,
+  isMatch: boolean,
+): [skill: ImpSkill | undefined, frame: number] {
   const [frame, setFrame] = useState<number>(0);
   const [skill, setSkill] = useState<ImpSkill>();
   useEffect(() => {
@@ -18,6 +17,8 @@ export function useSkillMatch({
     const timer = setInterval(function handler() {
       player.frameAdd();
       setFrame(player.frame);
+      // isMatch 为 false 时不匹配搓招技能
+      if (!isMatch) return;
       const frameDiff = player.frame - lastMatched.frame;
       // 如果距离上次搓招成功大于 100 帧，则撤销显示技能
       if (frameDiff > 100) setSkill(undefined);
@@ -40,7 +41,7 @@ export function useSkillMatch({
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [isMatch]);
 
   return [skill, frame];
 }

@@ -1,33 +1,25 @@
 import styles from './App.module.scss';
 import {
-  type GamepadConfig,
   GamepadSettings,
   InputHistory,
   DefaultInputHistoryFontSize,
   InputViewer,
-  type KeyboardConfig,
   KeyboardSettings,
   type OtherConfig,
   OtherSettings,
   SkillList,
   themes,
+  useKeyboardSettings,
+  useGamepadSettings,
 } from './components';
-import {
-  createPlayer,
-  defGamepadMapArr,
-  defKeyboardMapArr,
-  gamepadMap,
-  keyboardMap,
-  resetKeymap,
-} from '@/common';
+import { createPlayer } from '@/common';
 import { Checkbox } from 'antd';
 import { useLocalStorageState, useSkillMatch } from '@/hooks';
-import { socdFW, socdLW, socdN, XboxGamepadInput } from '@core';
+import { socdFW, socdLW, socdN } from '@core';
 
 const socdMap = { socdN, socdLW, socdFW } as const;
 const { player, xboxInput, hitboxInput, setSocd, skillList } = createPlayer();
 function App() {
-  const [skill, frame] = useSkillMatch({ player });
   const [config, setConfig] = useLocalStorageState({
     storageKey: 'config',
     defaultValue: (): OtherConfig => ({
@@ -56,24 +48,14 @@ function App() {
       }
     },
   });
-  const [gamepadConfig, setGamepadConfig] = useLocalStorageState({
-    storageKey: 'gamepadConfig',
-    defaultValue: (): GamepadConfig => ({
-      deadZone: XboxGamepadInput.DefaultLeftStickDeadZone,
-      keymap: defGamepadMapArr,
-      indexOfGamepads: 0,
-    }),
-    onChange: (v): void => {
-      xboxInput.leftStickDeadZone = v.deadZone;
-      xboxInput.indexOfGamepads = v.indexOfGamepads;
-      resetKeymap(gamepadMap, v.keymap);
-    },
-  });
-  const [keyboardConfig, setKeyboardConfig] = useLocalStorageState({
-    storageKey: 'keyboardConfig',
-    defaultValue: (): KeyboardConfig => ({ keymap: defKeyboardMapArr }),
-    onChange: (v): void => resetKeymap(keyboardMap, v.keymap),
-  });
+  const [skill, frame] = useSkillMatch(player, !config.inputHistory.only);
+
+  const { gamepadConfig, setGamepadConfig, isGamepadClear, setGamepadClear } = useGamepadSettings(
+    xboxInput,
+    clearHistory,
+  );
+  const { isKeyboardClear, setKeyboardClear, setKeyboardConfig } =
+    useKeyboardSettings(clearHistory);
 
   return (
     <div className={styles['_']}>
@@ -90,8 +72,17 @@ function App() {
         </Checkbox>
         {!config.inputHistory.only && (
           <>
-            <GamepadSettings config={gamepadConfig} onChange={setGamepadConfig} />
-            <KeyboardSettings config={keyboardConfig} onChange={setKeyboardConfig} />
+            <GamepadSettings
+              isClear={isGamepadClear}
+              setClear={setGamepadClear}
+              config={gamepadConfig}
+              onChange={setGamepadConfig}
+            />
+            <KeyboardSettings
+              isClear={isKeyboardClear}
+              setClear={setKeyboardClear}
+              onChange={setKeyboardConfig}
+            />
             <OtherSettings
               config={config}
               onChange={setConfig}
@@ -124,6 +115,10 @@ function App() {
       )}
     </div>
   );
+
+  function clearHistory(): void {
+    player.clearInputs();
+  }
 }
 
 export default App;
