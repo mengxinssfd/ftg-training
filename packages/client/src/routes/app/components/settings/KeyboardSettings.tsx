@@ -1,19 +1,23 @@
 import style from './KeyboardSettings.module.scss';
-import { defKeyboardMapArr, keyboardMap } from '@/common';
+import { defKeyboardMapArr, keyboardMap, resetKeymap } from '@/common';
 import { addKeyboardListener, type KeyOfKeymap, type MapArrayOfKeymap } from '@core';
 import { useEffect, useState } from 'react';
-import { Modal, Button, Space } from 'antd';
+import { Modal, Button, Space, Switch } from 'antd';
 import { KeymapTable } from '@/routes/app/components/settings/KeymapTable';
 import { preventDefaultEvent } from '@tool-pack/dom';
+import { useLocalStorageState } from '@/hooks';
 
 export interface KeyboardConfig {
   keymap: MapArrayOfKeymap;
 }
 export function KeyboardSettings({
   onChange,
+  isClear,
+  setClear,
 }: {
-  config: KeyboardConfig;
   onChange: (value: KeyboardConfig) => void;
+  isClear: boolean;
+  setClear: (value: boolean) => void;
 }): JSX.Element {
   const [activeKey, setActiveKey] = useState<KeyOfKeymap | undefined>(undefined);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,6 +56,17 @@ export function KeyboardSettings({
         }>
         <section className={style['_']}>
           <KeymapTable activeKey={activeKey} setActiveKey={setActiveKey} keymap={keyboardMap} />
+          <div>
+            <label>
+              按 esc 键清理输入历史：
+              <Switch
+                checkedChildren="是"
+                unCheckedChildren="否"
+                checked={isClear}
+                onChange={setClear}
+              />
+            </label>
+          </div>
         </section>
       </Modal>
     </>
@@ -63,4 +78,27 @@ export function KeyboardSettings({
   function reset(): void {
     onChange({ keymap: defKeyboardMapArr });
   }
+}
+
+export function useKeyboardSettings(clearHistory: () => void) {
+  const [, /* keyboardConfig, */ setKeyboardConfig] = useLocalStorageState({
+    storageKey: 'keyboardConfig',
+    defaultValue: (): KeyboardConfig => ({ keymap: defKeyboardMapArr }),
+    onChange: (v): void => resetKeymap(keyboardMap, v.keymap),
+  });
+
+  const [isClear, setClear] = useLocalStorageState({
+    storageKey: 'kbClearHistory',
+    defaultValue: false,
+  });
+  useEffect(() => {
+    if (!isClear) return;
+    return addKeyboardListener((keycode, isPressed): boolean | void => {
+      if (keycode === 'Escape' && isPressed) {
+        clearHistory();
+      }
+    });
+  }, [isClear]);
+
+  return { isKeyboardClear: isClear, setKeyboardClear: setClear, setKeyboardConfig };
 }
