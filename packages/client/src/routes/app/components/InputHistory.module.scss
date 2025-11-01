@@ -31,20 +31,25 @@
           line-height: $w;
           text-align: center;
           font-size: 0.75em;
-          &.lp,
+          background: url('../../../../public/btns.webp') -9999px -9999px no-repeat;
+          background-size: 10em;
+          &.lp {
+            background-position: 0 0;
+          }
+          &.mp {
+            background-position: 19.5% 0;
+          }
+          &.hp {
+            background-position: 39.5% 0;
+          }
           &.lk {
-            color: #00f7ff;
-            background: rgba(0, 247, 255, 0.15);
+            background-position: 59.5% 0;
           }
-          &.mp,
           &.mk {
-            color: #9ae84c;
-            background: rgba(154, 232, 76, 0.15);
+            background-position: 79.5% 0;
           }
-          &.hp,
           &.hk {
-            color: #850606;
-            background: rgba(133, 6, 6, 0.15);
+            background-position: 99% 0;
           }
         }
       }
