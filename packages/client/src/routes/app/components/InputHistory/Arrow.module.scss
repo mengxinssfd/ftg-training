@@ -1,0 +1,47 @@
+._ {
+  :global {
+    .arrow {
+      width: 1.05em;
+      &.DownRight {
+        rotate: 45deg;
+      }
+      &.Down {
+        rotate: 90deg;
+      }
+      &.DownLeft {
+        rotate: 135deg;
+      }
+      &.Left {
+        rotate: 180deg;
+      }
+      &.UpLeft {
+        rotate: 225deg;
+      }
+      &.Up {
+        rotate: 270deg;
+      }
+      &.UpRight {
+        rotate: 315deg;
+      }
+    }
+    .body {
+      position: relative;
+      width: 0.6em;
+      height: 0.4em;
+      background-color: white;
+      border-radius: 5%;
+      box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.5);
+    }
+    .head {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border: 0.45em solid transparent;
+      border-left-color: white;
+      filter: drop-shadow(5px 0 4px rgba(0, 0, 0, 0.5));
+    }
+  }
+}
