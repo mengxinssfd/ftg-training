@@ -10,7 +10,7 @@
   height: 100px;
   background: rgba(244, 164, 96, 0.2);
   border-radius: 10px;
-
+  font-size: 18px;
   :global {
     ul {
       display: grid;
@@ -18,13 +18,15 @@
     }
     li {
       $h: 30px;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: $h;
       height: $h;
       line-height: $h;
       text-align: center;
       &.active {
-        background: rgba(244, 164, 96, 0.5);
+        background: rgba(244, 164, 96, 0.7);
       }
     }
     .attacks {

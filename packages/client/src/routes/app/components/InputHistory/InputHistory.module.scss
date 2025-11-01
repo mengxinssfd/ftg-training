@@ -10,48 +10,23 @@
       line-height: 2em;
       font-size: var(--ih-fs);
       .direct {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         font-weight: bolder;
         text-align: center;
-        width: 2.5em;
+        height: 1em;
       }
       .frame {
         width: 1.875em;
+        color: white;
+        text-shadow: 0 0 4px black;
+        font-weight: bold;
       }
       .attacks {
         display: flex;
         align-items: center;
         font-weight: bolder;
-        span {
-          display: block;
-          $w: 1.56em;
-          width: $w;
-          height: $w;
-          flex-basis: $w;
-          border-radius: 50%;
-          line-height: $w;
-          text-align: center;
-          font-size: 0.75em;
-          background: url('../../../../public/btns.webp') -9999px -9999px no-repeat;
-          background-size: 10em;
-          &.lp {
-            background-position: 0 0;
-          }
-          &.mp {
-            background-position: 19.5% 0;
-          }
-          &.hp {
-            background-position: 39.5% 0;
-          }
-          &.lk {
-            background-position: 59.5% 0;
-          }
-          &.mk {
-            background-position: 79.5% 0;
-          }
-          &.hk {
-            background-position: 99% 0;
-          }
-        }
       }
     }
   }
@@ -73,8 +48,11 @@
       .frame {
         text-align: right;
       }
+      .direct {
+        width: 2.5em;
+      }
       .attacks {
-        span {
+        > div {
           margin-right: 4px;
         }
       }
@@ -103,9 +81,12 @@
       .frame {
         text-align: center;
       }
+      .direct {
+        margin-top: 0.5em;
+      }
       .attacks {
         flex-direction: column-reverse;
-        span {
+        > div {
           margin-top: 4px;
         }
       }
