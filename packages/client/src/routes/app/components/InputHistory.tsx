@@ -33,9 +33,7 @@ export function InputHistory({
               <div className="direct">{iconMap[v.direct]}</div>
               <div className="attacks">
                 {v.others.map((o) => (
-                  <span key={o} className={o as string}>
-                    {o}
-                  </span>
+                  <span key={o} className={o as string}></span>
                 ))}
               </div>
             </li>
