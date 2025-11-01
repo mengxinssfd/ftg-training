@@ -1,8 +1,11 @@
 import type { InputHistory as InputHistoryTS } from '@core';
+import { Direct } from '@core';
 import styles from './InputHistory.module.scss';
-import { iconMap } from '@/common/iconMap';
 import { getClassNames } from '@tool-pack/basic';
 import type { CSSProperties } from 'react';
+import { Arrow } from './Arrow';
+import { None } from './None';
+import { Btn } from './Btn';
 
 export function InputHistory({
   inputHistories: ih,
@@ -30,10 +33,12 @@ export function InputHistory({
           return (
             <li key={v.startFrame}>
               <div className="frame">{frame}</div>
-              <div className="direct">{iconMap[v.direct]}</div>
+              <div className="direct">
+                {v.direct === Direct.None ? <None /> : <Arrow direct={v.direct} />}
+              </div>
               <div className="attacks">
                 {v.others.map((o) => (
-                  <span key={o} className={o as string}></span>
+                  <Btn key={o} name={o as string} />
                 ))}
               </div>
             </li>

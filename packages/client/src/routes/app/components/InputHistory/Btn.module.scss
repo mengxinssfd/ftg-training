@@ -1,0 +1,36 @@
+._ {
+  :global {
+    span {
+      display: block;
+      $w: 1.25em;
+      width: $w;
+      height: $w;
+      flex-basis: $w;
+      border-radius: 50%;
+      line-height: $w;
+      text-align: center;
+      background: url('../../../../../public/btns.webp') -9999px -9999px no-repeat;
+      background-size: 9em;
+      box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.35);
+      background-position-y: -0.1em;
+      &.lp {
+        background-position-x: 0.5%;
+      }
+      &.mp {
+        background-position-x: 20%;
+      }
+      &.hp {
+        background-position-x: 39.5%;
+      }
+      &.lk {
+        background-position-x: 59%;
+      }
+      &.mk {
+        background-position-x: 78.6%;
+      }
+      &.hk {
+        background-position-x: 98%;
+      }
+    }
+  }
+}
