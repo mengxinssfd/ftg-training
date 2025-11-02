@@ -11,6 +11,7 @@ import {
   themes,
   useKeyboardSettings,
   useGamepadSettings,
+  DefaultInputHistoryLength,
 } from './components';
 import { createPlayer } from '@/common';
 import { Checkbox } from 'antd';
@@ -28,6 +29,7 @@ function App() {
       location: player.location,
       inputHistory: {
         fontSize: DefaultInputHistoryFontSize,
+        length: DefaultInputHistoryLength,
         layout: 'vertical',
         only: false,
       },
@@ -46,6 +48,7 @@ function App() {
         document.body.classList.remove(...themes.map((t) => prefix + t));
         document.body.classList.add(prefix + v.theme);
       }
+      player.inputManager.setHistoryMaxLen(v.inputHistory.length);
     },
   });
   const [skill, frame] = useSkillMatch(player, !config.inputHistory.only);
