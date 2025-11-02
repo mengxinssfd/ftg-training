@@ -2,7 +2,7 @@ import style from './OtherSettings.module.scss';
 import { useState } from 'react';
 import { Button, Modal, Select, Space, Switch, InputNumber } from 'antd';
 import { PlayerLocation } from '@core';
-import { DefaultInputHistoryFontSize } from '../InputHistory';
+import { DefaultInputHistoryFontSize, DefaultInputHistoryLength } from '../InputHistory';
 
 export function OtherSettings({
   config,
@@ -87,15 +87,34 @@ export function OtherSettings({
                     min={1}
                     max={100}
                     value={config.inputHistory.fontSize}
-                    onChange={(v) =>
-                      changeConfigObj('inputHistory')('fontSize')(v ?? DefaultInputHistoryFontSize)
-                    }
+                    onChange={(v) => changeConfigObj('inputHistory')('fontSize')(v ?? 1)}
                   />
                 </label>
                 <Button
                   size="small"
                   onClick={() =>
                     changeConfigObj('inputHistory')('fontSize')(DefaultInputHistoryFontSize)
+                  }>
+                  默认
+                </Button>
+              </Space>
+            </div>
+            <div>
+              <Space>
+                <label>
+                  输入历史长度：
+                  <InputNumber
+                    size="small"
+                    min={1}
+                    max={100}
+                    value={config.inputHistory.length ?? DefaultInputHistoryLength}
+                    onChange={(v) => changeConfigObj('inputHistory')('length')(v ?? 1)}
+                  />
+                </label>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    changeConfigObj('inputHistory')('length')(DefaultInputHistoryLength)
                   }>
                   默认
                 </Button>
@@ -178,6 +197,7 @@ export interface OtherConfig {
     layout: 'vertical' | 'horizontal';
     only: boolean;
     fontSize: number;
+    length: number;
   };
   visibles: {
     skillList: boolean;
