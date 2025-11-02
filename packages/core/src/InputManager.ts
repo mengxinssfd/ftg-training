@@ -52,8 +52,11 @@ export class InputManager {
     const input = Input.union(this.inputs);
     if (this.isSameInput(input)) return;
     this.inputHistories.push({ ...input, startFrame: this.frame, location: location });
-    if (this.inputHistories.length >= this.historyMaxLen) {
-      this.inputHistories.splice(0, this.inputHistories.length - this.historyMaxLen);
+    this.cutHistory(this.historyMaxLen);
+  }
+  private cutHistory(length: number): void {
+    if (this.inputHistories.length > length) {
+      this.inputHistories.splice(0, this.inputHistories.length - length);
     }
   }
   /**
@@ -91,6 +94,7 @@ export class InputManager {
    * 更新输入历史记录的最大保存长度
    */
   setHistoryMaxLen(length: number): void {
+    this.cutHistory(length);
     this.historyMaxLen = length;
   }
   /**

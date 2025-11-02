@@ -26,7 +26,6 @@ export function InputHistory({
         lay === 'horizontal' ? styles['horizontal'] : styles['vertical'],
       )}>
       {ih
-        .slice(-50)
         .map((v, i, arr) => {
           const lastV = arr[i + 1];
           const frame = Math.min(99, (lastV ? lastV.startFrame : currentFrame) - v.startFrame);
@@ -50,3 +49,4 @@ export function InputHistory({
 }
 
 export const DefaultInputHistoryFontSize = 16;
+export const DefaultInputHistoryLength = 50;
