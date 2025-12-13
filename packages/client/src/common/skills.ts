@@ -128,7 +128,7 @@ export const Sa1: ImpSkill = {
   limitFrame: 30,
   name: '真空波动拳',
   commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + p`,
-  directs: [presetDirects['236236']],
+  directs: [presetDirects['236236'], presetDirects['26236'], presetDirects['23626']],
   trigger: anyPunch,
 };
 export const Sa2: ImpSkill = {
@@ -136,7 +136,7 @@ export const Sa2: ImpSkill = {
   limitFrame: 30,
   name: '真·波掌击',
   commandView: `${presetDirects['214214'].map((d) => iconMap[d]).join('')} + p`,
-  directs: [presetDirects['214214']],
+  directs: [presetDirects['214214'], presetDirects['21424'], presetDirects['24214']],
   trigger: anyPunch,
 };
 export const Sa3: ImpSkill = {
@@ -144,7 +144,7 @@ export const Sa3: ImpSkill = {
   limitFrame: 30,
   name: '真·升龙拳',
   commandView: `${presetDirects['236236'].map((d) => iconMap[d]).join('')} + k`,
-  directs: [presetDirects['236236']],
+  directs: [presetDirects['236236'], presetDirects['26236'], presetDirects['23626']],
   trigger: anyKick,
 };
 
