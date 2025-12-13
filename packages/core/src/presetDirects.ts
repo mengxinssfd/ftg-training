@@ -29,17 +29,21 @@ export const presetDirects = (function () {
   const anyUp = [Direct.UpLeft, Direct.Up, Direct.UpRight];
   // 常用基础方向组合
   const d236 = [Direct.Down, Direct.DownRight, Direct.Right];
+  const d26 = [Direct.Down, Direct.Right];
   const d214 = [Direct.Down, Direct.DownLeft, Direct.Left];
+  const d24 = [Direct.Down, Direct.Left];
   const d323 = [Direct.DownRight, Direct.Down, Direct.DownRight];
   const d63214 = [Direct.Right, Direct.DownRight, ...d214];
   return {
     // 基础必杀技指令
     236: d236, // 波动拳
     236236: [...d236, ...d236], // 标准超杀
-    26236: [Direct.Down, Direct.Right, ...d236], // 优化超杀
+    26236: [...d26, ...d236], // 优化超杀
+    23626: [...d236, ...d26], // 优化超杀
     214: d214, // 反波动拳
     214214: [...d214, ...d214], // 反向超杀
-    24214: [Direct.Down, Direct.Left, ...d214], // 改良反向超杀
+    24214: [...d24, ...d214], // 改良反向超杀
+    21424: [...d214, ...d24], // 改良反向超杀
     2149: [...d214, Direct.UpRight], // 先摇空箭
     63214: d63214, // 指令头
     41236: d63214.slice().reverse(), // 反向指令投
